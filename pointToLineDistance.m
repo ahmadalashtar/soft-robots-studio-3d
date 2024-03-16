@@ -4,8 +4,8 @@ function [result] = pointToLineDistance(point,linePoint1,linePoint2)
     pointToLinePoint2 = distance_between_two_points(point,linePoint2);
     lineLength = distance_between_two_points(linePoint1,linePoint2);
     
-    if (lineLength == 0)
-        result = pointToLinePoint1;
+    if (lineLength == 0 || pointToLinePoint1 == 0 || pointToLinePoint2 == 0)
+        result = min(pointToLinePoint1,pointToLinePoint2);
         return;
     end
 
