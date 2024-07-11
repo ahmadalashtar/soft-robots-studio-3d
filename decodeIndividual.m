@@ -17,12 +17,12 @@ function [robot_configurations] = decodeIndividual(robot_chromosome)
     robot_configurations = zeros(n_nodes,3,n_targets);
     
     for i=1:2:n_targets*2
-        
+        %%EMİR: I reduced n_nodes + 1 's by -1 so they all are one less
         align_index = robot_chromosome(i,n_nodes+1);    % index of the node closest to the targets orientation segment
         align_angle_x = robot_chromosome(i,n_nodes+2);    %
-        align_angle_y = robot_chromosome(i+1,n_nodes+3);    %  
-        last_index = robot_chromosome(i,n_nodes+4);     % index of the node before the end effector
-        last_length = robot_chromosome(i,n_nodes+5);    % 
+        align_angle_y = robot_chromosome(i+1,n_nodes+2);    %  
+        last_index = robot_chromosome(i,n_nodes+3);     % index of the node before the end effector
+        last_length = robot_chromosome(i,n_nodes+4);    % 
         
         robot_configuration = zeros(n_nodes,3);
         for j=1:1:n_nodes        

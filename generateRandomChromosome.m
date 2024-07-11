@@ -125,7 +125,8 @@ function [chrom] =  generateRandomChromosome()
     end 
 end
 
-% A single chromosome is a matrix [t*2+1 x n+5]:
+% A single chromosome is a matrix [t*2+1 x n+5]: %%EMİR this needs to
+% change
 
 %  |                 |         |         |         |         |
 %  |     (t*2 x n)   | (t x 1) | (t x 1) | (t x 1) | (t x 1) |

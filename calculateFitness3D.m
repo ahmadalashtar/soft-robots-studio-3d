@@ -20,11 +20,12 @@
 % and we cut at the minimum between the nodes retreived by these two strategies.
 %
 % INPUT:
-% 'chrom' is the chromosome [t*2+1 x n+5] to be evaluated (extra genes should be empty)
+% 'chrom' is the chromosome [t*2+1 x n+4] to be evaluated (extra genes
+% should be empty) %%EMİR modified it to +4
 % 'draw_plot' is a boolean flag, true if you want to plot the segments from targets
 %
 % OUTPUT:
-% 'chrom' is the evaluated chromosome [t*2+1 x n+5] with added information in the extra genes
+% 'chrom' is the evaluated chromosome [t*2+1 x n+4] with added information in the extra genes%%EMİR modified it to +4
 % 'fitness' a scalar numeric value representing the fitness of the chromosome
 function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
 
@@ -87,11 +88,13 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         fitness(1) = fitness(1) + fit;
 
         [final_angle_x, final_angle_y]= calculateLastAngle(robot_points, ee_index, op.targets(ceili2,1:3),chrom,i);
-
+        
+        %%EMİR commented out the extra x and y removed i+1 and made both
+        %%n_nodes + 2
         chrom(i,n_nodes+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
-        chrom(i,n_nodes+3) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
-        chrom(i+1,n_nodes+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
-        chrom(i+1,n_nodes+3) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
+        chrom(i+1,n_nodes+2) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
+        %chrom(i+1,n_nodes+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
+        %chrom(i+1,n_nodes+3) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
         
         
         %----CUT ROBOT
@@ -104,21 +107,24 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
             dist2target = norm(robot_points(j,:)-t(1:3));
             if(dist2target<l)
                 %cut here
+                %%EMİR reduced everything by 1
                 lastNode_index = j;
-                chrom(i,n_nodes+4) = lastNode_index;
-                chrom(i,n_nodes+5) = dist2target; %cut length
-                chrom(i+1,n_nodes+4) = lastNode_index;
-                chrom(i+1,n_nodes+5) = dist2target; %cut length
-                sumLinksOnSegment = sumLinksOnSegment + chrom(i,n_nodes+4) - chrom(i,n_nodes+1) + 1;
+                chrom(i,n_nodes+3) = lastNode_index;
+                chrom(i,n_nodes+4) = dist2target; %cut length
+                chrom(i+1,n_nodes+3) = lastNode_index;
+                chrom(i+1,n_nodes+4) = dist2target; %cut length
+                sumLinksOnSegment = sumLinksOnSegment + chrom(i,n_nodes+4) - chrom(i,n_nodes+1) + 1;%%EMİR i didn't touch this
                 break;
             end
         end
         
         %----calculate robot total length
-        for j=1:1:chrom(i,n_nodes+4)-1
+        %%EMİR reduced for loop by 1
+        for j=1:1:chrom(i,n_nodes+3)-1
             thisConf_totLength = thisConf_totLength + chrom(n_targets*2+1,j);
         end
-        thisConf_totLength = thisConf_totLength + chrom(i,n_nodes+5);
+        %%this got reduced by 1 too EMİR
+        thisConf_totLength = thisConf_totLength + chrom(i,n_nodes+4);
         totLength = max(thisConf_totLength,totLength);
     end
     
