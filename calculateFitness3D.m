@@ -80,13 +80,11 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
             end 
         end
         
-        
-       
 
         fit = dist_mat(ee_index);        
         fitness(1) = fitness(1) + fit;
 
-        [final_angle_x, final_angle_y]= calculateLastAngle(robot_points, ee_index, op.targets(ceili2,1:3),chrom,i);
+        [final_angle_x, final_angle_y]= calculateLastAngle(robot_points, ee_index, op.targets(ceili2,1:3));
 
         chrom(i,n_nodes+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
         chrom(i,n_nodes+3) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
@@ -171,18 +169,59 @@ end
 
 % Calculate the angle between the robot (at the current end effector) and the target's orientation segment
 % Uses voronoi rotation to make the angle calculation simpler
-function [rotx, roty] = calculateLastAngle(robot_points, ee_index, target,chrom,i)
-    currentXangle = 0;
-    currentYangle = 0;
-    for j=1:ee_index-1
-        currentXangle = currentXangle + chrom(i,j);
-        currentYangle = currentYangle + chrom(i+1,j);
-    end
-    rotx = target(1) - currentXangle;
-    roty = target(2) - currentYangle;
+function [rotx, roty] = calculateLastAngle(robot_points, ee_index, target)
+    ev = robot_points(ee_index,:)-robot_points(ee_index-1,:)
+    tv = target(1:3)-robot_points(ee_index-1,:)
+
+    ex = [ev(3) ev(2)]
+    ey = [ev(3) ev(1)]
+
+    tx = [tv(3) tv(2)]
+    ty = [tv(3) tv(1)]
+    
+    rotx = calculateAngle(tx,ex)
+    roty = calculateAngle(ty,ey)
     
 end
 
+% input: 
+% - v1: target's projection on zx or zy
+% - v2: end point's vector projection on zx or zy
+% output:
+% - angle: the difference in angle to go from v2 to v1
+
+function angle = calculateAngle(v1,v2)
+    
+    x1 = v1(1);
+    y1 = v1(2);
+    x2 = v2(1);
+    y2 = v2(2);
+    v1n = norm(v1);
+    v2n = norm(v2);
+    
+    if (x1 >= 0)
+        v1angle = asind(y1/v1n);
+    elseif (y1<=0)
+        v1angle = asind(y1/v1n);
+        v1angle = -180 - v1angle ;
+    else
+        v1angle = asind(y1/v1n);
+        v1angle = 180 - v1angle ;
+    end
+    
+    if (x2 >= 0)
+        v2angle = asind(y2/v2n);
+    elseif (y2<=0)
+        v2angle = asind(y2/v2n);
+        v2angle = -180 - v2angle ;
+    else
+        v2angle = asind(y2/v2n);
+        v2angle = 180 - v2angle ;
+    end
+    
+    angle = v1angle - v2angle;
+    angle = round(angle,3);
+end
 
 % % Calculate the area of a triangle given its three vertices
 % function [area] = calculateTriangleArea(p1,p2,p3)

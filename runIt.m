@@ -47,7 +47,7 @@ function [best_chrom, configurations] = runIt()
     global algorithm;
     algorithm = 'ga';
     op.home_base = [0 0 0 0 0];
-    t1 = [0 0 700];
+    t1 = [5 5 5];
     % t2 = [13 13 13];
     
     % t2 = [100 100 100];
@@ -71,7 +71,7 @@ function [best_chrom, configurations] = runIt()
                     ]; %cylinder [x y z(base) radius height]
 
     op.n_nodes = 7;
-    op.length_domain = [10 30];
+    op.length_domain = [1 3];
     op.first_angle.is_fixed = true;
     op.angle_domain = [30 -30; 30 -30];
     op.first_angle.angle = 0;

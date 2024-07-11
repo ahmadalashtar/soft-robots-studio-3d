@@ -9,16 +9,16 @@
 function test()
 disp('hello')
 global op;
-    for i = 1 : 2
+    for i = 1 : 50
     chrom = generateRandomChromosome();
     [chrom, fitness] = calculateFitness3D(chrom, false);
-    % if fitness(4)~= 0
+    if fitness(4)~= 0
         disp(chrom);
         confs = decodeIndividual(chrom);
         drawProblem3D(confs(:,:,1))
         % drawProblem3D(confs(:,:,2))
         disp('')
-    % end
+    end
     % confs = decodeIndividual(chrom)
     % drawProblem3D(confs(:,:,1))
     end
