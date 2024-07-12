@@ -113,7 +113,7 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
                 chrom(i,n_nodes+4) = dist2target; %cut length
                 chrom(i+1,n_nodes+3) = lastNode_index;
                 chrom(i+1,n_nodes+4) = dist2target; %cut length
-                sumLinksOnSegment = sumLinksOnSegment + chrom(i,n_nodes+4) - chrom(i,n_nodes+1) + 1;%%EMİR i didn't touch this
+                sumLinksOnSegment = sumLinksOnSegment + chrom(i,n_nodes+3) - chrom(i,n_nodes+1) + 1;%%EMİR i didn't touch this
                 break;
             end
         end
