@@ -71,7 +71,7 @@ function [best_chrom, configurations] = runIt()
                     ]; %cylinder [x y z(base) radius height]
 
     op.n_nodes = 7;
-    op.length_domain = [10 30];
+    op.length_domain = [50 300];
     op.first_angle.is_fixed = true;
     op.angle_domain = [30 -30; 30 -30];
     op.first_angle.angle = 0;
@@ -135,9 +135,9 @@ function [best_chrom, configurations] = runIt()
     gas.fitIdx.id = 10;              % reference to chromosome in the array of population
     
     % extra genes in chromosome, it is a constant do not change!
-    gas.extra_genes = 5;
-    
-    %--------------------RUN---------------------
+
+    gas.extra_genes = 4;
+
     rng shuffle;
     dynamic_mut = gas.mutation_probability;
     
