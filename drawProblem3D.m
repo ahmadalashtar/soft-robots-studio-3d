@@ -44,10 +44,10 @@ function [] = drawProblem3D(robot_configurations)
     
     %draw op.targets
     for i=1:1:n_targets
-        plot3(op.targets(i,1), op.targets(i,2), op.targets(i,3),'x','Color','b', 'LineWidth', 8);  
+        plot3(op.targets(i,1), op.targets(i,2), op.targets(i,3),'-x','Color','b', 'LineWidth', 8);  
         
         %draw endpoints
-        plot3([op.end_points(i,1),op.targets(i,1)],[op.end_points(i,2),op.targets(i,2)],[op.end_points(i,3),op.targets(i,3)],'o','Color','b');
+        plot3([op.end_points(i,1),op.targets(i,1)],[op.end_points(i,2),op.targets(i,2)],[op.end_points(i,3),op.targets(i,3)],'--o','Color','b');
         
     end
     
