@@ -77,7 +77,10 @@ function [best_chrom, configurations] = runIt()
     op.first_angle.angle = 0;
     op.end_points = retrieveOrientationSegmentEndPoints3D(false);  % retrieve the end points for each target's orientation segment
     disp(angles2UnitVector(op.targets(1,1:3),op.end_points(1,:)))
+    
     drawProblem3D([]);
+    n = 10;
+    drawSegmentationArrow(op.end_points,op.targets,n)
 
     %---------------------GA SETTINGS---------------------
     global gas;         % genetic algorithm settings
@@ -132,10 +135,9 @@ function [best_chrom, configurations] = runIt()
     gas.fitIdx.id = 10;              % reference to chromosome in the array of population
     
     % extra genes in chromosome, it is a constant do not change!
-    % EMİR modified it from 5 to 4
+
     gas.extra_genes = 4;
 
-    %---------------------RUN---------------------
     rng shuffle;
     dynamic_mut = gas.mutation_probability;
     
