@@ -77,16 +77,10 @@ function [best_chrom, configurations] = runIt()
     op.first_angle.angle = 0;
     op.end_points = retrieveOrientationSegmentEndPoints3D(false);  % retrieve the end points for each target's orientation segment
     disp(angles2UnitVector(op.targets(1,1:3),op.end_points(1,:)))
-    drawProblem3D([]);
-    n = 1;
-    endPosChange = op.end_points;
     
-    for i = 1:1:n
-        quiver3(endPosChange(1,1), endPosChange(1,2), endPosChange(1,3), op.targets(1,1)-op.end_points(1,1), op.targets(1,2)-op.end_points(1,2), op.targets(1,3)-op.end_points(1,3), "--b","AutoScale","on", "AutoScaleFactor", 1/n, "LineWidth", 1/n)
-        endPosChange(1,1) = endPosChange(1,1) + ((op.targets(1,1)-op.end_points(1,1))/n);
-        endPosChange(1,2) = endPosChange(1,2) + ((op.targets(1,2)-op.end_points(1,2))/n);
-        endPosChange(1,3) = endPosChange(1,3) + ((op.targets(1,3)-op.end_points(1,3))/n);
-    end
+    drawProblem3D([]);
+    n = 10;
+    drawSegmentationArrow(op.end_points,op.targets,n)
 
     %---------------------GA SETTINGS---------------------
     global gas;         % genetic algorithm settings
