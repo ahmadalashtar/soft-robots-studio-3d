@@ -28,5 +28,8 @@ function u = compute_unit_vector(input)
     
     % Normalize the resulting vector to get the unit vector
     u = rotated_vector / norm(rotated_vector);
+    u(1) = round(u(1),3);
+    u(2) = round(u(2),3);
+    u(3) = round(u(3),3);
     u = u';
 end
