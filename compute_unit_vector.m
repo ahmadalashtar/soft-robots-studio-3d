@@ -13,7 +13,7 @@ function u = compute_unit_vector(input)
            0, sin(rot_x_rad), cos(rot_x_rad)];
     
     % Rotation matrix for y-axis
-    R_y = [cos(rot_y_rad), 0, sin(rot_y_rad);
+        R_y = [cos(rot_y_rad), 0, sin(rot_y_rad);
            0, 1, 0;
            -sin(rot_y_rad), 0, cos(rot_y_rad)];
     
