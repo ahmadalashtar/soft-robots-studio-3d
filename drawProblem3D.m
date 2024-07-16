@@ -50,9 +50,9 @@ function [] = drawProblem3D(robot_configurations)
         plot3([op.end_points(i,1),op.targets(i,1)],[op.end_points(i,2),op.targets(i,2)],[op.end_points(i,3),op.targets(i,3)],'--o','Color','b');
         
     end
-    n = 10;
+    arrowSegmentAmount = 10;
     for j = 1:size(op.targets(), 1)
-        drawSegmentationArrow(op.end_points,op.targets,n, j)
+        drawSegmentationArrow(op.end_points,op.targets, arrowSegmentAmount, j)
     end
     view(-159.1605,31.6712);
 %     set(h1, 'Zdir', 'reverse');

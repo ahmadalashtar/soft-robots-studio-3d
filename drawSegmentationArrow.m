@@ -1,12 +1,12 @@
-function drawSegmentationArrow(end_points, targets, n, j)
+function drawSegmentationArrow(end_points, targets, arrowSegmentAmount, j)
     % Initial position
     endPosChange = end_points;
 
-    dx = (targets(j,1) - end_points(j,1)) / n;
-    dy = (targets(j,2) - end_points(j,2)) / n;
-    dz = (targets(j,3) - end_points(j,3)) / n;
+    dx = (targets(j,1) - end_points(j,1)) / arrowSegmentAmount;
+    dy = (targets(j,2) - end_points(j,2)) / arrowSegmentAmount;
+    dz = (targets(j,3) - end_points(j,3)) / arrowSegmentAmount;
 
-    for i = 1:n
+    for i = 1:arrowSegmentAmount
         nextPos = endPosChange + [dx, dy, dz];
 
         plot3([endPosChange(j,1), nextPos(j,1)], [endPosChange(j,2), nextPos(j,2)], [endPosChange(j,3), nextPos(j,3)], "--b", "LineWidth", 1);
