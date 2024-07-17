@@ -86,9 +86,10 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
 
         fit = dist_mat(ee_index);        
         fitness(1) = fitness(1) + fit;
-
+        % for k = 2:size(robot_points,1)-1
         [final_angle_x, final_angle_y]= calculateLastAngle(robot_points, ee_index, op.targets(ceili2,1:3));
-        
+        % [final_angle_x, final_angle_y]= calculateLastAngle(robot_points, k, robot_points(k+1,:));
+        % end
         %%EMİR commented out the extra x and y removed i+1 and made both
         %%n_nodes + 2
         chrom(i,n_nodes+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
@@ -185,14 +186,14 @@ function [rotx, roty] = calculateLastAngle(robot_points, ee_index, target)
     segment2(1,:) = robot_points(ee_index,:);
     segment2(2,:) = target(1:3);
     
-    figure;
-    hold on;
-    
-    xlabel('x');
-    ylabel('y'); 
-    zlabel('z');
-    plot3([segment1(1,1) segment1(2,1)], [segment1(1,2) segment1(2,2)], [segment1(1,3) segment1(2,3)])
-    plot3([segment2(1,1) segment2(2,1)], [segment2(1,2) segment2(2,2)], [segment2(1,3) segment2(2,3)])
+    % figure;
+    % hold on;
+    % 
+    % xlabel('x');
+    % ylabel('y'); 
+    % zlabel('z');
+    % plot3([segment1(1,1) segment1(2,1)], [segment1(1,2) segment1(2,2)], [segment1(1,3) segment1(2,3)])
+    % plot3([segment2(1,1) segment2(2,1)], [segment2(1,2) segment2(2,2)], [segment2(1,3) segment2(2,3)])
 
     % Translate the segments such that the start of segment1 is at the origin
     translation_vector = -segment1(1, :);
@@ -226,20 +227,16 @@ function [rotx, roty] = calculateLastAngle(robot_points, ee_index, target)
     segment2_aligned = (rotation_matrix * segment2_translated')';
     
     % Display the aligned segments
-    disp('Segment 1 aligned:');
-    disp(segment1_aligned);
-    disp('Segment 2 aligned:');
-    disp(segment2_aligned);
-    figure;
-    hold on;
-    xlabel('x');
-    ylabel('y'); 
-    zlabel('z');
-    plot3([segment1_aligned(1,1) segment1_aligned(2,1)], [segment1_aligned(1,2) segment1_aligned(2,2)], [segment1_aligned(1,3) segment1_aligned(2,3)])
-    plot3([segment2_aligned(1,1) segment2_aligned(2,1)], [segment2_aligned(1,2) segment2_aligned(2,2)], [segment2_aligned(1,3) segment2_aligned(2,3)])
+    % figure;
+    % hold on;
+    % xlabel('x');
+    % ylabel('y'); 
+    % zlabel('z');
+    % plot3([segment1_aligned(1,1) segment1_aligned(2,1)], [segment1_aligned(1,2) segment1_aligned(2,2)], [segment1_aligned(1,3) segment1_aligned(2,3)])
+    % plot3([segment2_aligned(1,1) segment2_aligned(2,1)], [segment2_aligned(1,2) segment2_aligned(2,2)], [segment2_aligned(1,3) segment2_aligned(2,3)])
     vectorFromZero = segment2_aligned(2,:) - segment1_aligned(2,:);
-    [rotx roty] = vectors2Angles([0 0 1],vectorFromZero)
-
+    [rotx, roty] = vectors2Angles([0 0 1],vectorFromZero);
+    roty = -roty;
 end
 
 % input: 
