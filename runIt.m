@@ -50,7 +50,7 @@ function [best_chrom, configurations] = runIt()
     t1 = [0 0 700];
     % t2 = [13 13 13];
     
-    % t2 = [100 100 100];
+    %t2 = [100 100 100];
     %t3 = [-400 500 op.plane_z-53];
     % u1 = (op.home_base(1:3)-t1)/norm(op.home_base(1:3)-t1);
     % u2 = (op.home_base(1:3)-t2)/norm(op.home_base(1:3)-t2);
@@ -61,7 +61,7 @@ function [best_chrom, configurations] = runIt()
     op.targets = [ 
         % t1 180 5 ;
                     % t2 -30 -30 ;
-                    t1 45 45;
+                    t1 31 31;
                     % t2 180 0;
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
@@ -79,8 +79,6 @@ function [best_chrom, configurations] = runIt()
     disp(angles2UnitVector(op.targets(1,1:3),op.end_points(1,:)))
     
     drawProblem3D([]);
-    n = 10;
-    drawSegmentationArrow(op.end_points,op.targets,n)
 
     %---------------------GA SETTINGS---------------------
     global gas;         % genetic algorithm settings
