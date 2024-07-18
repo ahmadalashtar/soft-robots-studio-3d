@@ -47,7 +47,8 @@ function [best_chrom, configurations] = runIt()
     global algorithm;
     algorithm = 'ga';
     op.home_base = [0 0 0 0 0];
-    t1 = [0 0 700];
+    t1 = [300 100 500 ];
+    t2 = [300 -100 500  ];
     % t2 = [13 13 13];
     
     %t2 = [100 100 100];
@@ -61,7 +62,8 @@ function [best_chrom, configurations] = runIt()
     op.targets = [ 
         % t1 180 5 ;
                     % t2 -30 -30 ;
-                    t1 31 31;
+                    t1 0 50;
+                    t2 0 50;
                     % t2 180 0;
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
@@ -70,7 +72,7 @@ function [best_chrom, configurations] = runIt()
                      %0 0 op.plane_z 100 450;
                     ]; %cylinder [x y z(base) radius height]
 
-    op.n_nodes = 7;
+    op.n_nodes = 20;
     op.length_domain = [50 300];
     op.first_angle.is_fixed = true;
     op.angle_domain = [30 -30; 30 -30];
