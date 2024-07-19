@@ -1,38 +1,42 @@
-function coordinates = solveForwardKinematics(transformations,home_base,draw)
+function coordinates = solveForwardKinematics(conf,home_base,draw)
     % Input:
     % transformations: Nx3 matrix where each row is [rotX, rotY, extZ]
     % Output:
     % coordinates: Nx3 matrix where each row is [x, y, z]
     
     % Number of transformations
-    numTransforms = size(transformations, 1);
+    num_links = size(conf, 1);
     
     % Initialize coordinates matrix
-    coordinates = zeros(numTransforms+1, 3);
+    coordinates = zeros(num_links+1, 3);
     
     % Initial position
-    currentPos = home_base(1:3);
-    
-    for i = 1:numTransforms
+    accXcor = home_base(1);
+    accYcor = home_base(2);
+    accZcor = home_base(3);
+    accRotX = home_base(4);
+    accRotY = home_base(5);
+    for i = 1:num_links
         % Extract current transformation
-        rotX = transformations(i, 1);
-        rotY = transformations(i, 2);
-        extZ = transformations(i, 3);
-        
+        accRotX = conf(i, 1) + accRotX;
+        accRotY = conf(i, 2) + accRotY;
+        extZ = conf(i, 3);
+        pointFromZero = [0 0 extZ];
         % Create rotation matrices
-        Rx = [1, 0, 0; 0, cosd(rotX), -sind(rotX); 0, sind(rotX), cosd(rotX)];
-        Ry = [cosd(rotY), 0, sind(rotY); 0, 1, 0; -sind(rotY), 0, cosd(rotY)];
+        Rx = [1, 0, 0; 0, cosd(accRotX), -sind(accRotX); 0, sind(accRotX), cosd(accRotX)];
+        Ry = [cosd(accRotY), 0, sind(accRotY); 0, 1, 0; -sind(accRotY), 0, cosd(accRotY)];
         
         % Apply rotations
-        rotatedPos = (Rx * Ry * currentPos')';
+        newPointFromZero = (Rx * Ry * pointFromZero')';
         
         % Apply extension
-        newPos = rotatedPos + [0, 0, extZ];
-        
-        % Update current position
-        currentPos = newPos;
+        newPoint = newPointFromZero + [accXcor, accYcor, accZcor];
+        accXcor = newPoint(1);
+        accYcor = newPoint(2);
+        accZcor = newPoint(3);
+
         
         % Store new position in coordinates matrix
-        coordinates(i+1, :) = newPos;
+        coordinates(i+1, :) = newPoint;
     end
 end
