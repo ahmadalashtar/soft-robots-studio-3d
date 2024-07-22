@@ -235,8 +235,8 @@ function [rotx, roty] = calculateLastAngle(robot_points, ee_index, target)
     % plot3([segment1_aligned(1,1) segment1_aligned(2,1)], [segment1_aligned(1,2) segment1_aligned(2,2)], [segment1_aligned(1,3) segment1_aligned(2,3)])
     % plot3([segment2_aligned(1,1) segment2_aligned(2,1)], [segment2_aligned(1,2) segment2_aligned(2,2)], [segment2_aligned(1,3) segment2_aligned(2,3)])
     vectorFromZero = segment2_aligned(2,:) - segment1_aligned(2,:);
-    [rotx, roty] = vectors2Angles([0 0 1],vectorFromZero);
-    roty = -roty;
+    [rotx, roty] = solveInverseKinematics(vectorFromZero);
+
 end
 
 % input: 
