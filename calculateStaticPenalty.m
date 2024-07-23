@@ -61,8 +61,8 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
         link_count= chrom(i,n_nodes+1)-1;
         sum_of_angles_x = sum(chrom(i,1:link_count)) + final_angle_x;
         sum_of_angles_y = sum(chrom(i+1,1:link_count)) + final_angle_y;
-        target_angle_x= op.targets(ceil(i/2),4);
-        target_angle_y= op.targets(ceil(i/2),5);
+        target_angle_x= op.targets(ceil(i/2),4) - op.home_base(4);
+        target_angle_y= op.targets(ceil(i/2),5) - op.home_base(5);
         angle_range_x= [target_angle_x-10 target_angle_x+10];
         angle_range_y= [target_angle_y-10 target_angle_y+10];
         if(sum_of_angles_x<min(angle_range_x) || sum_of_angles_x>max(angle_range_x))
