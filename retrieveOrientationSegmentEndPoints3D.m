@@ -8,7 +8,7 @@ function [end_points] = retrieveOrientationSegmentEndPoints3D(draw_plot)
         
             
         u  = compute_unit_vector(op.targets(i,:));
-        % u  = angles2UnitVector(op.targets(i,:));
+        % u  = segment2UnitVector(op.targets(i,:));
         
 %         segmentLength = calculateSegmentLength(op.targets(i,:),angle,op.home_base,op.n_nodes*op.length_domain(2));
         segmentLength = norm(op.targets(i,1:3)-op.home_base(1:3))*1.25;
