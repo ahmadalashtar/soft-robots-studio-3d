@@ -4,7 +4,9 @@
 % 'n_individuals' is the number of individuals in the population
 %
 % OUTPUT: 
+
 % 'pop' is the random population [t*2+1 x n+4 x n_individuals]
+
 function [pop] = initializeRandomPopulation()
     global op;  % optimization problem
     global gas; % genetic algorithm settings
@@ -14,14 +16,18 @@ function [pop] = initializeRandomPopulation()
     switch algorithm
         case 'ga'
             % declare a static array of chromosomes filled with zeros
+
             pop = zeros(size(op.targets,1)*2+1,op.n_nodes+gas.extra_genes,gas.n_individuals);
+
             for i=1:1:gas.n_individuals
                 chrom = generateRandomChromosome();   
                 pop(:,:,i) = chrom;
             end
         case 'bbbc'
             % declare a static array of individuals filled with zeros
+
             pop = zeros(size(op.targets,1)*2+1,op.n_nodes+bbbcs.extra_genes,bbbcs.N);
+
             for i=1:1:bbbcs.N
                 indv = generateRandomChromosome();   
                 pop(:,:,i) = indv;
