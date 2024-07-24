@@ -1,12 +1,12 @@
 % Apply crossover operator on a pair of parents
 %
 % INPUT: 
-% 'p1' is the chromosome of the first parent [t+1 x n+4]
-% 'p2' is the chromosome of the second parent [t+1 x n+4]
+% 'p1' is the chromosome of the first parent [t*2+1 x n+4]
+% 'p2' is the chromosome of the second parent [t*2+1 x n+4]
 %
 % OUTPUT: 
-% 'o1' is the chromosome of the first child [t+1 x n+4]
-% 'o2' is the chromosome of the second child [t+1 x n+4]
+% 'o1' is the chromosome of the first child [t*2+1 x n+4]
+% 'o2' is the chromosome of the second child [t*2+1 x n+4]
 function [o1, o2] = crossover(p1, p2)
     
     global op;  % optimization problem
