@@ -137,7 +137,7 @@ if ~dot(n,u) % n & u perpendicular vectors
         rc = 2;
     else % line // to the plane
         if verbose
-            disp('(N,u) line is parallel to the (M,n) plane. Their intersection is the empty set.');
+            % disp('(N,u) line is parallel to the (M,n) plane. Their intersection is the empty set.');
         end
         I = [];
         rc = 0;

@@ -58,7 +58,7 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
 
         % calculate variance over the last 'varianceGen' generations
         
-        [~, comD] = centerOfMass(pop);
+        % [~, comD] = centerOfMass(pop);
         queue(qIndex)=fit_array_P(1,gas.fitIdx.ik);     % variance is on ik fitness only (ranking fitness depends on the current population, so it makes no sense to compare the rank of individuals from different generations)
         qIndex=qIndex+1;                    % the queue is implemented as a static array
         if qIndex>size(queue,2)             % when the index reaches the end of the array
@@ -83,13 +83,13 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
             fprintf('Length %.3f', fit_array_P(1,gas.fitIdx.totLength));
             
             fprintf('\t\tDist from Center of Mass: [');
-            for i=1:1:size(comD,2)
-                fprintf('%.4f', comD(i));
-                if i~=size(comD,2)
-                    fprintf(', ');
-                end
-            end    
-            fprintf('] = %.4f', mean(comD));
+            % for i=1:1:size(comD,2)
+            %     fprintf('%.4f', comD(i));
+            %     if i~=size(comD,2)
+            %         fprintf(', ');
+            %     end
+            % end    
+            % fprintf('] = %.4f', mean(comD));
             
 %             if dynamic_mutation == true
 %                 fprintf(', Dynamic Mutation: %.4f', gas.mutation_probability);

@@ -42,10 +42,11 @@
 function [best_chrom, configurations] = runIt()
     
     %---------------------PROBLEM DEFINITION---------------------  
-    
+    op.plane_z = 1000;
     global op;          % optimization problem
     global algorithm;
     algorithm = 'ga';
+    op.plane_z = 1000;
     op.home_base = [0 0 0 0 0];
     t1 = [300 100 500 ];
     t2 = [300 -100 500  ];
@@ -69,7 +70,7 @@ function [best_chrom, configurations] = runIt()
                     % ]; %target [x y z ux uy uz cone_angle]
     op.obstacles = [
                      
-                     %0 0 op.plane_z 100 450;
+                     100 100 100 20 100
                     ]; %cylinder [x y z(base) radius height]
 
     op.n_nodes = 20;
