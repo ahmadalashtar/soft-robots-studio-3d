@@ -1,7 +1,7 @@
 % Evaluate fitness for a population of individuals
 %
 % INPUT: 
-% 'pop' is the population to be evaluated [t+1 x n+4 x n_individuals]
+% 'pop' is the population to be evaluated [t*2+1 x n+4 x n_individuals]
 %
 % OUTPUT: 
 % 'fit_array', is a matrix with fitness values, composed of 'ik fitness', 'number of nodes', 'rank fitness', 'index in the pop array'[n_individuals x 4]
@@ -16,7 +16,7 @@ function [pop, fit_array] = evaluate(pop)
             fit_array = zeros(gas.n_individuals,length(fieldnames(gas.fitIdx)));
 
             for i=1:gas.n_individuals 
-                [pop(:,:,i), fitness] = calculateFitness2D(pop(:,:,i), false);
+                [pop(:,:,i), fitness] = calculateFitness3D(pop(:,:,i), false);
                 
                 % place the right data in fit_array
                 fit_array(i,gas.fitIdx.ik) = round(fitness(1),3);    % ik
