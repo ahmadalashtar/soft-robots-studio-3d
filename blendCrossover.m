@@ -4,12 +4,12 @@ function [child] = blendCrossover(p1, p2, alpha)
     global op;  % optimization problem
     global gas; % genetic algorithm settings
     
-    n_targets = size(p1,1)-1;
-    child = zeros(n_targets+1,op.n_nodes+gas.extra_genes); % newly generated offspring
-    ll_index = n_targets+1;    % row-index for link length in chromosomes
+    n_targets = floor(size(p1,1)-1)/2;
+    child = zeros(n_targets*2+1,op.n_nodes+gas.extra_genes); % newly generated offspring
+    ll_index = n_targets*2+1;    % row-index for link length in chromosomes
     
     %angles (targets x nodes+4)
-    for i=1:1:n_targets
+    for i=1:1:n_targets*2
         for j=1:1:op.n_nodes
             if j==1
                 if op.first_angle.is_fixed == false
