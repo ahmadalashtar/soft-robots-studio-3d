@@ -97,15 +97,15 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         %chrom(i+1,n_nodes+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
         %chrom(i+1,n_nodes+3) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
         
-        
-        %----CUT ROBOT
+         %----CUT ROBOT
         configurations = decodeIndividual(chrom); 
         conf = configurations(:,:,ceili2);
 %         drawProblem2D(configurations);
         robot_points = solveForwardKinematics3D(conf,op.home_base,false);
+        ee_point = robot_points(ee_index, :);
+        dist2target = norm(ee_point-t(1:3));
         for j=ee_index:1:n_nodes
             l = chrom(n_targets*2+1,j);
-            dist2target = norm(robot_points(j,:)-t(1:3));
             if(dist2target<l)
                 %cut here
                 %%EMİR reduced everything by 1
@@ -117,7 +117,29 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
                 sumLinksOnSegment = sumLinksOnSegment + chrom(i,n_nodes+3) - chrom(i,n_nodes+1) + 1;%%EMİR i didn't touch this
                 break;
             end
+            dist2target = dist2target - l;
         end
+
+%         %----CUT ROBOT if the angles were right :(
+%         configurations = decodeIndividual(chrom); 
+%         conf = configurations(:,:,ceili2);
+% %         drawProblem2D(configurations);
+%         robot_points = solveForwardKinematics3D(conf,op.home_base,false);
+%         for j=ee_index:1:n_nodes
+%             l = chrom(n_targets*2+1,j);
+%             dist2target = norm(robot_points(j,:)-t(1:3));
+%             if(dist2target<l)
+%                 %cut here
+%                 %%EMİR reduced everything by 1
+%                 lastNode_index = j;
+%                 chrom(i,n_nodes+3) = lastNode_index;
+%                 chrom(i,n_nodes+4) = dist2target; %cut length
+%                 chrom(i+1,n_nodes+3) = lastNode_index;
+%                 chrom(i+1,n_nodes+4) = dist2target; %cut length
+%                 sumLinksOnSegment = sumLinksOnSegment + chrom(i,n_nodes+3) - chrom(i,n_nodes+1) + 1;%%EMİR i didn't touch this
+%                 break;
+%             end
+%         end
         
         %----calculate robot total length
         %%EMİR reduced for loop by 1

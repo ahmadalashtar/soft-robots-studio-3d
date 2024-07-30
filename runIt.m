@@ -85,7 +85,7 @@ function [best_chrom, configurations] = runIt()
     %---------------------GA SETTINGS---------------------
     global gas;         % genetic algorithm settings
     
-    gas.generations = 500;
+    gas.generations = 100;
     gas.n_individuals = 500;
     gas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     gas.selection_method = 'tournament';    % 'tournament', 'proportionate'
