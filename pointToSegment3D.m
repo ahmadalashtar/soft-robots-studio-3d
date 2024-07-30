@@ -20,24 +20,22 @@ function [d, inside, xp] = pointToSegment3D(pt, v1, v2)
     v2_1 = (R*v2')';
     pt_1 = (R*pt')';
     
-    x1 = v1_1(1) - v1_1(1);
     x2 = v2_1(1) - v1_1(1);
     xp = pt_1(1) - v1_1(1);
     
     if x2<0
-        x1 = -x1;
         x2 = -x2;
         xp = -xp;
     end
     
     inside = false;
         
-    if (xp >= x1 && xp <= x2(1))
+    if (xp >= 0 && xp <= x2)
         a = v1_1 - v2_1;
         b = pt_1 - v2_1;
         d = norm(cross(a,b)) / norm(a);
         inside = true;
-    elseif xp < x1
+    elseif xp < 0
         d = norm(pt-v1);
     else
         d = norm(pt-v2);

@@ -34,7 +34,7 @@ function [] = drawProblem3D(robot_configurations)
     if isempty(robot_configurations) == false
         for i=1:1:size(robot_configurations,3)
             conf = robot_configurations(:,:,i);
-            xyz = solveForwardKinematics(conf,op.home_base,false);
+            xyz = solveForwardKinematics3D(conf,op.home_base,false);
             
             for j = 1 : 1 : size(conf,1)
                 plot3([xyz(j,1),xyz(j+1,1)],[xyz(j,2),xyz(j+1,2)],[xyz(j,3),xyz(j+1,3)],'-o','Color','r');

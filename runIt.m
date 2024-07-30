@@ -41,15 +41,14 @@
 
 function [best_chrom, configurations] = runIt()
     
-    %---------------------PROBLEM DEFINITION---------------------  
-    op.plane_z = 1000;
+    %---------------------PROBLEM DEFINITION--------------------- 
     global op;          % optimization problem
     global algorithm;
     algorithm = 'ga';
     op.plane_z = 1000;
     op.home_base = [0 0 0 0 0];
     t1 = [300 100 500 ];
-    t2 = [300 -100 500  ];
+    %t2 = [300 -100 500  ];
     % t2 = [13 13 13];
     
     %t2 = [100 100 100];
@@ -64,7 +63,7 @@ function [best_chrom, configurations] = runIt()
         % t1 180 5 ;
                     % t2 -30 -30 ;
                     t1 0 50;
-                    t2 0 50;
+                    %t2 0 50;
                     % t2 180 0;
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
@@ -86,7 +85,7 @@ function [best_chrom, configurations] = runIt()
     %---------------------GA SETTINGS---------------------
     global gas;         % genetic algorithm settings
     
-    gas.generations = 150;
+    gas.generations = 500;
     gas.n_individuals = 500;
     gas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     gas.selection_method = 'tournament';    % 'tournament', 'proportionate'
@@ -166,8 +165,7 @@ function [best_chrom, configurations] = runIt()
     else
         isBestFeasible = "unfeas";
     end
-    
+    r=1; %this is for experiments to keep track of which run we are executing. remove when running experiments
     tit = "RUN: " + num2str(r) + ", IK: " + num2str(fit_array(1,gas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,gas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,gas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,gas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + gas.n_individuals + ", mut: " + typeOfMut;
     title(tit); 
-    
 end

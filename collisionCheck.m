@@ -17,7 +17,7 @@ function [intersected_obstacles,j] = collisionCheck(conf,op)
             break
         end
     end
-    xyz = solveForwardKinematics(conf, op.home_base, false);
+    xyz = solveForwardKinematics3D(conf, op.home_base, false);
     intersected_obstacles = false; % setting the aboolean value of intersection to false and begins to check each joint and link it it collides with the robot 
     for j=1:1:ee %%might cause an error
         p_start = xyz(j,:); % getting the starting joint that is being under the checking 
