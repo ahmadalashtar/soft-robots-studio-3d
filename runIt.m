@@ -157,6 +157,8 @@ function [best_chrom, configurations] = runIt()
     best_index = fit_array(1,gas.fitIdx.id);
     best_chrom = pop(:,:,best_index);
     
+    best_chrom = gaLastAngle(best_chrom);
+
     configurations = decodeIndividual(pop(:,:,best_index));
     drawProblem3D(configurations);
     
