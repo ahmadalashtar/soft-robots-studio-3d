@@ -6,20 +6,21 @@ classdef Chrom
     end
     
     methods
-        function obj = chrom(rotx,roty)
-            obj.x = rotx;
-            obj.y = roty;
-        end
         function [fitness] = evaluate(obj,t_chrom,target_id)
             global op;
+            t_chrom = getRobotChrom(obj,t_chrom);
+            conf = decodeIndividual(t_chrom);
+            end_points = solveForwardKinematics3D(conf,op.home_base,false);
+            ee_index = t_chrom(1,size(t_chrom,2)-3);
+            target = op.targets(target_id,:);
+            fitness = norm(end_points(ee_index,:)-target(1:3));
+        end
+        function [robot_chrom] = getRobotChrom(obj,t_chrom)
             rotx = obj.x;
             roty = obj.y;
             t_chrom(1,size(t_chrom,2)-2) = rotx;
             t_chrom(2,size(t_chrom,2)-2) = roty;
-            conf = decodeIndividual(t_chrom);
-            end_points = solveForwardKinematics3D(conf,op.home_base,false);
-            ee_index = t_chrom(1,size(t_chrom,2)-3);
-            fitness = norm(end_points(ee_index,:)-op.targets(target_id,:));
+            robot_chrom = t_chrom;
         end
      end
 end
