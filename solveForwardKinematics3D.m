@@ -8,7 +8,7 @@
 % OUTPUT:
 % 'robot_CC' (n+1)x3 contains the configuration of a soft robot in cartesian coordinates, for each joint: x, y, z (starting from home base, last one is the end effector)
 % 'u' 1x3 is the unit vector of the end effector's orientation
-function [robot_CC, u] = solveForwardKinematics_3D_emre(robot_PC, home_base, draw_plot)
+function [robot_CC, u] = solveForwardKinematics3D(robot_PC, home_base, draw_plot)
 
     if draw_plot==true
         f = figure;
