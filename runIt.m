@@ -80,7 +80,7 @@ function [best_chrom, configurations] = runIt()
     op.end_points = retrieveOrientationSegmentEndPoints3D(false);  % retrieve the end points for each target's orientation segment
     disp(segment2UnitVector(op.targets(1,1:3),op.end_points(1,:)))
     
-    drawProblem3D([]);
+    % drawProblem3D([]);
 
     %---------------------GA SETTINGS---------------------
     global gas;         % genetic algorithm settings
