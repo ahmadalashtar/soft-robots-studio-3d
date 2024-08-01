@@ -159,7 +159,8 @@ function [best_chrom, configurations] = runIt()
     
     best_chrom = gaLastAngle(best_chrom);
 
-    configurations = decodeIndividual(pop(:,:,best_index));
+    % configurations = decodeIndividual(pop(:,:,best_index));
+    configurations = decodeIndividual(best_chrom);
     drawProblem3D(configurations);
     
     if fit_array(1,gas.fitIdx.pen) == 0

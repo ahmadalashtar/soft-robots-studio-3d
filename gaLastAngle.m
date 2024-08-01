@@ -1,9 +1,9 @@
 function [best_chrom] = gaLastAngle(best_chrom)
     targets = (size(best_chrom,1)-1)/2;
     lengths = best_chrom(size(best_chrom,1),:);
-    generations = 100;
-    individuals = 100;
-    for i = 1 : 2 : targets
+    generations = 150;
+    individuals = 150;
+    for i = 1 : 2 : targets * 2
         best_chrom(i:i+1,:) = main(generations,individuals,[best_chrom(i:i+1,:);lengths],ceil(i/2));
     end
 end
@@ -19,7 +19,7 @@ function [best_chrom] = main(generations,individuals,t_chrom,target_id)
     end
     [~, indices] = sort([pop.fitness]);
     sortedPop = pop(indices);
-    best_angle_chrom = sortedPop(1);
+    best_angle_chrom = sortedPop(1)
     best_chrom = best_angle_chrom.getRobotChrom(t_chrom);
     best_chrom = best_chrom(1:2,:);
     
