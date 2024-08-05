@@ -1,25 +1,23 @@
-function [best_chrom] = gaLastAngle(best_chrom)
+function [best_chrom] = gaLastAngle(best_chrom,individuals,generations,eta_c,eta_m,mutation_probability)
     targets = (size(best_chrom,1)-1)/2;
     lengths = best_chrom(size(best_chrom,1),:);
-    generations = 150;
-    individuals = 150;
     for i = 1 : 2 : targets * 2
-        best_chrom(i:i+1,:) = main(generations,individuals,[best_chrom(i:i+1,:);lengths],ceil(i/2));
+        best_chrom(i:i+1,:) = main(generations,individuals,[best_chrom(i:i+1,:);lengths],ceil(i/2),eta_c,eta_m,mutation_probability);
     end
 end
 
-function [best_chrom] = main(generations,individuals,t_chrom,target_id)
+function [best_chrom] = main(generations,individuals,t_chrom,target_id,eta_c,eta_m,mutation_probability)
     pop = randomPop(individuals);
     pop = evaluate(pop,t_chrom,target_id);
     for i = 1 : generations
         matingPool = selection(pop);
-        offsprings = variation(matingPool);
+        offsprings = variation(matingPool,eta_c,eta_m,mutation_probability);
         offsprings = evaluate(offsprings,t_chrom,target_id);
         pop = survive(pop,offsprings);
     end
     [~, indices] = sort([pop.fitness]);
     sortedPop = pop(indices);
-    best_angle_chrom = sortedPop(1)
+    best_angle_chrom = sortedPop(1);
     best_chrom = best_angle_chrom.getRobotChrom(t_chrom);
     best_chrom = best_chrom(1:2,:);
     
@@ -62,22 +60,22 @@ function [matingPool] = selection(pop)
     end
 end
 
-function [offsprings]  = variation(matingPool)
+function [offsprings]  = variation(matingPool,eta_c,eta_m,mutation_probability)
     individuals = size(matingPool,2);
     offsprings(individuals) = Chrom();
     for i = 1 : 2 : individuals
-        [o1x, o2x] = crossover(matingPool(i).x,matingPool(i+1).x,15,180,-180);
+        [o1x, o2x] = crossover(matingPool(i).x,matingPool(i+1).x,eta_c,180,-180);
 
-        o1x = mutation(o1x, 10, 180,-180, 0.1);
-        o2x = mutation(o2x, 10, 180,-180, 0.1);
+        o1x = mutation(o1x, eta_m, 180,-180, mutation_probability);
+        o2x = mutation(o2x, eta_m, 180,-180, mutation_probability);
 
         offsprings(i).x = o1x;
         offsprings(i+1).x = o2x;
         
-        [o1y, o2y] = crossover(matingPool(i).y,matingPool(i+1).y,15,180,-180);
+        [o1y, o2y] = crossover(matingPool(i).y,matingPool(i+1).y,eta_c,180,-180);
 
-        o1y = mutation(o1y, 10, 180,-180, 0.1);
-        o2y = mutation(o2y, 10, 180,-180, 0.1);
+        o1y = mutation(o1y, eta_m, 180,-180, mutation_probability);
+        o2y = mutation(o2y, eta_m, 180,-180, mutation_probability);
 
         offsprings(i).y = o1y;
         offsprings(i+1).y = o2y;
