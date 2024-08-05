@@ -11,9 +11,10 @@ classdef Chrom
             t_chrom = getRobotChrom(obj,t_chrom);
             conf = decodeIndividual(t_chrom);
             end_points = solveForwardKinematics3D(conf,op.home_base,false);
-            nodes_deployed = t_chrom(1,size(t_chrom,2)-1);
+            % nodes_deployed = t_chrom(1,size(t_chrom,2)-1);
+            last_node = size(end_points,1);
             target = op.targets(target_id,:);
-            fitness = norm(end_points(nodes_deployed+1,:)-target(1:3));
+            fitness = norm(end_points(last_node,:)-target(1:3));
         end
         function [robot_chrom] = getRobotChrom(obj,t_chrom)
             rotx = obj.x;
