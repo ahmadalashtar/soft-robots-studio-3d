@@ -2,12 +2,13 @@ function [best_chrom] = gaLastAngle(best_chrom,individuals,generations,eta_c,eta
     targets = (size(best_chrom,1)-1)/2;
     lengths = best_chrom(size(best_chrom,1),:);
     for i = 1 : 2 : targets * 2
-        best_chrom(i:i+1,:) = main(generations,individuals,[best_chrom(i:i+1,:);lengths],ceil(i/2),eta_c,eta_m,mutation_probability);
+        originalXAngle = best_chrom(i,size(best_chrom,2)-2);
+        best_chrom(i:i+1,:) = main(generations,individuals,[best_chrom(i:i+1,:);lengths],ceil(i/2),eta_c,eta_m,mutation_probability,originalXAngle);
     end
 end
 
-function [best_chrom] = main(generations,individuals,t_chrom,target_id,eta_c,eta_m,mutation_probability)
-    pop = randomPop(individuals);
+function [best_chrom] = main(generations,individuals,t_chrom,target_id,eta_c,eta_m,mutation_probability,originalXAngle)
+    pop = randomPop(individuals,originalXAngle);
     pop = evaluate(pop,t_chrom,target_id);
     for i = 1 : generations
         matingPool = selection(pop);
@@ -23,17 +24,27 @@ function [best_chrom] = main(generations,individuals,t_chrom,target_id,eta_c,eta
     
 end
 
-function [pop] = randomPop(individuals)
+function [pop] = randomPop(individuals,originalXAngle)
     pop(individuals) = Chrom();
     for i = 1 : individuals
-        pop(i) = randomChrom();
+        pop(i) = randomChrom(originalXAngle);
     end
 end
 
-function [new_chrom] = randomChrom()
+function [new_chrom] = randomChrom(originalXAngle)
     chrom = rand(1,2);
     chrom = chrom * 180 * 2 - 180;
     new_chrom = Chrom();
+    if (originalXAngle >= 0) && (chrom(1)>= 0)
+    elseif (originalXAngle <= 0) && (chrom(1)<= 0)
+    else
+        if (chrom(1) >= 0)
+            chrom(1) = chrom(1)-180;
+        elseif (chrom(1) <= 0)
+            chrom(1) = chrom(1)+180;
+        end
+    end
+    
     new_chrom.x = chrom(1);
     new_chrom.y = chrom(2);
 end

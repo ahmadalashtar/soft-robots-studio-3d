@@ -72,15 +72,15 @@ function [best_chrom, configurations] = runIt()
                      100 100 100 20 100
                     ]; %cylinder [x y z(base) radius height]
 
-    op.n_nodes = 20;
-    op.length_domain = [10 100];
+    op.n_nodes = 100;
+    op.length_domain = [5 30];
     op.first_angle.is_fixed = true;
     op.angle_domain = [30 -30; 30 -30];
     op.first_angle.angle = 0;
     op.end_points = retrieveOrientationSegmentEndPoints3D(false);  % retrieve the end points for each target's orientation segment
     disp(segment2UnitVector(op.targets(1,1:3),op.end_points(1,:)))
     
-    % drawProblem3D([]);
+    % % drawProblem3D([]);
 
     %---------------------GA SETTINGS---------------------
     global gas;         % genetic algorithm settings
