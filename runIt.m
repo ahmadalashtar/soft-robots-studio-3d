@@ -139,21 +139,19 @@ function [best_chrom, configurations] = runIt()
     gas.extra_genes = 4;
 
     rng shuffle;
-    dynamic_mut = gas.mutation_probability;
-    
-    if gas.mutation_probability == 1
-        typeOfMut = "Dynamic";
-    else
-        typeOfMut = round(gas.mutation_probability,2);
-    end
-    
-    tic
-    [pop, fit_array] = runGeneticAlgorithm(1);
-    toc
-    
-    elapsedTime = toc;
+    pop = [];
+    fit_array = [];
 
-    %*************Drawing Solution************
+    algorithm = 'bbbc';
+    
+    switch algorithm
+        case 'ga'
+        
+            [pop, fit_array] = runGeneticAlgorithm(1);
+        case 'bbbc'
+            [pop, fit_array] = runBBBC(1);
+    end
+
     best_index = fit_array(1,gas.fitIdx.id);
     best_chrom = pop(:,:,best_index);
 
@@ -161,7 +159,6 @@ function [best_chrom, configurations] = runIt()
     drawProblem3D(configurations);
 
     best_chrom  = gaLastAngle(best_chrom,500,100,2,50,0.1);
-    % configurations = decodeIndividual(pop(:,:,best_index));
 
     configurations = decodeIndividual(best_chrom);
     drawProblem3D(configurations);
