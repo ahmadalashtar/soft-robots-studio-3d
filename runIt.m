@@ -85,6 +85,8 @@ function [best_chrom, configurations] = runIt()
     %---------------------EA SETTINGS---------------------    
     global eas;
 
+    eas.algorithm = "ga"; % ga or bbbc
+    
     gas.generations = 10;
     gas.n_individuals = 10;
     gas.obstacle_avoidance = false; % we'll do obstacle avoidace later
