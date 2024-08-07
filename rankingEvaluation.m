@@ -3,7 +3,7 @@
 % INPUT/OUTPUT: 
 % 'fit_array', is a matrix with fitness values
 function [fit_array] = rankingEvaluation(fit_array)
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     global algorithm;
     
     n_individuals = size(fit_array,1);  % the number of individuals will double during survival thats why we should dynamically check how many individuals we are ranking!

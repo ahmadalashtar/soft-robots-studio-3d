@@ -30,7 +30,7 @@
 function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
 
     global op;  % optimization problem
-    global gas;  % genetic algorithm settings
+    global eas;  % genetic algorithm settings
     global bbbcs;
     global algorithm;     
     
@@ -322,7 +322,7 @@ end
 function [und] = calculateUndulation(chrom)
 
     global op;  % optimization problem
-    global gas;  % genetic algorithm settings
+    global eas;  % genetic algorithm settings
     
     n_targets = size(op.targets,1);
     n_nodes = size(chrom,2) - gas.extra_genes;

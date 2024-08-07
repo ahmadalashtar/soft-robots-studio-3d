@@ -7,7 +7,7 @@
 % 'fit_array', is a matrix with fitness values, composed of 'ik fitness', 'number of nodes', 'rank fitness', 'index in the pop array'[n_individuals x 4]
 function [pop, fit_array] = evaluate(pop)
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     global bbbcs;
     global algorithm;
 

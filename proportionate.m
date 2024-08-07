@@ -1,5 +1,5 @@
 function [matPool] = proportionate(fit_array, isMin)
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     
     if isMin == true
         fit_array(:,1) = flip(fit_array(:,1));  % for minimization, rank must be flipped

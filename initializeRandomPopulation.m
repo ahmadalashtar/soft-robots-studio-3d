@@ -9,7 +9,7 @@
 
 function [pop] = initializeRandomPopulation()
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     global bbbcs; % big bang - big crunch algorithm settings
     global algorithm;
 

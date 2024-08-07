@@ -8,7 +8,7 @@
 function [pop, fit_array_P] = runGeneticAlgorithm(exp)
     
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     
     %--INITIALIZATION 
     variance_array= zeros(1,gas.n_individuals);
@@ -29,7 +29,7 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
     %---------------DYNAMIC MUTATION---------------
     dynamic_mutation = false;
     if gas.mutation_probability == -1.0
-        mp_increment = 1.0 /gas.generations;    
+        mp_increment = 1.0 /eas.n_generations;    
         gas.mutation_probability = 1.0;
         dynamic_mutation = true;
     end

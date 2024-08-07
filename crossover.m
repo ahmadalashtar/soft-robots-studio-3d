@@ -10,7 +10,7 @@
 function [o1, o2] = crossover(p1, p2)
     
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     
     if rand() <= gas.crossover_probability
         % do crossover

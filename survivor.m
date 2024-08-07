@@ -12,7 +12,7 @@
 function [nextGenPop, fit_array_NGP] = survivor(pop, offspring, fit_array_P, fit_array_O)
     
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     
     switch gas.survival_method
         case 'non-elitist'

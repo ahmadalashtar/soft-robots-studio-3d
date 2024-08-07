@@ -3,7 +3,7 @@
 %IMPORTANT: first merge both populations 'pop' and 'offspring', then it recalculate their rank (rank only makes sense within a population)
 function [nextGenPop_final, fit_array_NGP] = elitistSurvivalFull(pop, offspring, fit_array_P, fit_array_O)
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
      
     nextGenPop = zeros(size(op.targets,1)*2+1,op.n_nodes+gas.extra_genes,gas.n_individuals*2);    % declare a static array of chromosomes filled with zeros
     fit_array_NGP = zeros(gas.n_individuals*2,length(fieldnames(gas.fitIdx)));                  % array containing fitness for each individual of the new population

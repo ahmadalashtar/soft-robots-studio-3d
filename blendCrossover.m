@@ -2,7 +2,7 @@
 
 function [child] = blendCrossover(p1, p2, alpha)
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     
     n_targets = floor(size(p1,1)-1)/2;
     child = zeros(n_targets*2+1,op.n_nodes+gas.extra_genes); % newly generated offspring

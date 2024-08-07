@@ -1,6 +1,6 @@
 function [child1, child2] = sbxCrossover(parent1, parent2, lower_bound, upper_bound)
 global op;  % optimization problem
-global gas; % genetic algorithm settings
+global eas; % genetic algorithm settings
     % Simulated Binary Crossover (SBX)
     % Inputs:
     %   parent1, parent2 - Parent solutions

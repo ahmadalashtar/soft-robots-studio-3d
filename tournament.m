@@ -1,7 +1,7 @@
 %--------------TOURNAMENT SELECTION--------------
 
 function [matPool] = tournament(fit_array, k, isMin)
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     
     matPool = zeros(gas.n_individuals,1);
     for i=1:gas.n_individuals
@@ -10,7 +10,7 @@ function [matPool] = tournament(fit_array, k, isMin)
 end
 
 function [winner] = getTournamentWinner(fit_array, k, isMin)
-	global gas; % genetic algorithm settings
+	global eas; % genetic algorithm settings
 
     bestFit = 0;
     winner = 0;

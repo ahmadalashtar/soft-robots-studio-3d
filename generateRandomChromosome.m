@@ -8,7 +8,7 @@
 function [chrom] =  generateRandomChromosome()
     
     global op;  % optimization problem
-    global gas;
+    global eas;
     global bbbcs;
     global algorithm;
 

@@ -3,7 +3,7 @@
 %IMPORTANT: first merge both populations 'pop' and 'offspring', then it recalculate their rank (rank only makes sense within a population)
 function [nextGenPop, fit_array_NGP] = elitistSurvivalAlpha(pop, offspring, fit_array_P, fit_array_O)
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     
     n_elites = fix(gas.survival_alpha*gas.n_individuals/100);
     n_off = gas.n_individuals - n_elites;

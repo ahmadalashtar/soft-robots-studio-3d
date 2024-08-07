@@ -8,7 +8,7 @@
 function [chrom] = mutation(chrom)
     
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     
     if rand() <= gas.mutation_probability
         % do mutation
@@ -36,6 +36,6 @@ end
 
 function [chrom] = polynomialMutation(chrom)
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     error('This Mutation Method is not implemented yet.');
 end

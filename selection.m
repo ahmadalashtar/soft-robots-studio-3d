@@ -9,7 +9,7 @@
 % IMPORTANT ---> the indices in the mating pool refer to the individuals in the array 'pop'
 function [matPool] = selection(fit_array)
 
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     
     switch gas.selection_method
         case 'tournament'

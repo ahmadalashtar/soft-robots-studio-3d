@@ -8,7 +8,7 @@
 % OUTPUT:
 % 'fit_array' 
 function [fit_array] = checkConstraints(pop, fit_array)
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     global bbbcs;
     global algorithm;
 
@@ -60,7 +60,7 @@ end
 %--------------DEB'S PENALTY METHOD--------------            
 function [fit_array] = addDebsPenalty(fit_array)          
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
 
     % get the worst feasible solution's fitness
     worstFit = 0;
@@ -95,7 +95,7 @@ end
 % %--------------POWELL AND SKOLNICK'S PENALTY METHOD was deprecated--------------
 % 
 % function [fit_array] = pownskolpenalty(chrom, fit_array)
-%     global gas; % genetic algorithm settings
+%     global eas; % genetic algorithm settings
 %     global op;
 %     
 %     worstfeas = 0;

@@ -1,7 +1,7 @@
 %--------------STATIC PENALTY METHOD--------------
 function [gScalar] = calculateStaticPenalty(chrom, r)          
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     global bbbcs;
     global algorithm;
 
