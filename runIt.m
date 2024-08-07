@@ -168,7 +168,6 @@ function [best_chrom, configurations] = runIt()
     else
         isBestFeasible = "unfeas";
     end
-    r=1; %this is for experiments to keep track of which run we are executing. remove when running experiments
-    tit = "RUN: " + num2str(r) + ", IK: " + num2str(fit_array(1,gas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,gas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,gas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,gas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + gas.n_individuals + ", mut: " + typeOfMut;
+    tit = "IK: " + num2str(fit_array(1,gas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,gas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,gas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,gas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + gas.n_individuals + ", mut: " + typeOfMut;
     title(tit); 
 end
