@@ -87,7 +87,7 @@ function [best_chrom, configurations] = runIt()
 
     eas.algorithm = "ga"; % ga or bbbc
     
-    gas.generations = 10;
+    eas.n_generations = 10;
     gas.n_individuals = 10;
     gas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     gas.selection_method = 'tournament';    % 'tournament', 'proportionate'
