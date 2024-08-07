@@ -8,7 +8,6 @@
 function [pop, fit_array] = evaluate(pop)
     global op;  % optimization problem
     global eas; % genetic algorithm settings
-    global bbbcs;
     global algorithm;
 
     switch algorithm

@@ -31,7 +31,6 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
 
     global op;  % optimization problem
     global eas;  % genetic algorithm settings
-    global bbbcs;
     global algorithm;     
     
     % the chromosome will be evaluated in this function

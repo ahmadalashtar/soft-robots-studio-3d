@@ -10,7 +10,6 @@
 function [pop] = initializeRandomPopulation()
     global op;  % optimization problem
     global eas; % genetic algorithm settings
-    global bbbcs; % big bang - big crunch algorithm settings
     global algorithm;
 
     switch algorithm

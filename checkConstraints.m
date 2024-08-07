@@ -9,7 +9,6 @@
 % 'fit_array' 
 function [fit_array] = checkConstraints(pop, fit_array)
     global eas; % genetic algorithm settings
-    global bbbcs;
     global algorithm;
 
     switch algorithm
