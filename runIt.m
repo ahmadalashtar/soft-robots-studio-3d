@@ -82,9 +82,9 @@ function [best_chrom, configurations] = runIt()
     
     % % drawProblem3D([]);
 
-    %---------------------GA SETTINGS---------------------
-    global gas;         % genetic algorithm settings
-    
+    %---------------------EA SETTINGS---------------------    
+    global eas;
+
     gas.generations = 10;
     gas.n_individuals = 10;
     gas.obstacle_avoidance = false; % we'll do obstacle avoidace later
