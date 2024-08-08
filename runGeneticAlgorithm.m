@@ -12,7 +12,7 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
     
     %--INITIALIZATION 
     variance_array= zeros(1,eas.n_individuals);
-    queue=zeros(1,gas.variance_generations);   % queue used to calculate the variance of the last 'variance_generations' generations best individuals
+    queue=zeros(1,eas.variance_generations);   % queue used to calculate the variance of the last 'variance_generations' generations best individuals
     qIndex = 1;
     variance = 0;
     
@@ -28,9 +28,9 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
     
     %---------------DYNAMIC MUTATION---------------
     dynamic_mutation = false;
-    if gas.mutation_probability == -1.0
+    if eas.ga.mutation_probability == -1.0
         mp_increment = 1.0 /eas.n_generations;    
-        gas.mutation_probability = 1.0;
+        eas.ga.mutation_probability = 1.0;
         dynamic_mutation = true;
     end
     
@@ -42,9 +42,9 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
     [fit_array_P] = rankingEvaluation(fit_array_P);
     
     %--ITERATIONS
-    for gen=1:1:gas.generations
+    for gen=1:1:eas.n_generations
         %--SELECTION
-        matPool = selection(fit_array_P(:,[gas.fitIdx.rank, gas.fitIdx.id]));   % passing to selection only rank fitness and pop-related id
+        matPool = selection(fit_array_P(:,[eas.fitIdx.rank, eas.fitIdx.id]));   % passing to selection only rank fitness and pop-related id
         
         %--VARIATION
         offspring = variation(pop, matPool);
@@ -59,7 +59,7 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
         % calculate variance over the last 'varianceGen' generations
         
         % [~, comD] = centerOfMass(pop);
-        queue(qIndex)=fit_array_P(1,gas.fitIdx.ik);     % variance is on ik fitness only (ranking fitness depends on the current population, so it makes no sense to compare the rank of individuals from different generations)
+        queue(qIndex)=fit_array_P(1,eas.fitIdx.ik);     % variance is on ik fitness only (ranking fitness depends on the current population, so it makes no sense to compare the rank of individuals from different generations)
         qIndex=qIndex+1;                    % the queue is implemented as a static array
         if qIndex>size(queue,2)             % when the index reaches the end of the array
             qIndex = 1;                     % goes back to 1
@@ -68,19 +68,19 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
         variance_array(gen)= variance;
         
         %--VERBOSE (SHOW LOG)
-        if gas.verbose
+        if eas.verbose
             fprintf('[%d.%d]\t', exp, gen);
-            if fit_array_P(1,gas.fitIdx.pen) == 0
+            if fit_array_P(1,eas.fitIdx.pen) == 0
                 fprintf('Feasible Solution: ');
             else
                 fprintf('Unfeasible Solution: ');
             end
-            fprintf('IK %.3f ', fit_array_P(1,gas.fitIdx.ik));
-            fprintf('(1st P: %.3f-%.3f, #%d), ', gas.rankingSettings.minFit, gas.rankingSettings.minFit + gas.rankingSettings.step_ik, gas.rankingSettings.firstPartitionSize);
-            fprintf('LtS %d, ', fit_array_P(1,gas.fitIdx.nodes));
-            fprintf('OND %d%%, ', fit_array_P(1,gas.fitIdx.wiggly));
-            fprintf('LoS %d, ', fit_array_P(1,gas.fitIdx.nodesOnSegment));
-            fprintf('Length %.3f', fit_array_P(1,gas.fitIdx.totLength));
+            fprintf('IK %.3f ', fit_array_P(1,eas.fitIdx.ik));
+            fprintf('(1st P: %.3f-%.3f, #%d), ', eas.rankingSettings.minFit, eas.rankingSettings.minFit + eas.rankingSettings.step_ik, eas.rankingSettings.firstPartitionSize);
+            fprintf('LtS %d, ', fit_array_P(1,eas.fitIdx.nodes));
+            fprintf('OND %d%%, ', fit_array_P(1,eas.fitIdx.wiggly));
+            fprintf('LoS %d, ', fit_array_P(1,eas.fitIdx.nodesOnSegment));
+            fprintf('Length %.3f', fit_array_P(1,eas.fitIdx.totLength));
             
             fprintf('\t\tDist from Center of Mass: [');
             % for i=1:1:size(comD,2)
@@ -107,22 +107,22 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
         %--SPECIAL CONVERGENCE CONDITIONS
         
         % stop if the variance is 0.0000
-        if gas.stopAtVariance_flag == true
-            if (round(variance,gas.stopAtVariance_zeros) == 0) && (gen>gas.variance_generations*2)
+        if eas.stopAtVariance_flag == true
+            if (round(variance,eas.stopAtVariance_zeros) == 0) && (gen>eas.variance_generations*2)
                 break;
             end
         end
         
         % stop if we reached a fitness of 0.0000, this will likely never be true
-        if gas.stopAtFitness_flag == true && round(fit_array_P(1,1), gas.stopAtFitness_zeros) == 0
+        if eas.stopAtFitness_flag == true && round(fit_array_P(1,1), eas.stopAtFitness_zeros) == 0
             break;
         end
         
          %--DYNAMIC AGGIUSTMENTS
          if dynamic_mutation == true
-            gas.mutation_probability = gas.mutation_probability - mp_increment; 
-            if gas.mutation_probability < 0
-                gas.mutation_probability = 0;
+            eas.ga.mutation_probability = eas.ga.mutation_probability - mp_increment; 
+            if eas.ga.mutation_probability < 0
+                eas.ga.mutation_probability = 0;
             end
          end
          
@@ -131,13 +131,13 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
     %--FOR EXPERIMENT FILEs
     for i=eas.n_individuals:-1:1
         if(round(variance_array(i),1) > 0)
-            gas.convergence0 = i-gas.variance_generations;
+            eas.convergence0 = i-eas.variance_generations;
             break;
         end
     end
     for i=eas.n_individuals:-1:1
         if(round(variance_array(i),2) > 0)
-            gas.convergence00 = i-gas.variance_generations;
+            eas.convergence00 = i-eas.variance_generations;
             break;
         end
     end

@@ -12,7 +12,7 @@ function [offspring] = variation(pop, matPool)
     global eas; % genetic algorithm settings
 
     % declare a static array of chromosomes filled with zeros
-    offspring = zeros(size(op.targets,1)*2+1,op.n_nodes+gas.extra_genes,eas.n_individuals);
+    offspring = zeros(size(op.targets,1)*2+1,op.n_nodes+eas.extra_genes,eas.n_individuals);
     
     matPool = matPool(randperm(length(matPool))); % shuffle the mating pool
     

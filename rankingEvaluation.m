@@ -10,15 +10,15 @@ function [fit_array] = rankingEvaluation(fit_array)
 
     switch algorithm
         case 'ga'
-            switch gas.ranking_method
+            switch eas.ranking_method
                 case 'penalty'
-                    [fit_array, gas.rankingSettings] = doPartitioning_simplified(fit_array, gas.rankingSettings, gas.fitIdx);
+                    [fit_array, eas.rankingSettings] = doPartitioning_simplified(fit_array, eas.rankingSettings, eas.fitIdx);
                 case 'separation'
-                    fit_array = sortrows(fit_array,[gas.fitIdx.pen, gas.fitIdx.ik]);          % sort fitness matrix by penalty and then ik
+                    fit_array = sortrows(fit_array,[eas.fitIdx.pen, eas.fitIdx.ik]);          % sort fitness matrix by penalty and then ik
             
                     % count feasible solutions
                     for i = 1:1:n_individuals
-                        if fit_array(i,gas.fitIdx.pen) ~= 0 
+                        if fit_array(i,eas.fitIdx.pen) ~= 0 
                             countFS = i-1;
                             break;
                         end
@@ -37,20 +37,20 @@ function [fit_array] = rankingEvaluation(fit_array)
                     switch countFS
                         case 0
                             % there are no feasible solutions, partition unfeasible
-                            [fit_array_unfeasible, gas.rankingSettings] = doPartitioning(fit_array_unfeasible, gas.rankingSettings, gas.fitIdx);
+                            [fit_array_unfeasible, eas.rankingSettings] = doPartitioning(fit_array_unfeasible, eas.rankingSettings, eas.fitIdx);
                         case 1
                             % there is only one feasible solution, add the only feasible and partition only unfeasible
-                            [fit_array_unfeasible, gas.rankingSettings] = doPartitioning(fit_array_unfeasible, gas.rankingSettings, gas.fitIdx);
+                            [fit_array_unfeasible, eas.rankingSettings] = doPartitioning(fit_array_unfeasible, eas.rankingSettings, eas.fitIdx);
                         case n_individuals - 1 
                             % there is only one unfeasible solution, do partitioning only to feasible and then append the only unfeasible
-                            [fit_array_feasible, gas.rankingSettings] = doPartitioning(fit_array_feasible, gas.rankingSettings, gas.fitIdx);
+                            [fit_array_feasible, eas.rankingSettings] = doPartitioning(fit_array_feasible, eas.rankingSettings, eas.fitIdx);
                         case n_individuals
                             % there are no unfeasible solution, do partitioning only to feasible and then append the only unfeasible (which is empty)
-                            [fit_array_feasible, gas.rankingSettings] = doPartitioning(fit_array_feasible, gas.rankingSettings, gas.fitIdx);
+                            [fit_array_feasible, eas.rankingSettings] = doPartitioning(fit_array_feasible, eas.rankingSettings, eas.fitIdx);
                         otherwise
                             % there are more feasible solutions, partition both feasible and unfeasible
-                            [fit_array_unfeasible, gas.rankingSettings] = doPartitioning(fit_array_unfeasible, gas.rankingSettings, gas.fitIdx);
-                            [fit_array_feasible, gas.rankingSettings] = doPartitioning(fit_array_feasible, gas.rankingSettings, gas.fitIdx);
+                            [fit_array_unfeasible, eas.rankingSettings] = doPartitioning(fit_array_unfeasible, eas.rankingSettings, eas.fitIdx);
+                            [fit_array_feasible, eas.rankingSettings] = doPartitioning(fit_array_feasible, eas.rankingSettings, eas.fitIdx);
                     end
                     fit_array = [fit_array_feasible ; fit_array_unfeasible];    % merge feasible and unfeasible solutions
                 otherwise
@@ -61,7 +61,7 @@ function [fit_array] = rankingEvaluation(fit_array)
             % such that each individual has a larger fitness than the previous one
             % this ranks each individual
             for i=1:1:n_individuals
-                fit_array(i,gas.fitIdx.rank) = i;
+                fit_array(i,eas.fitIdx.rank) = i;
             end    
     end
     

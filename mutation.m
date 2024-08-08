@@ -10,9 +10,9 @@ function [chrom] = mutation(chrom)
     global op;  % optimization problem
     global eas; % genetic algorithm settings
     
-    if rand() <= gas.mutation_probability
+    if rand() <= eas.mutation_probability
         % do mutation
-        switch gas.mutation_method
+        switch eas.ga.mutation_method
             case 'random'
                 chrom = randomMutation();
             case 'modifiedRandom'

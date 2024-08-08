@@ -5,7 +5,7 @@ function [child] = blendCrossover(p1, p2, alpha)
     global eas; % genetic algorithm settings
     
     n_targets = floor(size(p1,1)-1)/2;
-    child = zeros(n_targets*2+1,op.n_nodes+gas.extra_genes); % newly generated offspring
+    child = zeros(n_targets*2+1,op.n_nodes+eas.extra_genes); % newly generated offspring
     ll_index = n_targets*2+1;    % row-index for link length in chromosomes
     
     %angles (targets x nodes+4)

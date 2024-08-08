@@ -89,71 +89,69 @@ function [best_chrom, configurations] = runIt()
     eas.n_generations = 10;
     eas.n_individuals = 500;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
-    gas.selection_method = 'tournament';    % 'tournament', 'proportionate'
-    gas.crossover_method = 'blxa';  % 'blxa'
-    gas.crossover_probability = 0.9;
-    gas.mutation_method = 'random';   % 'random', 'modifiedRandom'
-    gas.mutation_probability = 0.4;  % -1 is dynamic 
-    gas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha'
-    gas.survival_alpha = 40;    %this is the percentage of elites that will stay in the new population
-    gas.penalty_method = 'static';	% 'static', 'deb'
+    eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
+    eas.ga.crossover_method = 'blxa';  % 'blxa'
+    eas.ga.crossover_probability = 0.9;
+    eas.ga.mutation_method = 'random';   % 'random', 'modifiedRandom'
+    eas.ga.mutation_probability = 0.4;  % -1 is dynamic 
+    eas.ga.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha'
+    eas.ga.survival_alpha = 40;    %this is the percentage of elites that will stay in the new population
+    eas.penalty_method = 'static';	% 'static', 'deb'
     
     % settings of rank partitioning algorithm
-    gas.ranking_method = 'penalty';     % 'penalty', 'separation'
-    gas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
-    gas.rankingSettings.step_len = 5;
+    eas.ranking_method = 'penalty';     % 'penalty', 'separation'
+    eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
+    eas.rankingSettings.step_len = 5;
     
-    gas.rankingSettings.minFit = 0;     % OUTPUT min IK fitness
-    gas.rankingSettings.maxFi = 0;      % OUTPUT max IK fitness  FIX THE TYPO
-    gas.rankingSettings.delta = 0;      % OUTPUT difference between max and min IK fitness
-    gas.rankingSettings.n_partitions = 0;       % OUTPUT overall number of partitions (delta/step_ik)
-    gas.rankingSettings.firstPartitionSize = 0; % OUTPUT number of individuals falling in the first partition (best ones)
+    eas.rankingSettings.minFit = 0;     % OUTPUT min IK fitness
+    eas.rankingSettings.maxFi = 0;      % OUTPUT max IK fitness  FIX THE TYPO
+    eas.rankingSettings.delta = 0;      % OUTPUT difference between max and min IK fitness
+    eas.rankingSettings.n_partitions = 0;       % OUTPUT overall number of partitions (delta/step_ik)
+    eas.rankingSettings.firstPartitionSize = 0; % OUTPUT number of individuals falling in the first partition (best ones)
 
-    gas.draw_plot = false;  % if you set this to true, your computer will likely explode
-    gas.verbose = true;
-    gas.normalize_weightDistance = true;    % deprecated
-    gas.variance_generations = 10; 
+    eas.draw_plot = false;  % if you set this to true, your computer will likely explode
+    eas.verbose = true;
+    eas.normalize_weightDistance = true;    % deprecated
+    eas.variance_generations = 10; 
     
-    gas.stopAtVariance_flag = false;    % if true, GA will stop when variance between solutions becomes < 0.000 (number of zeros are defined..
-    gas.stopAtVariance_zeros = 2;       % ...here)
-    gas.stopAtFitness_flag = false;     % if true, GA will stop when IK fitness becomes < 0.000 (number of zeros are defined..
-    gas.stopAtFitness_zeros = 2;        % ...here)
+    eas.stopAtVariance_flag = false;    % if true, GA will stop when variance between solutions becomes < 0.000 (number of zeros are defined..
+    eas.stopAtVariance_zeros = 2;       % ...here)
+    eas.stopAtFitness_flag = false;     % if true, GA will stop when IK fitness becomes < 0.000 (number of zeros are defined..
+    eas.stopAtFitness_zeros = 2;        % ...here)
     
-    gas.infeasible_subcount = 0;
-    gas.convergence0 = 0;
-    gas.convergence00 = 0;
+    eas.infeasible_subcount = 0;
+    eas.convergence0 = 0;
+    eas.convergence00 = 0;
     
     % indices for fit_array, these are constants do not change!
-    gas.fitIdx.ik = 6;              % IK fitness (avg among configurations)
-    gas.fitIdx.ikMod = 1;
-    gas.fitIdx.pen = 8;             % penalty for constraints
-    gas.fitIdx.nodes = 2;           % number of links to reach the target's orientation segment (overall sum)
-    gas.fitIdx.nodesOnSegment = 4;  % number of links on the target's orientation segment (overall sum)
-    gas.fitIdx.wiggly = 3;          % percentage of ondulation of the configuration (avg among configurations)
-    gas.fitIdx.totLength = 7;       % total length of the robot (avg among configurations - maybe we should use max?)
-    gas.fitIdx.totLengthMod = 5;
-    gas.fitIdx.rank = 9;            % rank, used as fitness for selection and survival operators
-    gas.fitIdx.id = 10;              % reference to chromosome in the array of population
+    eas.fitIdx.ik = 6;              % IK fitness (avg among configurations)
+    eas.fitIdx.ikMod = 1;
+    eas.fitIdx.pen = 8;             % penalty for constraints
+    eas.fitIdx.nodes = 2;           % number of links to reach the target's orientation segment (overall sum)
+    eas.fitIdx.nodesOnSegment = 4;  % number of links on the target's orientation segment (overall sum)
+    eas.fitIdx.wiggly = 3;          % percentage of ondulation of the configuration (avg among configurations)
+    eas.fitIdx.totLength = 7;       % total length of the robot (avg among configurations - maybe we should use max?)
+    eas.fitIdx.totLengthMod = 5;
+    eas.fitIdx.rank = 9;            % rank, used as fitness for selection and survival operators
+    eas.fitIdx.id = 10;              % reference to chromosome in the array of population
     
     % extra genes in chromosome, it is a constant do not change!
 
-    gas.extra_genes = 4;
+    eas.extra_genes = 4;
 
     rng shuffle;
     pop = [];
     fit_array = [];
-
-    algorithm = 'bbbc';
     
-    switch algorithm
-        case 'ga'
+    switch eas.algorithm
+        case "ga"
         
             [pop, fit_array] = runGeneticAlgorithm(1);
-        case 'bbbc'
+        case "bbbc"
             [pop, fit_array] = runBBBC(1);
     end
 
-    best_index = fit_array(1,gas.fitIdx.id);
+    best_index = fit_array(1,eas.fitIdx.id);
     best_chrom = pop(:,:,best_index);
 
     configurations = decodeIndividual(best_chrom);
@@ -164,11 +162,11 @@ function [best_chrom, configurations] = runIt()
     configurations = decodeIndividual(best_chrom);
     drawProblem3D(configurations);
     
-    if fit_array(1,gas.fitIdx.pen) == 0
+    if fit_array(1,eas.fitIdx.pen) == 0
         isBestFeasible = "feas";
     else
         isBestFeasible = "unfeas";
     end
-    tit = "IK: " + num2str(fit_array(1,gas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,gas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,gas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,gas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
+    tit = "IK: " + num2str(fit_array(1,eas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,eas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,eas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,eas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
     title(tit); 
 end

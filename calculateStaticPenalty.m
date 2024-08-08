@@ -6,7 +6,7 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
 
     gScalar = 0;
 
-    n_nodes = size(chrom,2) - gas.extra_genes;
+    n_nodes = size(chrom,2) - eas.extra_genes;
     n_targets = size(op.targets,1);
     min_angle_x = op.angle_domain(1,2);
     max_angle_x = op.angle_domain(1,1);
@@ -74,12 +74,8 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
      
 
         if(g(6) ~= 0)
-            switch algorithm
-                case 'ga'
-                    gas.infeasible_subcount = gas.infeasible_subcount+intersections;
-                case 'bbbc'
-                    bbbcs.infeasible_subcount = bbbcs.infeasible_subcount+intersections;
-            end
+            eas.infeasible_subcount = eas.infeasible_subcount+intersections;
+
            % --- running variance by https://lingpipe-blog.com/2009/07/07/welford-s-algorithm-delete-online-mean-variance-deviation/
 %            gas.infeasible_running_stats(2) = gas.infeasible_running_stats(2)+1;
 %            nextM = gas.infeasible_running_stats(1) + (intersections - gas.infeasible_running_stats(1)) / gas.infeasible_running_stats(2);

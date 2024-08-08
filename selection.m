@@ -11,7 +11,7 @@ function [matPool] = selection(fit_array)
 
     global eas; % genetic algorithm settings
     
-    switch gas.selection_method
+    switch eas.ga.selection_method
         case 'tournament'
             matPool = tournament(fit_array, 2, true);	% binary tournament selection
         case 'proportionate'

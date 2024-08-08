@@ -16,7 +16,7 @@ function [pop] = initializeRandomPopulation()
         case 'ga'
             % declare a static array of chromosomes filled with zeros
 
-            pop = zeros(size(op.targets,1)*2+1,op.n_nodes+gas.extra_genes,eas.n_individuals);
+            pop = zeros(size(op.targets,1)*2+1,op.n_nodes+eas.extra_genes,eas.n_individuals);
 
             for i=1:1:eas.n_individuals
                 chrom = generateRandomChromosome();   
@@ -25,7 +25,7 @@ function [pop] = initializeRandomPopulation()
         case 'bbbc'
             % declare a static array of individuals filled with zeros
 
-            pop = zeros(size(op.targets,1)*2+1,op.n_nodes+bbbcs.extra_genes,eas.n_individuals);
+            pop = zeros(size(op.targets,1)*2+1,op.n_nodes+eas.extra_genes,eas.n_individuals);
 
             for i=1:1:eas.n_individuals
                 indv = generateRandomChromosome();   

@@ -11,7 +11,7 @@ global eas; % genetic algorithm settings
     %   child1, child2 - Child solutions
     
     % Ensure parents are row vectors
-    eta_c = gas.eta_crossover;
+    eta_c = eas.ga.eta_crossover;
     if iscolumn(parent1)
         parent1 = parent1';
     end

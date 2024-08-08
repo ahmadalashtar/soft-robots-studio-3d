@@ -14,19 +14,19 @@ function [chrom] =  generateRandomChromosome()
     switch algorithm
         case 'ga'
             % lengths is shared for each configuration of the robot, so it is generated only once
-            lengths = zeros(1,op.n_nodes+gas.extra_genes);
+            lengths = zeros(1,op.n_nodes+eas.extra_genes);
             for i=1:1:op.n_nodes
                 lengths(i) = (op.length_domain(2)-op.length_domain(1))*rand + op.length_domain(1);
             end   
             
             n_targets = size(op.targets,1);
-            chrom = zeros(n_targets*2+1,op.n_nodes+gas.extra_genes);
+            chrom = zeros(n_targets*2+1,op.n_nodes+eas.extra_genes);
             
             for i=1:1:n_targets*2        
                 
                 end_effector = op.home_base(1:2);
                 robot_orientation = [1 0 0];
-                robot = zeros(1,op.n_nodes+gas.extra_genes); 
+                robot = zeros(1,op.n_nodes+eas.extra_genes); 
                 for j=1:1:op.n_nodes   
                     % generate angles for each node
                     % each angle is generated in a range that avoids collision with obstacles
@@ -69,18 +69,18 @@ function [chrom] =  generateRandomChromosome()
 
         case 'bbbc'
             % lengths are shared for each configuration of the robot, so it is generated only once
-            lengths = zeros(1,op.n_nodes+gas.extra_genes);
+            lengths = zeros(1,op.n_nodes+eas.extra_genes);
             for i=1:1:op.n_nodes
                 lengths(i) = (op.length_domain(2)-op.length_domain(1))*rand + op.length_domain(1);
             end   
             
             n_targets = size(op.targets*2,1);
-            chrom = zeros(n_targets*2+1,op.n_nodes+gas.extra_genes);    
+            chrom = zeros(n_targets*2+1,op.n_nodes+eas.extra_genes);    
             for i=1:1:n_targets*2        
                 
                 end_effector = op.home_base(1:3);
                 robot_orientation = [1 0 0];
-                robot = zeros(1,op.n_nodes+gas.extra_genes); 
+                robot = zeros(1,op.n_nodes+eas.extra_genes); 
                 
                 for j=1:1:op.n_nodes   
                     % generate angles for each node
