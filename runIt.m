@@ -87,7 +87,7 @@ function [best_chrom, configurations] = runIt()
     eas.algorithm = "ga"; % ga or bbbc
     
     eas.n_generations = 10;
-    gas.n_individuals = 10;
+    eas.n_individuals = 500;
     gas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     gas.selection_method = 'tournament';    % 'tournament', 'proportionate'
     gas.crossover_method = 'blxa';  % 'blxa'
@@ -169,6 +169,6 @@ function [best_chrom, configurations] = runIt()
     else
         isBestFeasible = "unfeas";
     end
-    tit = "IK: " + num2str(fit_array(1,gas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,gas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,gas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,gas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + gas.n_individuals + ", mut: " + typeOfMut;
+    tit = "IK: " + num2str(fit_array(1,gas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,gas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,gas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,gas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
     title(tit); 
 end

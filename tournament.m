@@ -3,8 +3,8 @@
 function [matPool] = tournament(fit_array, k, isMin)
     global eas; % genetic algorithm settings
     
-    matPool = zeros(gas.n_individuals,1);
-    for i=1:gas.n_individuals
+    matPool = zeros(eas.n_individuals,1);
+    for i=1:eas.n_individuals
         matPool(i) = getTournamentWinner(fit_array, k, isMin);
     end
 end
@@ -15,7 +15,7 @@ function [winner] = getTournamentWinner(fit_array, k, isMin)
     bestFit = 0;
     winner = 0;
     for j=1:k
-        index = ceil((gas.n_individuals)*rand);
+        index = ceil((eas.n_individuals)*rand);
         if j==1
             bestFit = fit_array(index,1);
             winner = fit_array(index,2);

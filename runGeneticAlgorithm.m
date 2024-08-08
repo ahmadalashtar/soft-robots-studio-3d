@@ -11,19 +11,19 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
     global eas; % genetic algorithm settings
     
     %--INITIALIZATION 
-    variance_array= zeros(1,gas.n_individuals);
+    variance_array= zeros(1,eas.n_individuals);
     queue=zeros(1,gas.variance_generations);   % queue used to calculate the variance of the last 'variance_generations' generations best individuals
     qIndex = 1;
     variance = 0;
     
     % in case a funny user decides to have an odd number of idividuals in the population...
-    if mod(gas.n_individuals,2) ~= 0
-        gas.n_individuals = gas.n_individuals + 1;
+    if mod(eas.n_individuals,2) ~= 0
+        eas.n_individuals = eas.n_individuals + 1;
     end
     
     % a funnier user...
-    if gas.n_individuals <= 0
-        gas.n_individuals = 1;
+    if eas.n_individuals <= 0
+        eas.n_individuals = 1;
     end
     
     %---------------DYNAMIC MUTATION---------------
@@ -129,13 +129,13 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
     end  % place a breakpoint here as you run the algorithm to pause, and check how the individuals are evolving by plotting the best one with 'drawProblem2D(decodeIndividual(pop(:,:,1)))'
 
     %--FOR EXPERIMENT FILEs
-    for i=gas.n_individuals:-1:1
+    for i=eas.n_individuals:-1:1
         if(round(variance_array(i),1) > 0)
             gas.convergence0 = i-gas.variance_generations;
             break;
         end
     end
-    for i=gas.n_individuals:-1:1
+    for i=eas.n_individuals:-1:1
         if(round(variance_array(i),2) > 0)
             gas.convergence00 = i-gas.variance_generations;
             break;

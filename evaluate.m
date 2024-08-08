@@ -12,9 +12,9 @@ function [pop, fit_array] = evaluate(pop)
 
     switch algorithm
         case 'ga'
-            fit_array = zeros(gas.n_individuals,length(fieldnames(gas.fitIdx)));
+            fit_array = zeros(eas.n_individuals,length(fieldnames(gas.fitIdx)));
 
-            for i=1:gas.n_individuals 
+            for i=1:eas.n_individuals 
                 [pop(:,:,i), fitness] = calculateFitness3D(pop(:,:,i), false);
                 
                 % place the right data in fit_array
@@ -32,9 +32,9 @@ function [pop, fit_array] = evaluate(pop)
             fit_array = checkConstraints(pop, fit_array);
 
         case 'bbbc'
-            fit_array = zeros(bbbcs.N,length(fieldnames(bbbcs.fitIdx)));
+            fit_array = zeros(eas.n_individuals,length(fieldnames(bbbcs.fitIdx)));
 
-            for i=1:bbbcs.N 
+            for i=1:eas.n_individuals 
                 [pop(:,:,i), fitness] = calculateFitness2D(pop(:,:,i), false);
                 
                 % place the right data in fit_array

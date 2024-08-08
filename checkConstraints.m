@@ -15,7 +15,7 @@ function [fit_array] = checkConstraints(pop, fit_array)
         case 'ga'
             switch gas.penalty_method
                 case 'static'
-                    for i=1:gas.n_individuals
+                    for i=1:eas.n_individuals
                         index = fit_array(i,gas.fitIdx.id);
                         fit_array(i,gas.fitIdx.pen) = calculateStaticPenalty(pop(:,:,index),[10 10 10 10 10 10 100 10]);
                         if gas.ranking_method == "penalty"
@@ -34,7 +34,7 @@ function [fit_array] = checkConstraints(pop, fit_array)
         case 'bbbc'
             switch bbbcs.penalty_method
                 case 'static'
-                    for i=1:bbbcs.N
+                    for i=1:eas.n_individuals
                         index = fit_array(i,bbbcs.fitIdx.id);
                         fit_array(i,bbbcs.fitIdx.pen) = calculateStaticPenalty(pop(:,:,index),[10 10 10 100 10]);
                         if bbbcs.ranking_method == "penalty"
@@ -65,7 +65,7 @@ function [fit_array] = addDebsPenalty(fit_array)
     worstFit = 0;
     bestFit = fit_array(1, 1);
     areThereFeasibleSolutions = false;
-    for i = 1:1:gas.n_individuals
+    for i = 1:1:eas.n_individuals
         if fit_array(i, 2) == 0 % if it is feasible
             if worstFit < fit_array(i, 1)
                 worstFit = fit_array(i, 1);
@@ -83,7 +83,7 @@ function [fit_array] = addDebsPenalty(fit_array)
     end
     
     % add penalty
-    for i = 1:1:gas.n_individuals
+    for i = 1:1:eas.n_individuals
         if(fit_array(i, 2) ~= 0)    % if it is unfeasible    
             fit_array(i,3) = worstFit + fit_array(i, 2);
             fit_array(i,3) = fit_array(i,3) + fit_array(i, 1); % this part is not in Deb's formulation, but without it the ranking algorithm might not work!
