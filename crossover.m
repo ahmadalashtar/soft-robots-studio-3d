@@ -17,7 +17,7 @@ function [o1, o2] = crossover(p1, p2)
         switch gas.crossover_method
             case 'blxa'
                 alpha = 0.5;
-                if(gas.obstacle_avoidance==true)
+                if(eas.obstacle_avoidance==true)
                     o1 = blendCrossover_obstacleAvoidance(p1, p2, alpha);
                     o2 = blendCrossover_obstacleAvoidance(p1, p2, alpha);
                 else

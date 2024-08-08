@@ -88,7 +88,7 @@ function [best_chrom, configurations] = runIt()
     
     eas.n_generations = 10;
     eas.n_individuals = 500;
-    gas.obstacle_avoidance = false; % we'll do obstacle avoidace later
+    eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     gas.selection_method = 'tournament';    % 'tournament', 'proportionate'
     gas.crossover_method = 'blxa';  % 'blxa'
     gas.crossover_probability = 0.9;

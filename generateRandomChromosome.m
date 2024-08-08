@@ -33,20 +33,20 @@ function [chrom] =  generateRandomChromosome()
                     if j==1 
                         % first link might be fixed to the base
                         if op.first_angle.is_fixed == false
-                            if(gas.obstacle_avoidance == true)
+                            if(eas.obstacle_avoidance == true)
                                 angle = getRandomAngleAvoidingObstacles(end_effector, robot_orientation, lengths(j), op.length_domain, op.obstacles, [-179 180], false);
                             else
                                 angle = (180-(-179))*rand + (-179); % does not consider obstacle avoidance
                             end
                         else
-                            if(gas.obstacle_avoidance == true)
+                            if(eas.obstacle_avoidance == true)
                                angle = getRandomAngleAvoidingObstacles(end_effector, robot_orientation, lengths(j), op.length_domain, op.obstacles, [-abs(op.first_angle.angle) abs(op.first_angle.angle)], false);
                             else
                                angle = op.first_angle.angle;  % does not consider obstacle avoidance
                             end
                         end
                     else                
-                         if(gas.obstacle_avoidance==true)
+                         if(eas.obstacle_avoidance==true)
                              angle = getRandomAngleAvoidingObstacles(end_effector, robot_orientation, lengths(j), op.length_domain, op.obstacles, op.angle_domain, false);
                          else
                              angle = (op.angle_domain(mod(i,2)+1,2)-op.angle_domain(mod(i,2)+1,1))*rand + op.angle_domain(mod(i,2)+1,1); % does not consider obstacle avoidance
@@ -88,20 +88,20 @@ function [chrom] =  generateRandomChromosome()
                     if j==1
                         % first link might be fixed to the base
                         if op.first_angle.is_fixed == false
-                            if(bbbcs.obstacle_avoidance == true)
+                            if(eas.obstacle_avoidance == true)
                                 angle = getRandomAngleAvoidingObstacles(end_effector, robot_orientation, lengths(j), op.length_domain, op.obstacles, [-179 180], false);
                             else
                                 angle = (180-(-179))*rand + (-179); % does not consider obstacle avoidance
                             end
                         else
-                            if(bbbcs.obstacle_avoidance == true)
+                            if(eas.obstacle_avoidance == true)
                                angle = getRandomAngleAvoidingObstacles(end_effector, robot_orientation, lengths(j), op.length_domain, op.obstacles, [-abs(op.first_angle.angle) abs(op.first_angle.angle)], false);
                             else
                                angle = op.first_angle.angle;  % does not consider obstacle avoidance
                             end
                         end
                     else                
-                         if(bbbcs.obstacle_avoidance==true)
+                         if(eas.obstacle_avoidance==true)
                              angle = getRandomAngleAvoidingObstacles(end_effector, robot_orientation, lengths(j), op.length_domain, op.obstacles, op.angle_domain, false);
                          else
                              angle = (op.angle_domain(mod(i,2)+1,2)-op.angle_domain(mod(i,2)+1,1))*rand + op.angle_domain(mod(i,2)+1,1); % does not consider obstacle avoidance
