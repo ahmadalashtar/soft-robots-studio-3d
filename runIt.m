@@ -43,7 +43,6 @@ function [best_chrom, configurations] = runIt()
     
     %---------------------PROBLEM DEFINITION--------------------- 
     global op;          % optimization problem
-    global algorithm;
     algorithm = 'ga';
     op.plane_z = 1000;
     op.home_base = [0 0 0 0 0];
