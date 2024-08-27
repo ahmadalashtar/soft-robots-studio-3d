@@ -47,9 +47,10 @@ function [best_chrom, configurations] = runIt()
     algorithm = 'ga';
     op.plane_z = 1000;
     op.home_base = [0 0 0 0 0];
-    t1 = [300 100 500 ];
-    % t2 = [300 -100 500  ];
-    % t2 = [13 13 13];
+
+    t1 = [100 30 200 ];
+    % t2 = [100 -30 200  ];
+    % t3 = [50 50 50];
     
     %t2 = [100 100 100];
     %t3 = [-400 500 op.plane_z-53];
@@ -65,6 +66,7 @@ function [best_chrom, configurations] = runIt()
                     t1 0 50;
                     % t2 0 50;
                     % t2 180 0;
+
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
     op.obstacles = [
@@ -74,6 +76,7 @@ function [best_chrom, configurations] = runIt()
 
     op.n_nodes = 100;
     op.length_domain = [5 30];
+
     op.first_angle.is_fixed = true;
     op.angle_domain = [30 -30; 30 -30];
     op.first_angle.angle = 0;
