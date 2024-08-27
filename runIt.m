@@ -47,6 +47,7 @@ function [best_chrom, configurations] = runIt()
     algorithm = 'ga';
     op.plane_z = 1000;
     op.home_base = [0 0 0 0 0];
+
     t1 = [100 30 200 ];
     % t2 = [100 -30 200  ];
     % t3 = [50 50 50];
@@ -63,8 +64,9 @@ function [best_chrom, configurations] = runIt()
         % t1 180 5 ;
                     % t2 -30 -30 ;
                     t1 0 50;
-                    % t2 45 50;
-                    % t3 180 0;
+                    % t2 0 50;
+                    % t2 180 0;
+
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
     op.obstacles = [
@@ -72,21 +74,22 @@ function [best_chrom, configurations] = runIt()
                      100 100 100 20 100
                     ]; %cylinder [x y z(base) radius height]
 
-    op.n_nodes = 20;
-    op.length_domain = [10 100];
+    op.n_nodes = 100;
+    op.length_domain = [5 30];
+
     op.first_angle.is_fixed = true;
     op.angle_domain = [30 -30; 30 -30];
     op.first_angle.angle = 0;
     op.end_points = retrieveOrientationSegmentEndPoints3D(false);  % retrieve the end points for each target's orientation segment
     disp(segment2UnitVector(op.targets(1,1:3),op.end_points(1,:)))
     
-    % drawProblem3D([]);
+    % % drawProblem3D([]);
 
     %---------------------GA SETTINGS---------------------
     global gas;         % genetic algorithm settings
     
-    gas.generations = 100;
-    gas.n_individuals = 500;
+    gas.generations = 10;
+    gas.n_individuals = 10;
     gas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     gas.selection_method = 'tournament';    % 'tournament', 'proportionate'
     gas.crossover_method = 'blxa';  % 'blxa'
@@ -156,8 +159,14 @@ function [best_chrom, configurations] = runIt()
     %*************Drawing Solution************
     best_index = fit_array(1,gas.fitIdx.id);
     best_chrom = pop(:,:,best_index);
-    
-    configurations = decodeIndividual(pop(:,:,best_index));
+
+    configurations = decodeIndividual(best_chrom);
+    drawProblem3D(configurations);
+
+    best_chrom  = gaLastAngle(best_chrom,500,100,2,50,0.1);
+    % configurations = decodeIndividual(pop(:,:,best_index));
+
+    configurations = decodeIndividual(best_chrom);
     drawProblem3D(configurations);
     
     if fit_array(1,gas.fitIdx.pen) == 0
