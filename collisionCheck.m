@@ -70,7 +70,7 @@ function [result,i] = checkIfZObstacle(p_start,p_end,obs)
     u = (p_end-p_start)/norm(p_end-p_start);
     N = p_start;
     
-    R = GetRodriguesRotation(u',[0 0 1]');
+    R = getRodriguesRotation(u',[0 0 1]');
     p_start_r = (R*p_start')';
     p_end_r = (R*p_end')';
     

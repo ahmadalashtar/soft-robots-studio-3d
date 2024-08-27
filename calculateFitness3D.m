@@ -88,7 +88,7 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         fitness(1) = fitness(1) + fit;
         % for k = 2:size(robot_points,1)-1
         ee_link_index = ee_index -1 ;
-        [final_angle_x, final_angle_y] = solveInverseKinematics(conf,ee_link_index,op.targets(ceili2,1:3));
+        [final_angle_x, final_angle_y] = solveInverseKinematics3D(conf,robot_points,ee_link_index,op.targets(ceili2,1:3));
         % [final_angle_x, final_angle_y]= calculateLastAngle(robot_points, k, robot_points(k+1,:));
         % end
         %%EMİR commented out the extra x and y removed i+1 and made both
@@ -210,12 +210,6 @@ end
 % - angles: the difference in angles to go from v2 to v1 as a rotation on x
 % and rotation on y in respect to Z
 
-function [rot_x, rot_y] = vectors2Angles(v1,v2)
-    rot_x = calculateAngle([v1(3) v1(2)],[v2(3) v2(2)]);
-    rot_y = calculateAngle([v1(3) v1(1)],[v2(3) v2(1)]);
-end
-
-
 % input: 
 % - v1: a 2D vector on zx or zy
 % - v2: a 2D vector on zx or zy
@@ -223,38 +217,7 @@ end
 % - angle: the difference in angle to go from v2 to v1 in respect to the
 % v1(1) and v2(1)
 
-function angle = calculateAngle(v1,v2)
 
-    x1 = v1(1);
-    y1 = v1(2);
-    x2 = v2(1);
-    y2 = v2(2);
-    v1n = norm(v1);
-    v2n = norm(v2);
-
-    if (x1 >= 0)
-        v1angle = asind(y1/v1n);
-    elseif (y1<=0)
-        v1angle = asind(y1/v1n);
-        v1angle = -180 - v1angle ;
-    else
-        v1angle = asind(y1/v1n);
-        v1angle = 180 - v1angle ;
-    end
-
-    if (x2 >= 0)
-        v2angle = asind(y2/v2n);
-    elseif (y2<=0)
-        v2angle = asind(y2/v2n);
-        v2angle = -180 - v2angle ;
-    else
-        v2angle = asind(y2/v2n);
-        v2angle = 180 - v2angle ;
-    end
-
-    angle = v1angle - v2angle;
-    angle = round(angle,3);
-end
 
 % % Calculate the area of a triangle given its three vertices
 % function [area] = calculateTriangleArea(p1,p2,p3)
