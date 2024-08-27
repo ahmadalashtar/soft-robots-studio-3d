@@ -87,7 +87,8 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         fit = dist_mat(ee_index);        
         fitness(1) = fitness(1) + fit;
         % for k = 2:size(robot_points,1)-1
-        [final_angle_x, final_angle_y]= calculateLastAngle(robot_points, ee_index, op.targets(ceili2,1:3));
+        ee_link_index = ee_index -1 ;
+        [final_angle_x, final_angle_y] = solveInverseKinematics(conf,ee_link_index,op.targets(ceili2,1:3));
         % [final_angle_x, final_angle_y]= calculateLastAngle(robot_points, k, robot_points(k+1,:));
         % end
         %%EMİR commented out the extra x and y removed i+1 and made both
@@ -200,66 +201,7 @@ end
 
 % Calculate the angle between the robot (at the current end effector) and the target's orientation segment
 % Uses voronoi rotation to make the angle calculation simpler
-function [rotx, roty] = calculateLastAngle(robot_points, ee_index, target)
-    segment1 = zeros(2,3);
-    segment2 = zeros(2,3);
-    segment1(1,:) = robot_points(ee_index-1,:);
-    segment1(2,:) = robot_points(ee_index,:);
-    segment2(1,:) = robot_points(ee_index,:);
-    segment2(2,:) = target(1:3);
-    
-    % figure;
-    % hold on;
-    % 
-    % xlabel('x');
-    % ylabel('y'); 
-    % zlabel('z');
-    % plot3([segment1(1,1) segment1(2,1)], [segment1(1,2) segment1(2,2)], [segment1(1,3) segment1(2,3)])
-    % plot3([segment2(1,1) segment2(2,1)], [segment2(1,2) segment2(2,2)], [segment2(1,3) segment2(2,3)])
 
-    % Translate the segments such that the start of segment1 is at the origin
-    translation_vector = -segment1(1, :);
-    segment1_translated = segment1 + translation_vector;
-    segment2_translated = segment2 + translation_vector;
-    
-    % Define the direction vector of the first segment
-    direction_vector = segment1_translated(2, :) - segment1_translated(1, :);
-    direction_vector = direction_vector / norm(direction_vector); % Normalize
-    
-    % Find the rotation matrix to align direction_vector with the z-axis
-    z_axis = [0, 0, 1];
-    rotation_axis = cross(direction_vector, z_axis);
-    rotation_angle = acos(dot(direction_vector, z_axis));
-    
-    if norm(rotation_axis) ~= 0
-        rotation_axis = rotation_axis / norm(rotation_axis);
-        K = [0, -rotation_axis(3), rotation_axis(2);
-             rotation_axis(3), 0, -rotation_axis(1);
-             -rotation_axis(2), rotation_axis(1), 0];
-    
-        % Rodrigues' rotation formula
-        rotation_matrix = eye(3) + sin(rotation_angle) * K + (1 - cos(rotation_angle)) * (K * K);
-    else
-        % If the rotation axis is zero, no rotation is needed (segments are already aligned)
-        rotation_matrix = eye(3);
-    end
-    
-    % Rotate the segments
-    segment1_aligned = (rotation_matrix * segment1_translated')';
-    segment2_aligned = (rotation_matrix * segment2_translated')';
-    
-    % Display the aligned segments
-    % figure;
-    % hold on;
-    % xlabel('x');
-    % ylabel('y'); 
-    % zlabel('z');
-    % plot3([segment1_aligned(1,1) segment1_aligned(2,1)], [segment1_aligned(1,2) segment1_aligned(2,2)], [segment1_aligned(1,3) segment1_aligned(2,3)])
-    % plot3([segment2_aligned(1,1) segment2_aligned(2,1)], [segment2_aligned(1,2) segment2_aligned(2,2)], [segment2_aligned(1,3) segment2_aligned(2,3)])
-    vectorFromZero = segment2_aligned(2,:) - segment1_aligned(2,:);
-    [rotx, roty] = solveInverseKinematics(vectorFromZero);
-
-end
 
 % input: 
 % - v1: a 3D vector as [x y z]
