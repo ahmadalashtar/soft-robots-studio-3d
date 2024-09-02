@@ -72,7 +72,7 @@ function [best_chrom, configurations] = runIt()
                      100 100 100 20 100
                     ]; %cylinder [x y z(base) radius height]
 
-    op.n_nodes = 10;
+    op.n_nodes = 20;
     op.length_domain = [5 30];
 
     op.first_angle.is_fixed = true;
@@ -162,12 +162,7 @@ function [best_chrom, configurations] = runIt()
 
     best_index = fit_array(1,eas.fitIdx.id);
     best_chrom = pop(:,:,best_index);
-
-    configurations = decodeIndividual(best_chrom);
-    drawProblem3D(configurations);
-
-    best_chrom  = gaLastAngle(best_chrom,500,100,2,50,0.1);
-
+    
     configurations = decodeIndividual(best_chrom);
     drawProblem3D(configurations);
     
@@ -176,6 +171,7 @@ function [best_chrom, configurations] = runIt()
     else
         isBestFeasible = "unfeas";
     end
-    tit = "IK: " + num2str(fit_array(1,eas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,eas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,eas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,eas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
+    r=1; %this is for experiments to keep track of which run we are executing. remove when running experiments
+    tit = "RUN: " + num2str(r) + ", IK: " + num2str(fit_array(1,eas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,eas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,eas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,eas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
     title(tit); 
 end
