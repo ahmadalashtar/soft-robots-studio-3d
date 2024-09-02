@@ -87,6 +87,7 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         % for k = 2:size(robot_points,1)-1
         ee_link_index = ee_index -1 ;
         [final_angle_x, final_angle_y] = solveInverseKinematics3D(conf,robot_points,ee_link_index,op.targets(ceili2,1:3));
+        [final_angle_x, final_angle_y] = optimizeAngle(final_angle_x, final_angle_y);
         % [final_angle_x, final_angle_y]= calculateLastAngle(robot_points, k, robot_points(k+1,:));
         % end
         %%EMİR commented out the extra x and y removed i+1 and made both
