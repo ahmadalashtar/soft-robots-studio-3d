@@ -4,12 +4,11 @@
 % 'fit_array', is a matrix with fitness values
 function [fit_array] = rankingEvaluation(fit_array)
     global eas; % genetic algorithm settings
-    global algorithm;
     
     n_individuals = size(fit_array,1);  % the number of individuals will double during survival thats why we should dynamically check how many individuals we are ranking!
 
-    switch algorithm
-        case 'ga'
+    switch eas.algorithm
+        case "ga"
             switch eas.ranking_method
                 case 'penalty'
                     [fit_array, eas.rankingSettings] = doPartitioning_simplified(fit_array, eas.rankingSettings, eas.fitIdx);

@@ -6,53 +6,26 @@
 % OUTPUT: 
 % 'fit_array', is a matrix with fitness values, composed of 'ik fitness', 'number of nodes', 'rank fitness', 'index in the pop array'[n_individuals x 4]
 function [pop, fit_array] = evaluate(pop)
-    global op;  % optimization problem
-    global eas; % genetic algorithm settings
-    global algorithm;
+    global eas;
 
-    switch algorithm
-        case 'ga'
-            fit_array = zeros(eas.n_individuals,length(fieldnames(eas.fitIdx)));
+    fit_array = zeros(eas.n_individuals,length(fieldnames(eas.fitIdx)));
 
-            for i=1:eas.n_individuals 
-                [pop(:,:,i), fitness] = calculateFitness3D(pop(:,:,i), false);
-                
-                % place the right data in fit_array
-                fit_array(i,eas.fitIdx.ik) = round(fitness(1),3);    % ik
-                fit_array(i,eas.fitIdx.nodes) = fitness(2); % nodes
-                fit_array(i,eas.fitIdx.wiggly) = fitness(3); % ondulation
-                fit_array(i,eas.fitIdx.nodesOnSegment) = fitness(4); % nodes on the segments
-                fit_array(i,eas.fitIdx.totLength) = fitness(5); % average length of robot
+    for i=1:eas.n_individuals 
+        [pop(:,:,i), fitness] = calculateFitness3D(pop(:,:,i), false);
         
-                % add a reference to the chromosome in the population linked to that fitness
-                % it will be useful when we sort 'fit_array', because 'pop' will not be sorted
-                fit_array(i,eas.fitIdx.id) = i;
-            end
-            
-            fit_array = checkConstraints(pop, fit_array);
+        % place the right data in fit_array
+        fit_array(i,eas.fitIdx.ik) = round(fitness(1),3);    % ik
+        fit_array(i,eas.fitIdx.nodes) = fitness(2); % nodes
+        fit_array(i,eas.fitIdx.wiggly) = fitness(3); % ondulation
+        fit_array(i,eas.fitIdx.nodesOnSegment) = fitness(4); % nodes on the segments
+        fit_array(i,eas.fitIdx.totLength) = fitness(5); % average length of robot
 
-        case 'bbbc'
-            fit_array = zeros(eas.n_individuals,length(fieldnames(eas.fitIdx)));
-
-            for i=1:eas.n_individuals 
-                [pop(:,:,i), fitness] = calculateFitness2D(pop(:,:,i), false);
-                
-                % place the right data in fit_array
-                fit_array(i,eas.fitIdx.ik) = round(fitness(1),3);    % ik
-                fit_array(i,eas.fitIdx.nodes) = fitness(2); % nodes
-                fit_array(i,eas.fitIdx.wiggly) = fitness(3); % ondulation
-                fit_array(i,eas.fitIdx.nodesOnSegment) = fitness(4); % nodes on the segments
-                fit_array(i,eas.fitIdx.totLength) = fitness(5); % average length of robot
-        
-                % add a reference to the chromosome in the population linked to that fitness
-                % it will be useful when we sort 'fit_array', because 'pop' will not be sorted
-                fit_array(i,eas.fitIdx.id) = i;
-            end
+        % add a reference to the chromosome in the population linked to that fitness
+        % it will be useful when we sort 'fit_array', because 'pop' will not be sorted
+        fit_array(i,eas.fitIdx.id) = i;
+    end
     
-            fit_array = checkConstraints(pop, fit_array);
-            
-    end  
-    
+    fit_array = checkConstraints(pop, fit_array);
 
 end
 

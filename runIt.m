@@ -43,7 +43,6 @@ function [best_chrom, configurations] = runIt()
     
     %---------------------PROBLEM DEFINITION--------------------- 
     global op;          % optimization problem
-    algorithm = 'ga';
     op.plane_z = 1000;
     op.home_base = [0 0 0 0 0];
     t1 = [300 100 500 ];
@@ -71,7 +70,7 @@ function [best_chrom, configurations] = runIt()
                      100 100 100 20 100
                     ]; %cylinder [x y z(base) radius height]
 
-    op.n_nodes = 100;
+    op.n_nodes = 10;
     op.length_domain = [5 30];
     op.first_angle.is_fixed = true;
     op.angle_domain = [30 -30; 30 -30];
@@ -86,8 +85,8 @@ function [best_chrom, configurations] = runIt()
 
     eas.algorithm = "ga"; % ga or bbbc
     
-    eas.n_generations = 10;
-    eas.n_individuals = 500;
+    eas.n_generations = 2;
+    eas.n_individuals = 10;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
     eas.ga.crossover_method = 'blxa';  % 'blxa'
@@ -140,6 +139,13 @@ function [best_chrom, configurations] = runIt()
     eas.extra_genes = 4;
 
     rng shuffle;
+
+    if eas.ga.mutation_probability == 1
+        typeOfMut = "Dynamic";
+    else
+        typeOfMut = round(eas.ga.mutation_probability,2);
+    end
+
     pop = [];
     fit_array = [];
     

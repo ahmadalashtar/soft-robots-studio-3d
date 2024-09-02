@@ -2,7 +2,6 @@
 function [gScalar] = calculateStaticPenalty(chrom, r)          
     global op;  % optimization problem
     global eas; % genetic algorithm settings
-    global algorithm;
 
     gScalar = 0;
 
