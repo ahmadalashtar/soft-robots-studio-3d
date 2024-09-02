@@ -10,14 +10,14 @@
 function [o1, o2] = crossover(p1, p2)
     
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
+    global eas; % genetic algorithm settings
     
-    if rand() <= gas.crossover_probability
+    if rand() <= eas.ga.crossover_probability
         % do crossover
-        switch gas.crossover_method
+        switch eas.ga.crossover_method
             case 'blxa'
                 alpha = 0.5;
-                if(gas.obstacle_avoidance==true)
+                if(eas.obstacle_avoidance==true)
                     o1 = blendCrossover_obstacleAvoidance(p1, p2, alpha);
                     o2 = blendCrossover_obstacleAvoidance(p1, p2, alpha);
                 else
@@ -37,8 +37,8 @@ function [o1, o2] = crossover(p1, p2)
         o1 = p1;
         o2 = p2;
         % make sure the extra genes of the chromosome are not copied from the parent, otherwise this chromosome will be corrupted during evaluation
-        o1(:,op.n_nodes+1:op.n_nodes+gas.extra_genes) = 0;  
-        o2(:,op.n_nodes+1:op.n_nodes+gas.extra_genes) = 0;
+        o1(:,op.n_nodes+1:op.n_nodes+eas.extra_genes) = 0;  
+        o2(:,op.n_nodes+1:op.n_nodes+eas.extra_genes) = 0;
     end
 
 end

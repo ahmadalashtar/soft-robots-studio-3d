@@ -1,6 +1,6 @@
 function [child1, child2] = sbxCrossover(parent1, parent2, lower_bound, upper_bound)
 global op;  % optimization problem
-global gas; % genetic algorithm settings
+global eas; % genetic algorithm settings
     % Simulated Binary Crossover (SBX)
     % Inputs:
     %   parent1, parent2 - Parent solutions
@@ -11,7 +11,7 @@ global gas; % genetic algorithm settings
     %   child1, child2 - Child solutions
     
     % Ensure parents are row vectors
-    eta_c = gas.eta_crossover;
+    eta_c = eas.ga.eta_crossover;
     if iscolumn(parent1)
         parent1 = parent1';
     end

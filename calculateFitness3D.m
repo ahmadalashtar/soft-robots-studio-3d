@@ -30,15 +30,13 @@
 function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
 
     global op;  % optimization problem
-    global gas;  % genetic algorithm settings
-    global bbbcs;
-    global algorithm;     
+    global eas;  % genetic algorithm settings
     
     % the chromosome will be evaluated in this function
     % if it has been previoulsy evaluated, its extra genes would be different than 0
     % this would corrupt the chromosome during evaluation
     % therefore, reset the last extra genes to zero, and restart the evaluation
-    chrom(:,op.n_nodes+1:op.n_nodes+gas.extra_genes) = 0; 
+    chrom(:,op.n_nodes+1:op.n_nodes+eas.extra_genes) = 0; 
     
     fitness = [0 0 0 0 0];
     sumLinks = 0;
@@ -227,10 +225,10 @@ end
 function [und] = calculateUndulation(chrom)
 
     global op;  % optimization problem
-    global gas;  % genetic algorithm settings
+    global eas;  % genetic algorithm settings
     
     n_targets = size(op.targets,1);
-    n_nodes = size(chrom,2) - gas.extra_genes;
+    n_nodes = size(chrom,2) - eas.extra_genes;
     
     changes_x = zeros(n_targets,1);       % count changes in direction 
     changes_y = zeros(n_targets,1);       % count changes in direction

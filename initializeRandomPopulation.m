@@ -9,31 +9,14 @@
 
 function [pop] = initializeRandomPopulation()
     global op;  % optimization problem
-    global gas; % genetic algorithm settings
-    global bbbcs; % big bang - big crunch algorithm settings
-    global algorithm;
-
-    switch algorithm
-        case 'ga'
+    global eas; % genetic algorithm settings
             % declare a static array of chromosomes filled with zeros
+    pop = zeros(size(op.targets,1)*2+1,op.n_nodes+eas.extra_genes,eas.n_individuals);
 
-            pop = zeros(size(op.targets,1)*2+1,op.n_nodes+gas.extra_genes,gas.n_individuals);
-
-            for i=1:1:gas.n_individuals
-                chrom = generateRandomChromosome();   
-                pop(:,:,i) = chrom;
-            end
-        case 'bbbc'
-            % declare a static array of individuals filled with zeros
-
-            pop = zeros(size(op.targets,1)*2+1,op.n_nodes+bbbcs.extra_genes,bbbcs.N);
-
-            for i=1:1:bbbcs.N
-                indv = generateRandomChromosome();   
-                pop(:,:,i) = indv;
-            end
-            
-    end        
+    for i=1:1:eas.n_individuals
+        chrom = generateRandomChromosome();   
+        pop(:,:,i) = chrom;
+    end
 end
     
 

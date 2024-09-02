@@ -7,9 +7,9 @@
 % 'robot_configurations' is [n x 3 x t] containing pairs <angle, link length> for each node for each configuration (each target)
 function [robot_configurations] = decodeIndividual(robot_chromosome)
     
-    global gas;
+    global eas;
     n_targets = floor(size(robot_chromosome,1)/2);
-    n_nodes = size(robot_chromosome,2) - gas.extra_genes;
+    n_nodes = size(robot_chromosome,2) - eas.extra_genes;
     
 
     l = size(robot_chromosome,1); % index of the link lengths in the chromosome
