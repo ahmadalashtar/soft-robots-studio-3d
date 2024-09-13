@@ -37,8 +37,8 @@ function [o1, o2] = crossover(p1, p2)
         o1 = p1;
         o2 = p2;
         % make sure the extra genes of the chromosome are not copied from the parent, otherwise this chromosome will be corrupted during evaluation
-        o1(:,op.n_nodes+1:op.n_nodes+eas.extra_genes) = 0;  
-        o2(:,op.n_nodes+1:op.n_nodes+eas.extra_genes) = 0;
+        o1(:,op.n_links+1:op.n_links+eas.extra_genes) = 0;  
+        o2(:,op.n_links+1:op.n_links+eas.extra_genes) = 0;
     end
 
 end

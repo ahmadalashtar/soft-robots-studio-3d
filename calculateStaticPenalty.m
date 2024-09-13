@@ -5,7 +5,7 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
 
     gScalar = 0;
 
-    n_nodes = size(chrom,2) - eas.extra_genes;
+    n_links = size(chrom,2) - eas.extra_genes;
     n_targets = size(op.targets,1);
     min_angle_x = op.angle_domain(1,2);
     max_angle_x = op.angle_domain(1,1);
@@ -14,9 +14,9 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
     min_length = op.length_domain(1);
 
     for i = 1:2:n_targets*2
-        final_angle_x = chrom(i,n_nodes+2);
-        final_angle_y = chrom(i+1,n_nodes+2);
-        last_link_length = chrom(i,n_nodes+4);
+        final_angle_x = chrom(i,n_links+2);
+        final_angle_y = chrom(i+1,n_links+2);
+        last_link_length = chrom(i,n_links+4);
 
         g = zeros(1,8);     % array of penalty terms for each constraint
         beta = 1;           % parameter of penalty method
@@ -31,7 +31,7 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
         g(4) = abs(min(0,max_angle_y - final_angle_y))^beta;    
 
         %--CONSTRAINT 3: final link length is > min link length, only if there is only 1 link on the target's orientation segment
-        linksOnSegment = chrom(i,n_nodes+3) - (chrom(i,n_nodes+1)-1);
+        linksOnSegment = chrom(i,n_links+3) - (chrom(i,n_links+1)-1);
         if linksOnSegment <= 1
             g(5) = abs(min(0,last_link_length - min_length))^beta;
         else
@@ -56,7 +56,7 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
         % since it can generate the closest point to be one of the edges of the segment, 
         % and in case that point is the target then the solution would be horrible
         
-        link_count= chrom(i,n_nodes+1)-1;
+        link_count= chrom(i,n_links+1)-1;
         sum_of_angles_x = sum(chrom(i,1:link_count)) + final_angle_x;
         sum_of_angles_y = sum(chrom(i+1,1:link_count)) + final_angle_y;
         target_angle_x= op.targets(ceil(i/2),4) - op.home_base(4);
