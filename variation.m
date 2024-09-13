@@ -12,7 +12,7 @@ function [offspring] = variation(pop, matPool)
     global eas; % genetic algorithm settings
 
     % declare a static array of chromosomes filled with zeros
-    offspring = zeros(size(op.targets,1)*2+1,op.n_nodes+eas.extra_genes,eas.n_individuals);
+    offspring = zeros(size(op.targets,1)*2+1,op.n_links+eas.extra_genes,eas.n_individuals);
     
     matPool = matPool(randperm(length(matPool))); % shuffle the mating pool
     
@@ -35,10 +35,10 @@ function [offspring] = variation(pop, matPool)
         offspring(:,:,i) = o1;
         offspring(:,:,i+1) = o2;
         
-        if o1(1,op.n_nodes+1) ~= 0
+        if o1(1,op.n_links+1) ~= 0
             error("A corrupted chromosome has been generated during crossover!\n");
         end
-        if o2(1,op.n_nodes+1) ~= 0
+        if o2(1,op.n_links+1) ~= 0
             error("A corrupted chromosome has been generated during crossover!\n");
         end
     end

@@ -8,7 +8,7 @@ function [nextGenPop, fit_array_NGP] = elitistSurvivalAlpha(pop, offspring, fit_
     n_elites = fix(eas.survival_alpha*eas.n_individuals/100);
     n_off = eas.n_individuals - n_elites;
      
-    nextGenPop = zeros(size(op.targets,1)*2+1,op.n_nodes+eas.extra_genes,eas.n_individuals);    % declare a static array of chromosomes filled with zeros
+    nextGenPop = zeros(size(op.targets,1)*2+1,op.n_links+eas.extra_genes,eas.n_individuals);    % declare a static array of chromosomes filled with zeros
     fit_array_NGP = zeros(eas.n_individuals,length(fieldnames(eas.fitIdx)));                  % array containing fitness for each individual of the new population
     
     fit_array_O(:,eas.fitIdx.id) = fit_array_O(:,eas.fitIdx.id) + eas.n_individuals;            % new id for offspring

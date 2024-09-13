@@ -5,7 +5,7 @@
 % > .home_base, [1x3]                   pose of the home base, array: [x , y , angle in deg (positive counterclockwise from x-axis)]
 % > .targets, [tx3]                     pose of the target(s), matrix: [x , y , angle in deg (positive counterclockwise from x-axis)]
 % > .obstacles, [ox3]                   pose of the obstacle(s), matrix: [x , y , radius]
-% > .n_nodes, 1x1                       max number of nodes
+% > .n_links, 1x1                       max number of nodes
 % > .angle_domain, 2x1                  range of joint bending angles [min angle, max angle] (in deg)
 % > .length_domain, 1x2                 length domain of each link: [min length required, max length] 
 % > .first_angle                        data structure
@@ -72,7 +72,7 @@ function [best_chrom, configurations] = runIt()
                      100 100 100 20 100
                     ]; %cylinder [x y z(base) radius height]
 
-    op.n_nodes = 20;
+    op.n_links = 20;
     op.length_domain = [5 30];
 
     op.first_angle.is_fixed = true;

@@ -3,14 +3,14 @@ function [end_points] = retrieveOrientationSegmentEndPoints3D(draw_plot)
     
     
     end_points = zeros(size(op.targets,1),3);
-    %segmentLength = op.n_nodes*op.length_domain(2);
+    %segmentLength = op.n_links*op.length_domain(2);
     for i=1:1:size(op.targets,1)
         
             
         u  = compute_unit_vector(op.targets(i,:));
         % u  = segment2UnitVector(op.targets(i,:));
         
-%         segmentLength = calculateSegmentLength(op.targets(i,:),angle,op.home_base,op.n_nodes*op.length_domain(2));
+%         segmentLength = calculateSegmentLength(op.targets(i,:),angle,op.home_base,op.n_links*op.length_domain(2));
         segmentLength = norm(op.targets(i,1:3)-op.home_base(1:3))*1.25;
         
         p = op.targets(i,1:3) - u*segmentLength;

@@ -11,7 +11,7 @@ function [pop] = initializeRandomPopulation()
     global op;  % optimization problem
     global eas; % genetic algorithm settings
             % declare a static array of chromosomes filled with zeros
-    pop = zeros(size(op.targets,1)*2+1,op.n_nodes+eas.extra_genes,eas.n_individuals);
+    pop = zeros(size(op.targets,1)*2+1,op.n_links+eas.extra_genes,eas.n_individuals);
 
     for i=1:1:eas.n_individuals
         chrom = generateRandomChromosome();   

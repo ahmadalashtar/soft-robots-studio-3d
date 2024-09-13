@@ -36,7 +36,7 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
     % if it has been previoulsy evaluated, its extra genes would be different than 0
     % this would corrupt the chromosome during evaluation
     % therefore, reset the last extra genes to zero, and restart the evaluation
-    chrom(:,op.n_nodes+1:op.n_nodes+eas.extra_genes) = 0; 
+    chrom(:,op.n_links+1:op.n_links+eas.extra_genes) = 0; 
     
     fitness = [0 0 0 0 0];
     sumLinks = 0;
@@ -44,7 +44,7 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
     totLength = 0;
     
     n_targets = size(op.targets,1);
-    n_nodes = op.n_nodes;
+    n_links = op.n_links;
     
     
     if draw_plot
@@ -66,9 +66,9 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         %----CALCULATE MIN DISTANCE FROM ROBOT TO TARGET'S ORIENTATION SEGMENT AND LAST ANGLE
         robot_points = solveForwardKinematics3D(conf,op.home_base,false);
         [dist_mat, ee_index] = calculateMinDistance_FromOrientationSegment(robot_points,[op.targets(ceili2,1:3);op.end_points(ceili2,:)]);
-        chrom(i,n_nodes+1) = ee_index;  % this is the index of the closest node to the target's orientation segment
-        chrom(i+1,n_nodes+1) = ee_index;  % this is the index of the closest node to the target's orientation segment
-        sumLinks = sumLinks + chrom(i,n_nodes+1)-1;
+        chrom(i,n_links+1) = ee_index;  % this is the index of the closest node to the target's orientation segment
+        chrom(i+1,n_links+1) = ee_index;  % this is the index of the closest node to the target's orientation segment
+        sumLinks = sumLinks + chrom(i,n_links+1)-1;
         
         % % draw distances from robot to segment (for DEBUG and PAPER FIGURES)
         % areas_vect = zeros(1,size(dist_mat,1));
@@ -91,11 +91,11 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         % [final_angle_x, final_angle_y]= calculateLastAngle(robot_points, k, robot_points(k+1,:));
         % end
         %%EMİR commented out the extra x and y removed i+1 and made both
-        %%n_nodes + 2
-        chrom(i,n_nodes+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
-        chrom(i+1,n_nodes+2) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
-        %chrom(i+1,n_nodes+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
-        %chrom(i+1,n_nodes+3) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
+        %%n_links + 2
+        chrom(i,n_links+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
+        chrom(i+1,n_links+2) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
+        %chrom(i+1,n_links+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
+        %chrom(i+1,n_links+3) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
         
          %----CUT ROBOT
         configurations = decodeIndividual(chrom); 
@@ -104,17 +104,17 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         robot_points = solveForwardKinematics3D(conf,op.home_base,false);
         ee_point = robot_points(ee_index, :);
         dist2target = norm(ee_point-t(1:3));
-        for j=ee_index:1:n_nodes
+        for j=ee_index:1:n_links
             l = chrom(n_targets*2+1,j);
             if(dist2target<l)
                 %cut here
                 %%EMİR reduced everything by 1
                 lastNode_index = j;
-                chrom(i,n_nodes+3) = lastNode_index;
-                chrom(i,n_nodes+4) = dist2target; %cut length
-                chrom(i+1,n_nodes+3) = lastNode_index;
-                chrom(i+1,n_nodes+4) = dist2target; %cut length
-                sumLinksOnSegment = sumLinksOnSegment + chrom(i,n_nodes+3) - chrom(i,n_nodes+1) + 1;%%EMİR i didn't touch this
+                chrom(i,n_links+3) = lastNode_index;
+                chrom(i,n_links+4) = dist2target; %cut length
+                chrom(i+1,n_links+3) = lastNode_index;
+                chrom(i+1,n_links+4) = dist2target; %cut length
+                sumLinksOnSegment = sumLinksOnSegment + chrom(i,n_links+3) - chrom(i,n_links+1) + 1;%%EMİR i didn't touch this
                 break;
             end
             dist2target = dist2target - l;
@@ -125,29 +125,29 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
 %         conf = configurations(:,:,ceili2);
 % %         drawProblem2D(configurations);
 %         robot_points = solveForwardKinematics3D(conf,op.home_base,false);
-%         for j=ee_index:1:n_nodes
+%         for j=ee_index:1:n_links
 %             l = chrom(n_targets*2+1,j);
 %             dist2target = norm(robot_points(j,:)-t(1:3));
 %             if(dist2target<l)
 %                 %cut here
 %                 %%EMİR reduced everything by 1
 %                 lastNode_index = j;
-%                 chrom(i,n_nodes+3) = lastNode_index;
-%                 chrom(i,n_nodes+4) = dist2target; %cut length
-%                 chrom(i+1,n_nodes+3) = lastNode_index;
-%                 chrom(i+1,n_nodes+4) = dist2target; %cut length
-%                 sumLinksOnSegment = sumLinksOnSegment + chrom(i,n_nodes+3) - chrom(i,n_nodes+1) + 1;%%EMİR i didn't touch this
+%                 chrom(i,n_links+3) = lastNode_index;
+%                 chrom(i,n_links+4) = dist2target; %cut length
+%                 chrom(i+1,n_links+3) = lastNode_index;
+%                 chrom(i+1,n_links+4) = dist2target; %cut length
+%                 sumLinksOnSegment = sumLinksOnSegment + chrom(i,n_links+3) - chrom(i,n_links+1) + 1;%%EMİR i didn't touch this
 %                 break;
 %             end
 %         end
         
         %----calculate robot total length
         %%EMİR reduced for loop by 1
-        for j=1:1:chrom(i,n_nodes+3)-1
+        for j=1:1:chrom(i,n_links+3)-1
             thisConf_totLength = thisConf_totLength + chrom(n_targets*2+1,j);
         end
         %%this got reduced by 1 too EMİR
-        thisConf_totLength = thisConf_totLength + chrom(i,n_nodes+4);
+        thisConf_totLength = thisConf_totLength + chrom(i,n_links+4);
         totLength = max(thisConf_totLength,totLength);
     end
     
@@ -229,7 +229,7 @@ function [und] = calculateUndulation(chrom)
     global eas;  % genetic algorithm settings
     
     n_targets = size(op.targets,1);
-    n_nodes = size(chrom,2) - eas.extra_genes;
+    n_links = size(chrom,2) - eas.extra_genes;
     
     changes_x = zeros(n_targets,1);       % count changes in direction 
     changes_y = zeros(n_targets,1);       % count changes in direction
@@ -237,11 +237,11 @@ function [und] = calculateUndulation(chrom)
     % count changes in direction for each configuration
     for i = 1:2:n_targets*2
         ceili2 = ceil(i/2);
-        lastNode = chrom(i, n_nodes + 1);                 % get last node
+        lastNode = chrom(i, n_links + 1);                 % get last node
         angleSigns_x = chrom(i,1:lastNode);               % get angles until cut
         angleSigns_y = chrom(i+1,1:lastNode);             % get angles until cut
-        angleSigns_x(lastNode) = chrom(i,n_nodes + 2);    % replace last angle
-        angleSigns_y(lastNode) = chrom(i+1,n_nodes + 3);    % replace last angle
+        angleSigns_x(lastNode) = chrom(i,n_links + 2);    % replace last angle
+        angleSigns_y(lastNode) = chrom(i+1,n_links + 3);    % replace last angle
         angleSigns_x = sign(angleSigns_x);                % get signs of angles
         angleSigns_y = sign(angleSigns_y);                % get signs of angles
         angleSigns_x = angleSigns_x(angleSigns_x~=0);     % remove any zeros from angles (love this matlab function)
