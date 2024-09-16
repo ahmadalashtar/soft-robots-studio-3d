@@ -1,4 +1,3 @@
-
 % MAIN FUNCTION
 %
 % Optimization Problem defintion:
@@ -73,7 +72,7 @@ function [best_chrom, configurations] = runIt()
                     ]; %cylinder [x y z(base) radius height]
 
     op.n_links = 20;
-    op.length_domain = [5 30];
+    op.length_domain = [5 100];
 
     op.first_angle.is_fixed = true;
     op.angle_domain = [30 -30; 30 -30];
@@ -86,10 +85,12 @@ function [best_chrom, configurations] = runIt()
     %---------------------EA SETTINGS---------------------    
     global eas;
 
-    eas.algorithm = "ga"; % ga or bbbc
-    
-    eas.n_generations = 2;
-    eas.n_individuals = 10;
+    eas.algorithm = "bbbc"; % ga or bbbc
+
+    eas.bbbc.crunchMethod = 'com'; % for bbbc
+
+    eas.n_generations = 100;
+    eas.n_individuals = 500;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
     eas.ga.crossover_method = 'blxa';  % 'blxa'

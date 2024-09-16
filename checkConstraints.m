@@ -18,9 +18,7 @@ function [fit_array] = checkConstraints(pop, fit_array)
                             fit_array(i,eas.fitIdx.ik) = fit_array(i,eas.fitIdx.ik) + fit_array(i,eas.fitIdx.pen);
                         end
                     end
-
             end
-
 end
 
 
