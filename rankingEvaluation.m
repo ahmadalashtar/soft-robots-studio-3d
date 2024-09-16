@@ -7,8 +7,6 @@ function [fit_array] = rankingEvaluation(fit_array)
     
     n_individuals = size(fit_array,1);  % the number of individuals will double during survival thats why we should dynamically check how many individuals we are ranking!
 
-    switch eas.algorithm
-        case "ga"
             switch eas.ranking_method
                 case 'penalty'
                     [fit_array, eas.rankingSettings] = doPartitioning_simplified(fit_array, eas.rankingSettings, eas.fitIdx);
@@ -56,12 +54,11 @@ function [fit_array] = rankingEvaluation(fit_array)
                     error('Unexpected Ranking Method.');
             end
             
-            % partition fitness is given by a numerical rank
-            % such that each individual has a larger fitness than the previous one
-            % this ranks each individual
-            for i=1:1:n_individuals
-                fit_array(i,eas.fitIdx.rank) = i;
-            end    
-    end
-    
+
+    % partition fitness is given by a numerical rank
+    % such that each individual has a larger fitness than the previous one
+    % this ranks each individual
+    for i=1:1:n_individuals
+        fit_array(i,eas.fitIdx.rank) = i;
+    end  
 end

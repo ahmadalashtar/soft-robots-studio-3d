@@ -82,7 +82,6 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
             fprintf('LoS %d, ', fit_array_P(1,eas.fitIdx.nodesOnSegment));
             fprintf('Length %.3f', fit_array_P(1,eas.fitIdx.totLength));
             
-            fprintf('\t\tDist from Center of Mass: [');
             % for i=1:1:size(comD,2)
             %     fprintf('%.4f', comD(i));
             %     if i~=size(comD,2)
