@@ -7,14 +7,12 @@
 % 'fit_array', is a matrix with fitness values, composed of 'ik fitness', 'number of nodes', 'rank fitness', 'index in the pop array'[n_individuals x 4]
 function [pop, fit_array_P] = runGeneticAlgorithm(exp)
     
-    global op;  % optimization problem
     global eas; % genetic algorithm settings
     
     %--INITIALIZATION 
     variance_array= zeros(1,eas.n_individuals);
     queue=zeros(1,eas.variance_generations);   % queue used to calculate the variance of the last 'variance_generations' generations best individuals
     qIndex = 1;
-    variance = 0;
     
     % in case a funny user decides to have an odd number of idividuals in the population...
     if mod(eas.n_individuals,2) ~= 0

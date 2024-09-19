@@ -1,12 +1,8 @@
-function [pop, fit_array] = runBBBC(exp)
+function [pop, fit_array_P] = runBBBC(exp)
     
-    global op;
     global eas;       % big bang-big crunch settings
 
     rng shuffle
-
-    n_targets = size(op.targets,1);
-    cMass = zeros(n_targets*2+1,op.n_links+eas.extra_genes);
 
     %--INITIALIZATION 
     variance_array= zeros(1,eas.n_individuals);
@@ -18,27 +14,31 @@ function [pop, fit_array] = runBBBC(exp)
     if eas.n_individuals <= 0
         eas.n_individuals = 1;
     end
+    
+    pop = initializeRandomPopulation();  % pop is [t*2+1 x n+extra_genes x n_individuals]
+    %--EVALUATION
+    [pop, fit_array_P] = evaluate(pop);
+    [fit_array_P] = rankingEvaluation(fit_array_P);
 
     %--ITERATIONS
+
     for gen = 1 : eas.n_generations
 
-        if gen == 1  %--BIG BANG
-            %--RANDOM INITIALIZATION - First Big Bang Phase
-            pop = initializeRandomPopulation();  % pop is [t*2+1 x n+extra_genes x n_individuals]
-        else
-            pop = bigBangPhase(cMass, gen);        
-        end
-
-        %--EVALUATION
-        [pop, fit_array] = evaluate(pop);
-        [fit_array] = rankingEvaluation(fit_array);
-
         %--BIG CRUNCH
-        cMass = bigCrunchPhase(pop,fit_array);
+        cMass = bigCrunchPhase(pop,fit_array_P);
+        
+        offspring = bigBangPhase(cMass, gen);  
+        
+        %--EVALUATION
+        [offspring, fit_array_O] = evaluate(offspring);
+        [fit_array_O] = rankingEvaluation(fit_array_O);
+         
+        %--SURVIVOR
+        [pop, fit_array_P] = survivor(pop, offspring, fit_array_P, fit_array_O);
 
         % calculate variance over the last 'varianceGen' generations
         
-        queue(qIndex)=fit_array(1,eas.fitIdx.ik);     % variance is on ik fitness only (ranking fitness depends on the current population, so it makes no sense to compare the rank of individuals from different generations)
+        queue(qIndex)=fit_array_P(1,eas.fitIdx.ik);     % variance is on ik fitness only (ranking fitness depends on the current population, so it makes no sense to compare the rank of individuals from different generations)
         qIndex=qIndex+1;                    % the queue is implemented as a static array
         if qIndex>size(queue,2)             % when the index reaches the end of the array
             qIndex = 1;                     % goes back to 1
@@ -49,17 +49,17 @@ function [pop, fit_array] = runBBBC(exp)
         %--VERBOSE (SHOW LOG)
         if eas.verbose
             fprintf('[%d.%d]\t', exp, gen);
-            if fit_array(1,eas.fitIdx.pen) == 0
+            if fit_array_P(1,eas.fitIdx.pen) == 0
                 fprintf('feas: ');
             else
                 fprintf('unfs: ');
             end
-            fprintf('IK %.3f ', fit_array(1,eas.fitIdx.ik));
+            fprintf('IK %.3f ', fit_array_P(1,eas.fitIdx.ik));
             fprintf('(1st P: %.3f-%.3f, #%d), ', eas.rankingSettings.minFit, eas.rankingSettings.minFit + eas.rankingSettings.step_ik, eas.rankingSettings.firstPartitionSize);
-            fprintf('LtS %d, ', fit_array(1,eas.fitIdx.nodes));
-            fprintf('OND %d%%, ', fit_array(1,eas.fitIdx.wiggly));
-            fprintf('LoS %d, ', fit_array(1,eas.fitIdx.nodesOnSegment));
-            fprintf('Length %.3f', fit_array(1,eas.fitIdx.totLength));
+            fprintf('LtS %d, ', fit_array_P(1,eas.fitIdx.nodes));
+            fprintf('OND %d%%, ', fit_array_P(1,eas.fitIdx.wiggly));
+            fprintf('LoS %d, ', fit_array_P(1,eas.fitIdx.nodesOnSegment));
+            fprintf('Length %.3f', fit_array_P(1,eas.fitIdx.totLength));
             
             fprintf('\n');
         end
@@ -74,7 +74,7 @@ function [pop, fit_array] = runBBBC(exp)
         end
         
         % stop if we reached a fitness of 0.0000, this will likely never be true
-        if eas.stopAtFitness_flag == true && round(fit_array(1,1), eas.stopAtFitness_zeros) == 0
+        if eas.stopAtFitness_flag == true && round(fit_array_P(1,1), eas.stopAtFitness_zeros) == 0
             break;
         end
 

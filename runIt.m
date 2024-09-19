@@ -89,16 +89,16 @@ function [best_chrom, configurations] = runIt()
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 100;
-    eas.n_individuals = 500;
+    eas.n_generations = 50;
+    eas.n_individuals = 50;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
+    eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
     eas.ga.crossover_method = 'blxa';  % 'blxa'
     eas.ga.crossover_probability = 0.9;
     eas.ga.mutation_method = 'random';   % 'random', 'modifiedRandom'
     eas.ga.mutation_probability = 0.4;  % -1 is dynamic 
-    eas.ga.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha'
-    eas.ga.survival_alpha = 40;    %this is the percentage of elites that will stay in the new population
+    eas.survival_alpha = 40;    %this is the percentage of elites that will stay in the new population
     eas.penalty_method = 'static';	% 'static', 'deb'
     
     % settings of rank partitioning algorithm
