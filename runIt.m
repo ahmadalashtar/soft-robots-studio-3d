@@ -155,10 +155,11 @@ function [best_chrom, configurations] = runIt()
     
     switch eas.algorithm
         case "ga"
-        
             [pop, fit_array] = runGeneticAlgorithm(1);
         case "bbbc"
             [pop, fit_array] = runBBBC(1);
+        case "pso"
+            [pop, fit_array] = runPSO(1);
     end
 
     best_index = fit_array(1,eas.fitIdx.id);
