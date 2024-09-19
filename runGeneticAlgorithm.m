@@ -14,15 +14,17 @@ function [pop, fit_array_P] = runGeneticAlgorithm(exp)
     queue=zeros(1,eas.variance_generations);   % queue used to calculate the variance of the last 'variance_generations' generations best individuals
     qIndex = 1;
     
+    % a funnier user...
+    if eas.n_individuals <= 0
+        eas.n_individuals = 2;
+    end
+
     % in case a funny user decides to have an odd number of idividuals in the population...
     if mod(eas.n_individuals,2) ~= 0
         eas.n_individuals = eas.n_individuals + 1;
     end
     
-    % a funnier user...
-    if eas.n_individuals <= 0
-        eas.n_individuals = 1;
-    end
+    
     
     %---------------DYNAMIC MUTATION---------------
     dynamic_mutation = false;
