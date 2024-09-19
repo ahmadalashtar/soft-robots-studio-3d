@@ -14,7 +14,7 @@ function [nextGenPop, fit_array_NGP] = survivor(pop, offspring, fit_array_P, fit
     global op;  % optimization problem
     global eas; % genetic algorithm settings
     
-    switch eas.ga.survival_method 
+    switch eas.survival_method 
         case 'non-elitist'
             nextGenPop = pop;
             fit_array_NGP = fit_array_O;    % not much more to do here...
