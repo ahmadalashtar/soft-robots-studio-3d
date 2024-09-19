@@ -7,10 +7,10 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
 
     n_links = size(chrom,2) - eas.extra_genes;
     n_targets = size(op.targets,1);
-    min_angle_x = op.angle_domain(1,2);
-    max_angle_x = op.angle_domain(1,1);
-    min_angle_y = op.angle_domain(2,2);
-    max_angle_y = op.angle_domain(2,1);
+    min_angle_x = op.angle_domain(1);
+    max_angle_x = op.angle_domain(2);
+    min_angle_y = op.angle_domain(1);
+    max_angle_y = op.angle_domain(2);
     min_length = op.length_domain(1);
 
     for i = 1:2:n_targets*2
