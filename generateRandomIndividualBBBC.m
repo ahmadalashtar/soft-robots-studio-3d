@@ -50,8 +50,8 @@ function [indv] =  generateRandomIndividualBBBC(cMass, gen)
                  if(eas.obstacle_avoidance==true)
                      angle = getRandomAngleAvoidingObstaclesWithCenterOfMass(end_effector, robot_orientation, lengths(j), op.length_domain, op.obstacles, op.angle_domain, false, gen, cMass, i, j);
                  else
-                     angle = cMass(i,j) + (op.angle_domain(1,1)*(-1 + 2*rand()))/gen;
-                     angle = max(min(angle, op.angle_domain(1,1)), op.angle_domain(1,2));
+                     angle = cMass(i,j) + (180*(-1 + (1--1)*rand()))/gen;
+                     angle = max(min(angle, 180), -179);
                  end
             end
             robot(j) = angle;

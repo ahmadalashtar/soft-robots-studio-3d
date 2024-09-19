@@ -32,7 +32,7 @@ function [chrom] =  generateRandomChromosome()
                     if(eas.obstacle_avoidance == true)
                         angle = getRandomAngleAvoidingObstacles(end_effector, robot_orientation, lengths(j), op.length_domain, op.obstacles, [-179 180], false);
                     else
-                        angle = (180-(-179))*rand + (-179); % does not consider obstacle avoidance
+                        angle = (op.angle_domain(2)-op.angle_domain(1))*rand + op.angle_domain(1);
                     end
                 else
                     if(eas.obstacle_avoidance == true)
@@ -45,7 +45,7 @@ function [chrom] =  generateRandomChromosome()
                  if(eas.obstacle_avoidance==true)
                      angle = getRandomAngleAvoidingObstacles(end_effector, robot_orientation, lengths(j), op.length_domain, op.obstacles, op.angle_domain, false);
                  else
-                     angle = (op.angle_domain(mod(i,2)+1,2)-op.angle_domain(mod(i,2)+1,1))*rand + op.angle_domain(mod(i,2)+1,1); % does not consider obstacle avoidance
+                     angle = (op.angle_domain(2)-op.angle_domain(1))*rand + op.angle_domain(1); % does not consider obstacle avoidance
                  end
             end
 
