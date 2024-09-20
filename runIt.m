@@ -85,7 +85,7 @@ function [best_chrom, configurations] = runIt()
     %---------------------EA SETTINGS---------------------    
     global eas;
 
-    eas.algorithm = "bbbc"; % ga or bbbc
+    eas.algorithm = "ga"; % ga or bbbc
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
@@ -127,16 +127,18 @@ function [best_chrom, configurations] = runIt()
     eas.convergence00 = 0;
     
     % indices for fit_array, these are constants do not change!
-    eas.fitIdx.ik = 6;              % IK fitness (avg among configurations)
+
     eas.fitIdx.ikMod = 1;
-    eas.fitIdx.pen = 8;             % penalty for constraints
     eas.fitIdx.nodes = 2;           % number of links to reach the target's orientation segment (overall sum)
-    eas.fitIdx.nodesOnSegment = 4;  % number of links on the target's orientation segment (overall sum)
     eas.fitIdx.wiggly = 3;          % percentage of ondulation of the configuration (avg among configurations)
-    eas.fitIdx.totLength = 7;       % total length of the robot (avg among configurations - maybe we should use max?)
+    eas.fitIdx.nodesOnSegment = 4;  % number of links on the target's orientation segment (overall sum)
     eas.fitIdx.totLengthMod = 5;
+    eas.fitIdx.ik = 6;              % IK fitness (avg among configurations)
+    eas.fitIdx.totLength = 7;       % total length of the robot (avg among configurations - maybe we should use max?)
+    eas.fitIdx.pen = 8;             % penalty for constraints
     eas.fitIdx.rank = 9;            % rank, used as fitness for selection and survival operators
-    eas.fitIdx.id = 10;              % reference to chromosome in the array of population
+    eas.fitIdx.id = 10;             % reference to chromosome in the array of population
+    eas.fitIdx.localBest = 11;      %local best of a particle in PSO
     
     % extra genes in chromosome, it is a constant do not change!
 
