@@ -89,10 +89,10 @@ function [best_chrom, configurations] = runIt()
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 50;
-    eas.n_individuals = 50;
+    eas.n_generations = 250;
+    eas.n_individuals = 250;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
-    eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
+    eas.survival_method = 'non-elitist'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
     eas.ga.crossover_method = 'blxa';  % 'blxa'
     eas.ga.crossover_probability = 0.9;
@@ -104,7 +104,7 @@ function [best_chrom, configurations] = runIt()
     eas.pso.omega = 0.75;
     eas.pso.cognitiveConstant = 1;
     eas.pso.socialConstant = 2;
-    eas.pso.globalBest = [];
+    eas.pso.globalBest = struct('position',[],'fitness',[]);
 
     % settings of rank partitioning algorithm
     eas.ranking_method = 'penalty';     % 'penalty', 'separation'
@@ -143,8 +143,6 @@ function [best_chrom, configurations] = runIt()
     eas.fitIdx.pen = 8;             % penalty for constraints
     eas.fitIdx.rank = 9;            % rank, used as fitness for selection and survival operators
     eas.fitIdx.id = 10;             % reference to chromosome in the array of population
-    eas.fitIdx.localBest = 11;
-    eas.fitIdx.velocity = 12;
     % extra genes in chromosome, it is a constant do not change!
 
     eas.extra_genes = 4;
@@ -160,7 +158,7 @@ function [best_chrom, configurations] = runIt()
     pop = [];
     fit_array = [];
     
-    eas.algorithm = "ga"; % ga or bbbc or pso
+    eas.algorithm = "pso"; % ga or bbbc or pso
 
     switch eas.algorithm
         case "ga"
