@@ -85,7 +85,7 @@ function [best_chrom, configurations] = runIt()
     %---------------------EA SETTINGS---------------------    
     global eas;
 
-    eas.algorithm = "ga"; % ga or bbbc
+    
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
@@ -101,6 +101,11 @@ function [best_chrom, configurations] = runIt()
     eas.survival_alpha = 40;    %this is the percentage of elites that will stay in the new population
     eas.penalty_method = 'static';	% 'static', 'deb'
     
+    eas.pso.omega = 0.75;
+    eas.pso.cognitiveConstant = 1;
+    eas.pso.socialConstant = 2;
+    eas.pso.globalBest = [];
+
     % settings of rank partitioning algorithm
     eas.ranking_method = 'penalty';     % 'penalty', 'separation'
     eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
@@ -138,8 +143,8 @@ function [best_chrom, configurations] = runIt()
     eas.fitIdx.pen = 8;             % penalty for constraints
     eas.fitIdx.rank = 9;            % rank, used as fitness for selection and survival operators
     eas.fitIdx.id = 10;             % reference to chromosome in the array of population
-    eas.fitIdx.localBest = 11;      %local best of a particle in PSO
-    
+    eas.fitIdx.localBest = 11;
+    eas.fitIdx.velocity = 12;
     % extra genes in chromosome, it is a constant do not change!
 
     eas.extra_genes = 4;
@@ -155,6 +160,8 @@ function [best_chrom, configurations] = runIt()
     pop = [];
     fit_array = [];
     
+    eas.algorithm = "ga"; % ga or bbbc or pso
+
     switch eas.algorithm
         case "ga"
             [pop, fit_array] = runGeneticAlgorithm(1);
