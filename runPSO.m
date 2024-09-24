@@ -1,4 +1,4 @@
-function [positions, fitness] = runPSO(exp)
+function [localBests, localBestsFitness] = runPSO(exp)
     
     global eas;
     global op;
@@ -32,7 +32,7 @@ function [positions, fitness] = runPSO(exp)
         oldSwarm = swarm;
         swarm = updateSwarm(swarm);
         swarm = applySurvival(swarm,oldSwarm);
-        fittest = getFittest(swarm);
+        fittest = eas.pso.globalBest;
         bestFitness = fittest.fitness;
         % calculate variance over the last 'varianceGen' generations
         
@@ -78,9 +78,32 @@ function [positions, fitness] = runPSO(exp)
         end
 
     end    
+    localBests = localBestToArray(swarm);
+    localBestsFitness = localBestsFitnessToArray(swarm);
+    [localBests , localBestsFitness] = evaluate(localBests);
+    [localBestsFitness] = rankingEvaluation(localBestsFitness);
+    % fitness = fitnessToArray(swarm);
+    % positions = positionsToArray(swarm);
+end
+function localBests = localBestToArray(swarm)
+    rows = size(swarm(1).position,1);
+    columns = size(swarm(1).position,2);
+    matrices = size(swarm,2);
 
-    fitness = fitnessToArray(swarm);
-    positions = positionsToArray(swarm);
+    localBests = zeros(rows,columns,matrices);
+    
+    for i = 1 : size(swarm,2)
+        localBests(:,:,i) = swarm(i).localBest;
+    end 
+end
+function localBestsFitness = localBestsFitnessToArray(swarm)
+    rows = size(swarm,2);
+    columns = size(swarm(1).localBestFitness,2);
+
+    localBestsFitness = zeros(rows,columns);
+    for i = 1 : size(swarm,2)
+        localBestsFitness(i,:) = swarm(i).localBestFitness;
+    end
 end
 function fitness = fitnessToArray(swarm)
     rows = size(swarm,2);
