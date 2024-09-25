@@ -85,14 +85,14 @@ function [best_chrom, configurations] = runIt()
     %---------------------EA SETTINGS---------------------    
     global eas;
 
-    eas.algorithm = "bbbc"; % ga or bbbc
+    
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 50;
-    eas.n_individuals = 50;
+    eas.n_generations = 250;
+    eas.n_individuals = 250;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
-    eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
+    eas.survival_method = 'non-elitist'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
     eas.ga.crossover_method = 'blxa';  % 'blxa'
     eas.ga.crossover_probability = 0.9;
@@ -101,6 +101,11 @@ function [best_chrom, configurations] = runIt()
     eas.survival_alpha = 40;    %this is the percentage of elites that will stay in the new population
     eas.penalty_method = 'static';	% 'static', 'deb'
     
+    eas.pso.omega = 0.75;
+    eas.pso.cognitiveConstant = 1;
+    eas.pso.socialConstant = 2;
+    eas.pso.globalBest = struct('position',[],'fitness',[]);
+
     % settings of rank partitioning algorithm
     eas.ranking_method = 'penalty';     % 'penalty', 'separation'
     eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
@@ -127,17 +132,17 @@ function [best_chrom, configurations] = runIt()
     eas.convergence00 = 0;
     
     % indices for fit_array, these are constants do not change!
-    eas.fitIdx.ik = 6;              % IK fitness (avg among configurations)
+
     eas.fitIdx.ikMod = 1;
-    eas.fitIdx.pen = 8;             % penalty for constraints
     eas.fitIdx.nodes = 2;           % number of links to reach the target's orientation segment (overall sum)
-    eas.fitIdx.nodesOnSegment = 4;  % number of links on the target's orientation segment (overall sum)
     eas.fitIdx.wiggly = 3;          % percentage of ondulation of the configuration (avg among configurations)
-    eas.fitIdx.totLength = 7;       % total length of the robot (avg among configurations - maybe we should use max?)
+    eas.fitIdx.nodesOnSegment = 4;  % number of links on the target's orientation segment (overall sum)
     eas.fitIdx.totLengthMod = 5;
+    eas.fitIdx.ik = 6;              % IK fitness (avg among configurations)
+    eas.fitIdx.totLength = 7;       % total length of the robot (avg among configurations - maybe we should use max?)
+    eas.fitIdx.pen = 8;             % penalty for constraints
     eas.fitIdx.rank = 9;            % rank, used as fitness for selection and survival operators
-    eas.fitIdx.id = 10;              % reference to chromosome in the array of population
-    
+    eas.fitIdx.id = 10;             % reference to chromosome in the array of population
     % extra genes in chromosome, it is a constant do not change!
 
     eas.extra_genes = 4;
@@ -153,12 +158,15 @@ function [best_chrom, configurations] = runIt()
     pop = [];
     fit_array = [];
     
+    eas.algorithm = "pso"; % ga or bbbc or pso
+
     switch eas.algorithm
         case "ga"
-        
             [pop, fit_array] = runGeneticAlgorithm(1);
         case "bbbc"
             [pop, fit_array] = runBBBC(1);
+        case "pso"
+            [pop, fit_array] = runPSO(1);
     end
 
     best_index = fit_array(1,eas.fitIdx.id);

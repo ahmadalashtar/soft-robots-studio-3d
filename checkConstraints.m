@@ -6,7 +6,7 @@
 % 'draw_plot' is a boolean flag, true if you want to plot the segments from targets (currently not used, but it might be useful in the future?)
 %
 % OUTPUT:
-% 'fit_array' 
+% 'fit_array'
 function [fit_array] = checkConstraints(pop, fit_array)
     global eas; % genetic algorithm settings
             switch eas.penalty_method
@@ -19,6 +19,8 @@ function [fit_array] = checkConstraints(pop, fit_array)
                         end
                     end
             end
+        end
+end
 end
 
 
@@ -57,38 +59,3 @@ function [fit_array] = addDebsPenalty(fit_array)
         end
     end
 end
-
-% %--------------POWELL AND SKOLNICK'S PENALTY METHOD was deprecated--------------
-% 
-% function [fit_array] = pownskolpenalty(chrom, fit_array)
-%     global eas; % genetic algorithm settings
-%     global op;
-%     
-%     worstfeas = 0;
-%     bestinfeas = 0;
-%     indnum = gas.n_individuals;
-%     while indnum > 0                  % this function is to find the worst feasible individual's fitness
-%         if(fit_array(indnum, 5) == 0)
-%             worstfeas = fit_array(indnum, 3);
-%             break
-%         end
-%         indnum = indnum - 1;
-%     end
-% 
-%     indnum = 1;
-%     while indnum < gas.n_individuals                 
-%         if(fit_array(indnum, 5) ~= 0)
-%             bestinfeas = fit_array(indnum, 3);
-%             break
-%         end
-%         indnum = indnum + 1;
-%     end
-% 
-%      for i = 1:1:gas.n_individuals
-%         if(fit_array(i, 5) ~= 0)    % calculates the fitnesses of nonfeasible individuals
-%             fit_array(i,3) = fit_array(i,3) +  fit_array(i, 5) + abs( worstfeas -bestinfeas);
-%         end
-%      end
-%      fit_array(:,5) = [];
-% 
-% end
