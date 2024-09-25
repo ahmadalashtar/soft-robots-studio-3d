@@ -19,8 +19,6 @@ function [fit_array] = checkConstraints(pop, fit_array)
                         end
                     end
             end
-        end
-end
 end
 
 
