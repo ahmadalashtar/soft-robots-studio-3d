@@ -158,7 +158,7 @@ function [best_chrom, configurations] = runIt()
     pop = [];
     fit_array = [];
     
-    eas.algorithm = "pso"; % ga or bbbc or pso
+    eas.algorithm = "de"; % ga or bbbc or pso or de
 
     switch eas.algorithm
         case "ga"
@@ -167,6 +167,8 @@ function [best_chrom, configurations] = runIt()
             [pop, fit_array] = runBBBC(1);
         case "pso"
             [pop, fit_array] = runPSO(1);
+        case "de"
+            [pop, fit_array] = runDE(1);
     end
 
     best_index = fit_array(1,eas.fitIdx.id);
