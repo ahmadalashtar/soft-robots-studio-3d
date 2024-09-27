@@ -13,14 +13,12 @@ function [fit_array] = checkConstraints(pop, fit_array)
                 case 'static'
                     for i=1:eas.n_individuals
                         index = fit_array(i,eas.fitIdx.id);
-                        fit_array(i,eas.fitIdx.pen) = calculateStaticPenalty(pop(:,:,index),[10 10 10 10 10 100 10  10]);
+                        fit_array(i,eas.fitIdx.pen) = calculateStaticPenalty(pop(:,:,index),[10 10 10 10 10 100 10 10]);
                         if eas.ranking_method == "penalty"
                             fit_array(i,eas.fitIdx.ik) = fit_array(i,eas.fitIdx.ik) + fit_array(i,eas.fitIdx.pen);
                         end
                     end
             end
-        end
-end
 end
 
 

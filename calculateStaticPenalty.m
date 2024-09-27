@@ -44,9 +44,7 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
         conf = configurations(:,:,ceil(i/2));
         % check intersections for every segment of each configuration of the robot
                 
-        if collisionCheck(conf,op)
-            intersections = intersections + 1;
-        end
+        intersections = intersections + collisionCheck(conf);
 
         g(6) = intersections;
 
