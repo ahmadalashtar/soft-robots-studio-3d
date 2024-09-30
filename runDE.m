@@ -100,13 +100,6 @@ function [pop, fit_array_P] = runDE(exp)
             break;
         end
         
-         %--DYNAMIC AGGIUSTMENTS
-         if dynamic_mutation == true
-            eas.ga.mutation_probability = eas.ga.mutation_probability - mp_increment; 
-            if eas.ga.mutation_probability < 0
-                eas.ga.mutation_probability = 0;
-            end
-         end
          
     end  % place a breakpoint here as you run the algorithm to pause, and check how the individuals are evolving by plotting the best one with 'drawProblem2D(decodeIndividual(pop(:,:,1)))'
 
@@ -130,7 +123,8 @@ function mutants = calculateMutantVectors(pop,fitness)
     global eas;
     
     mutants = pop;
-    fittestID = fitness(:, eas.fitIdx.rank) == 1;
+    fittestFitnessIndex = fitness(:, eas.fitIdx.rank) == 1;
+    fittestPopIndex = fitness(fittestFitnessIndex,eas.fitIdx.id);
 
     rows = size(pop,1);
     columns = size(pop,2);
@@ -140,40 +134,41 @@ function mutants = calculateMutantVectors(pop,fitness)
     
     for k = 1 : individuals
         indices = 1:size(pop,3);
-        indices(targetIndex) = [];
+        indices(k) = [];
         randIndices = datasample(indices, 5, 'Replace', false);
         
-        r1 = pop(row,column,randIndices(1));
-        r2 = pop(row,column,randIndices(2));
-        r3 = pop(row,column,randIndices(3));
-        r4 = pop(row,column,randIndices(4));
-        r5 = pop(row,column,randIndices(5));
+        r1 = randIndices(1);
+        r2 = randIndices(2);
+        r3 = randIndices(3);
+        r4 = randIndices(4);
+        r5 = randIndices(5);
         for j = 1 : columns
             for i = 1 : rows
-                mutants(i,j,k) = mutateVector(pop,i,j,k,fittestID,r1,r2,r3,r4,r5);
+                mutants(i,j,k) = mutateVector(pop,i,j,k,fittestPopIndex,pop(i,j,r1),pop(i,j,r2),pop(i,j,r3),pop(i,j,r4),pop(i,j,r5));
             end
         end
     end
 end
 
-function mutant = mutateVector(pop,row,column,targetIndex,fittestID,r1,r2,r3,r4,r5)
+function mutant = mutateVector(pop,row,column,targetIndex,fittestPopIndex,xr1,xr2,xr3,xr4,xr5)
     global eas;
-    best = pop(:,:,fittestID);
+    global op;
+    best = pop(:,:,fittestPopIndex);
     xi = pop(row,column,targetIndex);
     F = eas.de.scalingFactor;
     switch eas.de.variant
         case 1
-            mutant = r1+F*(r2-r3); %xr1+F(xr2−xr3)
+            mutant = xr1+F*(xr2-xr3); %xr1+F(xr2−xr3)
         case 2
-            mutant = best+F*(r1-r2); %xbest+F(xr1−xr2)
+            mutant = best+F*(xr1-xr2); %xbest+F(xr1−xr2)
         case 3 
-            mutant = r1+F*(r2-r3)+F*(r4-r5); %xr1+F(xr2−xr3)+F(xr4−xr5)
+            mutant = xr1+F*(xr2-xr3)+F*(xr4-xr5); %xr1+F(xr2−xr3)+F(xr4−xr5)
         case 4
-            mutant = best+F*(r1-r2)+F*(r3-r4); %xbest+F(xr1−xr2)+F(xr3−xr4)
+            mutant = best+F*(xr1-xr2)+F*(xr3-xr4); %xbest+F(xr1−xr2)+F(xr3−xr4)
         case 5
-            mutant = xi+F*(best-xi)+F*(r1-r2); %xi+F(xbest−xi)+F(xr1−xr2)
+            mutant = xi+F*(best-xi)+F*(xr1-xr2); %xi+F(xbest−xi)+F(xr1−xr2)
         case 6
-            mutant = xi + (r1-xi)*rand() + F*(r2-r3); %xi+rand(xr1−xi)+F(xr2−xr3)
+            mutant = xi + (xr1-xi)*rand() + F*(xr2-xr3); %xi+rand(xr1−xi)+F(xr2−xr3)
     end
     lengthsIndex = size(pop,1);
     minLength = op.length_domain(1);
