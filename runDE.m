@@ -30,11 +30,9 @@ function [pop, fit_array_P] = runDE(exp)
     
     %--ITERATIONS
     for gen=1:eas.n_generations
-        mutants = calculateMutantVectors(pop);
-        [mutants, fit_array_M] = evaluate(mutants);
-        [fit_array_M] = rankingEvaluation(fit_array_M);
+        mutants = calculateMutantVectors(pop, fit_array_P);
         
-        trials = calculateTrialVectors(pop, fit_array_P,mutants,fit_array_M);
+        trials = calculateTrialVectors(pop,mutants);
         [trials, fit_array_T] = evaluate(trials);
         [fit_array_T] = rankingEvaluation(fit_array_T);
         
@@ -126,4 +124,91 @@ function [pop, fit_array_P] = runDE(exp)
         end
     end
     
+end
+
+function mutants = calculateMutantVectors(pop,fitness)
+    global eas;
+    
+    mutants = pop;
+    fittestID = fitness(:, eas.fitIdx.rank) == 1;
+
+    rows = size(pop,1);
+    columns = size(pop,2);
+    individuals = size(pop,3);
+    
+
+    
+    for k = 1 : individuals
+        indices = 1:size(pop,3);
+        indices(targetIndex) = [];
+        randIndices = datasample(indices, 5, 'Replace', false);
+        
+        r1 = pop(row,column,randIndices(1));
+        r2 = pop(row,column,randIndices(2));
+        r3 = pop(row,column,randIndices(3));
+        r4 = pop(row,column,randIndices(4));
+        r5 = pop(row,column,randIndices(5));
+        for j = 1 : columns
+            for i = 1 : rows
+                mutants(i,j,k) = mutateVector(pop,i,j,k,fittestID,r1,r2,r3,r4,r5);
+            end
+        end
+    end
+end
+
+function mutant = mutateVector(pop,row,column,targetIndex,fittestID,r1,r2,r3,r4,r5)
+    global eas;
+    best = pop(:,:,fittestID);
+    xi = pop(row,column,targetIndex);
+    F = eas.de.scalingFactor;
+    switch eas.de.variant
+        case 1
+            mutant = r1+F*(r2-r3); %xr1+F(xr2−xr3)
+        case 2
+            mutant = best+F*(r1-r2); %xbest+F(xr1−xr2)
+        case 3 
+            mutant = r1+F*(r2-r3)+F*(r4-r5); %xr1+F(xr2−xr3)+F(xr4−xr5)
+        case 4
+            mutant = best+F*(r1-r2)+F*(r3-r4); %xbest+F(xr1−xr2)+F(xr3−xr4)
+        case 5
+            mutant = xi+F*(best-xi)+F*(r1-r2); %xi+F(xbest−xi)+F(xr1−xr2)
+        case 6
+            mutant = xi + (r1-xi)*rand() + F*(r2-r3); %xi+rand(xr1−xi)+F(xr2−xr3)
+    end
+    lengthsIndex = size(pop,1);
+    minLength = op.length_domain(1);
+    maxLength = op.length_domain(2);
+    minAngle = op.angle_domain(1);
+    maxAngle = op.angle_domain(2);
+    if row == lengthsIndex
+        % swarm(i).position(j,k) = max(min(swarm(i).position(j,k),maxLength),minLength); %Clamping (Saturation)
+        mutant = mod(mutant,maxLength-minLength+1) + minLength; % Wrapping (Modulus Operator)  
+    else
+        % swarm(i).position(j,k) = max(min(swarm(i).position(j,k),maxAngle),minAngle) + minAngle; % Clamping (Saturation)
+        mutant = mod(abs(mutant),maxAngle-minAngle+1) + minAngle; % Wrapping (Modulus Operator)  
+    end
+
+end
+
+function trials = calculateTrialVectors(pop,mutants)
+    global eas;
+
+    trials = pop;
+    rows = size(pop,1);
+    columns = size(pop,2);
+    individuals = size(pop,3);
+    
+
+    
+    for k = 1 : individuals
+        for j = 1 : columns
+            for i = 1 : rows
+                if rand() <= eas.de.crossoverProbability
+                    trials(i,j,k) = mutants(i,j,k);
+                end
+            end
+        end
+    end
+    
+
 end
