@@ -89,8 +89,8 @@ function [best_chrom, configurations] = runIt()
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 250;
-    eas.n_individuals = 250;
+    eas.n_generations = 50;
+    eas.n_individuals = 50;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     eas.survival_method = 'non-elitist'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
@@ -158,7 +158,7 @@ function [best_chrom, configurations] = runIt()
     pop = [];
     fit_array = [];
     
-    eas.algorithm = "pso"; % ga or bbbc or pso
+    eas.algorithm = "pso"; % ga, bbbc, pso, or de
 
     switch eas.algorithm
         case "ga"
@@ -167,6 +167,8 @@ function [best_chrom, configurations] = runIt()
             [pop, fit_array] = runBBBC(1);
         case "pso"
             [pop, fit_array] = runPSO(1);
+        case "de"
+            [pop, fit_array] = runDE(1);
     end
 
     best_index = fit_array(1,eas.fitIdx.id);
