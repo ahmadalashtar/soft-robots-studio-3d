@@ -77,7 +77,7 @@ function [best_chrom, configurations] = runIt()
     op.first_angle.is_fixed = true;
     op.angle_domain = [-30 30];
     op.first_angle.angle = 0;
-    op.end_points = retrieveOrientationSegmentEndPoints3D();  % retrieve the end points for each target's orientation segment
+    op.end_points = retrieveOrientationSegmentEndPoints3D(op.targets,op.obstacles);  % retrieve the end points for each target's orientation segment
     disp(segment2UnitVector(op.targets(1,1:3),op.end_points(1,:)))
     
     % % drawProblem3D([]);
