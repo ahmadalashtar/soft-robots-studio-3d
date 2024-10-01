@@ -71,13 +71,13 @@ function [best_chrom, configurations] = runIt()
                      100 100 100 20 100
                     ]; %cylinder [x y z(base) radius height]
 
-    op.n_links = 20;
-    op.length_domain = [5 100];
+    op.n_links = 10;
+    op.length_domain = [10 50];
 
     op.first_angle.is_fixed = true;
     op.angle_domain = [-30 30];
     op.first_angle.angle = 0;
-    op.end_points = retrieveOrientationSegmentEndPoints3D(false);  % retrieve the end points for each target's orientation segment
+    op.end_points = retrieveOrientationSegmentEndPoints3D();  % retrieve the end points for each target's orientation segment
     disp(segment2UnitVector(op.targets(1,1:3),op.end_points(1,:)))
     
     % % drawProblem3D([]);
@@ -89,10 +89,10 @@ function [best_chrom, configurations] = runIt()
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 50;
-    eas.n_individuals = 50;
+    eas.n_generations = 250;
+    eas.n_individuals = 250;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
-    eas.survival_method = 'non-elitist'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
+    eas.survival_method = 'elitist_alpha'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
     eas.ga.crossover_method = 'blxa';  % 'blxa'
     eas.ga.crossover_probability = 0.9;
@@ -162,7 +162,7 @@ function [best_chrom, configurations] = runIt()
     pop = [];
     fit_array = [];
     
-    eas.algorithm = "ga"; % ga, bbbc, pso, or de
+    eas.algorithm = "de"; % ga, bbbc, pso, or de
 
     switch eas.algorithm
         case "ga"
