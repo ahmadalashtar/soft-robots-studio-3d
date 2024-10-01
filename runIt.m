@@ -89,8 +89,8 @@ function [best_chrom, configurations] = runIt()
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 250;
-    eas.n_individuals = 250;
+    eas.n_generations = 50;
+    eas.n_individuals = 50;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     eas.survival_method = 'non-elitist'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
@@ -105,7 +105,11 @@ function [best_chrom, configurations] = runIt()
     eas.pso.cognitiveConstant = 1;
     eas.pso.socialConstant = 2;
     eas.pso.globalBest = struct('position',[],'fitness',[]);
-
+    
+    eas.de.scalingFactor = 0.85;
+    eas.de.crossoverProbability = 0.8;
+    eas.de.variant = 1; % 1: rand/1 2: best/1 3: rand/2 4: best/2 5: current-to-best/1 6: current-to-rand/1
+    
     % settings of rank partitioning algorithm
     eas.ranking_method = 'penalty';     % 'penalty', 'separation'
     eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
@@ -158,7 +162,7 @@ function [best_chrom, configurations] = runIt()
     pop = [];
     fit_array = [];
     
-    eas.algorithm = "pso"; % ga or bbbc or pso
+    eas.algorithm = "ga"; % ga, bbbc, pso, or de
 
     switch eas.algorithm
         case "ga"
@@ -167,6 +171,8 @@ function [best_chrom, configurations] = runIt()
             [pop, fit_array] = runBBBC(1);
         case "pso"
             [pop, fit_array] = runPSO(1);
+        case "de"
+            [pop, fit_array] = runDE(1);
     end
 
     best_index = fit_array(1,eas.fitIdx.id);
