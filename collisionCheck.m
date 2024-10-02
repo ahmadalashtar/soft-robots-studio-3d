@@ -17,7 +17,7 @@ function intersects = collisionCheck(conf)
     intersects = false;
     for i = 1 : nUsedNodes - 1 
         for j = 1 : nObstacles
-            if doTheyIntersect(nodes(i,:),nodes(i+1,:),obstacles(j,:))
+            if segmentxcylinder(nodes(i,:),nodes(i+1,:),obstacles(j,:))
                 intersects = true;
                 return;
             end
@@ -25,7 +25,7 @@ function intersects = collisionCheck(conf)
     end
 end
 
-function intersect = doTheyIntersect(startPt,endPt,obstacle)
+function intersect = segmentxcylinder(startPt,endPt,obstacle)
     intersectXY = planarIntersection(startPt,endPt,obstacle,"XY");
     if ~intersectXY
         intersect = false;
