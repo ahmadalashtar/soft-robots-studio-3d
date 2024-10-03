@@ -38,7 +38,7 @@
 % > execute 'drawProblem2D(decodeIndividual(pop(:,:,1)))'
 % > remove breakpoint and continue the execution
 
-function [best_chrom, configurations] = runIt()
+function [best_chrom, configurations] = main()
     
     %---------------------PROBLEM DEFINITION--------------------- 
     global op;          % optimization problem
@@ -68,7 +68,7 @@ function [best_chrom, configurations] = runIt()
                     % ]; %target [x y z ux uy uz cone_angle]
     op.obstacles = [
                      
-                     100 100 100 20 100
+                     0 30 120 20 100
                     ]; %cylinder [x y z(base) radius height]
 
     op.n_links = 20;
@@ -77,7 +77,7 @@ function [best_chrom, configurations] = runIt()
     op.first_angle.is_fixed = true;
     op.angle_domain = [-30 30];
     op.first_angle.angle = 0;
-    op.end_points = retrieveOrientationSegmentEndPoints3D(false);  % retrieve the end points for each target's orientation segment
+    op.end_points = retrieveOrientationSegmentEndPoints3D(op.targets,op.obstacles,op.home_base);  % retrieve the end points for each target's orientation segment
     disp(segment2UnitVector(op.targets(1,1:3),op.end_points(1,:)))
     
     % % drawProblem3D([]);
@@ -189,4 +189,5 @@ function [best_chrom, configurations] = runIt()
     r=1; %this is for experiments to keep track of which run we are executing. remove when running experiments
     tit = "RUN: " + num2str(r) + ", IK: " + num2str(fit_array(1,eas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,eas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,eas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,eas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
     title(tit); 
+    disp(num2str(fit_array(1,eas.fitIdx.pen)))
 end
