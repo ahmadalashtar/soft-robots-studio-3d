@@ -40,7 +40,7 @@ function [endPoints] = retrieveOrientationSegmentEndPoints3D(targets,obstacles,b
 end
 function coordinates = retrieveCoordinates(startPt,endPt,obstacle)
 coordinates = endPt;
-inside = segmentInsideCylinder(startPt,endPt,obstacle);
+[inside,~,~] = segmentInsideCylinder(startPt,endPt,obstacle);
 if inside
     coordinates = startPt;
     return;
@@ -123,7 +123,8 @@ if ~isempty(circlSegmentIntersections)
         if ~isempty(z)
             if ~pointToSegment3D([circlSegmentIntersections(i,:) z],startPt,endPt)
                 coordinate = [circlSegmentIntersections(i,:) z];
-                if segmentInsideCylinder(coordinate,coordinate,obstacle)
+                [result,~,~] = segmentInsideCylinder(coordinate,coordinate,obstacle);
+                if result
                     if norm(coordinate-startPt) < length
                         coordinates = coordinate;
                         length = norm(coordinate-startPt);
