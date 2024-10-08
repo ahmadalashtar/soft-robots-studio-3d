@@ -18,7 +18,7 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
         final_angle_y = chrom(i+1,n_links+2);
         last_link_length = chrom(i,n_links+4);
 
-        g = zeros(1,8);     % array of penalty terms for each constraint
+        g = zeros(1,6);     % array of penalty terms for each constraint
         beta = 1;           % parameter of penalty method
 
         %--CONSTRAINT 1,2: final angle is between angle bounds
@@ -53,20 +53,6 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
         % this constraint is needed in beacause of the algorithm of distance point-segment,
         % since it can generate the closest point to be one of the edges of the segment, 
         % and in case that point is the target then the solution would be horrible
-        
-        link_count= chrom(i,n_links+1)-1;
-        sum_of_angles_x = sum(chrom(i,1:link_count)) + final_angle_x;
-        sum_of_angles_y = sum(chrom(i+1,1:link_count)) + final_angle_y;
-        target_angle_x= op.targets(ceil(i/2),4) - op.home_base(4);
-        target_angle_y= op.targets(ceil(i/2),5) - op.home_base(5);
-        angle_range_x= [target_angle_x-10 target_angle_x+10];
-        angle_range_y= [target_angle_y-10 target_angle_y+10];
-        if(sum_of_angles_x<min(angle_range_x) || sum_of_angles_x>max(angle_range_x))
-            g(7)=1;
-        end
-        if(sum_of_angles_y<min(angle_range_y) || sum_of_angles_y>max(angle_range_y))
-            g(8)=1;
-        end
 
      
 
