@@ -56,5 +56,8 @@ function [] = drawProblem3D(robot_configurations)
     % end
     view(-159.1605,31.6712);
 %     set(h1, 'Zdir', 'reverse');
+
+    drawMinMax(op.length_domain,f)
+    
     
 end

@@ -119,7 +119,7 @@ function [best_chrom, configurations] = main()
     end
     r=1; %this is for experiments to keep track of which run we are executing. remove when running experiments
     tit = "RUN: " + num2str(r) + ", IK: " + num2str(fit_array(1,eas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,eas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,eas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,eas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
-    title(tit); 
+    title(tit);
     disp(num2str(fit_array(1,eas.fitIdx.pen)))
     disp("hello")
 end
