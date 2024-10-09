@@ -9,12 +9,11 @@ function firstTask()
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
     op.obstacles = [
-                     100 100 200 1 1;
-                    % 85 0 200 12.5 300;
-                    % 45 56.79492 200 12.5 300;
-                    % 45 -56.79492 200 12.5 300;
-                    % 145 -30 200 12.5 80;
-                    % 145 30 200 12.5 80;
+                    85 0 200 12.5 300;
+                    45 56.79492 200 12.5 300;
+                    45 -56.79492 200 12.5 300;
+                    145 -30 200 12.5 80;
+                    145 30 200 12.5 80;
                     ]; %cylinder [x y z(base) radius height]
 
     op.n_links = 20;
