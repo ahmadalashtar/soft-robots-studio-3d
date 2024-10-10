@@ -38,13 +38,25 @@
 % > execute 'drawProblem2D(decodeIndividual(pop(:,:,1)))'
 % > remove breakpoint and continue the execution
 
-function [best_chrom, configurations] = main()
+function [best_chrom, configurations] = experiment_main()
     
     %---------------------PROBLEM DEFINITION--------------------- 
     global op;
     global eas;
 
-    firstTask();
+    numOfIteration = 20;
+    %%Experiment Variables
+
+    eas.num_Of_Gen = 500;
+    eas.population = 500;
+    eas.crossover = 1;
+    eas.mutation = "random";
+    eas.survival = "full";
+    eas.selection = "Tournament";
+    eas.crossover_method = "blxa";
+    eas.survival_alpha;
+    eas.penalty = "static";
+    eas.ranking_method = "penalty";
 
     eas.rankingSettings.minFit = 0;     % OUTPUT min IK fitness
     eas.rankingSettings.maxFi = 0;      % OUTPUT max IK fitness  FIX THE TYPO
@@ -78,6 +90,12 @@ function [best_chrom, configurations] = main()
     eas.fitIdx.pen = 8;             % penalty for constraints
     eas.fitIdx.rank = 9;            % rank, used as fitness for selection and survival operators
     eas.fitIdx.id = 10;             % reference to chromosome in the array of population
+
+    
+    eas.fitIdx.parameterID = 11;    % reference to parameter which is using
+    eas.fitIdx.algo = 12;         % type of algorithm that we are using
+    eas.fitIdx.runTime = 13;        % running time in seconds
+    eas.fitIdx.runID = 14;          % reference to iteration number
     % extra genes in chromosome, it is a constant do not change!
 
     eas.extra_genes = 4;
