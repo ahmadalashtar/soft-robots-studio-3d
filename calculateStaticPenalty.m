@@ -18,7 +18,7 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
         final_angle_y = chrom(i+1,n_links+2);
         last_link_length = chrom(i,n_links+4);
 
-        g = zeros(1,8);     % array of penalty terms for each constraint
+        g = zeros(1,9);     % array of penalty terms for each constraint
         beta = 1;           % parameter of penalty method
 
         %--CONSTRAINT 1,2: final angle is between angle bounds
@@ -44,7 +44,9 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
         conf = configurations(:,:,ceil(i/2));
         % check intersections for every segment of each configuration of the robot
                 
-        intersections = intersections + collisionCheck(conf);
+        nodes = solveForwardKinematics3D(conf,op.home_base,0);
+
+        intersections = intersections + collisionCheck(conf, nodes);
 
         g(6) = intersections;
 
@@ -80,7 +82,27 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
 %            gas.infeasible_running_stats(1) = nextM;
 
         end
-        
+
+        nUsedLinks = 0;
+        for i = 1:size(conf,1)
+            if conf(i,3)==0
+                nUsedLinks = i-1;
+                break;
+            end
+        end
+        nUsedNodes = nUsedLinks + 1;
+
+        for i = 1:1:nUsedNodes - 1
+
+            angle_X = atand(abs(nodes(i+1, 3) - nodes(i, 3))/abs(nodes(i+1, 1) - nodes(i, 1)));
+            angle_Y = atand(abs(nodes(i+1, 2) - nodes(i, 2))/abs(nodes(i+1, 3) - nodes(i, 3)));
+
+            vectors = collisionCheckVectors(op.length_domain(1), op.angle_domain(2), op.angle_domain(1), op.angle_domain(2), op.angle_domain(1), angle_X, angle_Y, nodes(i,:));
+            if vectorObstacleCheck(vectors, op.obstacles, nodes(i,:))
+                g(9) = g(9) + 1;
+            end
+        end
+            
         gScalar = gScalar + g*r';
     end
 end
