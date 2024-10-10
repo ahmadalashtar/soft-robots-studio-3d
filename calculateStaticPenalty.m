@@ -14,6 +14,7 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
     min_length = op.length_domain(1);
 
     for i = 1:2:n_targets*2
+        targetIndex = ceil(i/2);
         final_angle_x = chrom(i,n_links+2);
         final_angle_y = chrom(i+1,n_links+2);
         last_link_length = chrom(i,n_links+4);
@@ -66,6 +67,26 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
 %            gas.infeasible_running_stats(1) = nextM;
 
         end
+        
+
+        % what if the epsilon node was directly on the target? Enter
+        % Constraint #7
+
+        % forward kinematics to get the coordinates
+        
+        % get the coordinates of the target and its endpoint
+
+        %translate the epsildon, target, and its endpoint to the origin, so
+        %that the target is on the origin 0 0 0
+
+        % calculate the angle between A the target and epsilon and B the
+        % target and its endpoint
+
+        % if the result is NaN then the epsilon is exactly on the target.
+        % Penalize
+
+        % else if the angle is larger or equal to 90, penalize.
+
         
         gScalar = gScalar + g*r';
     end
