@@ -78,6 +78,10 @@ function [best_chrom, configurations] = main()
     eas.fitIdx.pen = 8;             % penalty for constraints
     eas.fitIdx.rank = 9;            % rank, used as fitness for selection and survival operators
     eas.fitIdx.id = 10;             % reference to chromosome in the array of population
+    eas.fitIdx.parameterID = 11;    % reference to parameter which is using
+    eas.fitIdx.algoType = 12;       % type of algorithm that we are using
+    eas.fitIdx.runTime = 13;        % running time in seconds
+    eas.fitIdx.runID = 14;          % reference to iteration number
     % extra genes in chromosome, it is a constant do not change!
 
     eas.extra_genes = 4;
