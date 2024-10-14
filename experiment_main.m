@@ -1,44 +1,4 @@
-% MAIN FUNCTION
-%
-% Optimization Problem defintion:
-% > .home_base, [1x3]                   pose of the home base, array: [x , y , angle in deg (positive counterclockwise from x-axis)]
-% > .targets, [tx3]                     pose of the target(s), matrix: [x , y , angle in deg (positive counterclockwise from x-axis)]
-% > .obstacles, [ox3]                   pose of the obstacle(s), matrix: [x , y , radius]
-% > .n_links, 1x1                       max number of nodes
-% > .angle_domain, 2x1                  range of joint bending angles [min angle, max angle] (in deg)
-% > .length_domain, 1x2                 length domain of each link: [min length required, max length] 
-% > .first_angle                        data structure
-%   | > .is_fixed, bool                 boolean, true if first angle from base is fixed, false otherwise
-%   | > .first_angle.angle, 1x1         THIS MAKES NO SENSE I WILL PROBABLY REMOVE IT if first angle from base is fixed, max angle of the first joint (in deg) - will generate an angle in the range +-angle, which will start based on the orientation defined in the home base
-% > .end_points, tx2                    contains the end point [x , y] of the segments starting from the target in the direction of the reaching orientation, used to solve the inverse kinematics
-    
-% Genetic Algorithm settings:
-%  > .parallel                          boolean, true to run parallel computing
-%  > .generations, 1x1                  number of iterations of the GA
-%  > .n_individuals, 1x1                number of individuals in the population
-%  > .selection_method                  selection method of the algortithm, can be: 'tournament', 'roulette', 'sus', 'random';
-%  > .crossover_method                  crossover method of the algortithm, can be: 'blxa', 'sbx'
-%  > .mutation_method                   mutation method of the algortithm, can be: 'non-uniform', 'polynomial', 'random'
-%  > .survival_method                   survival method of the algortithm, can be: 'non-elitist', 'elitist', 'dynamic'
-%  > .crossover probability             [0-1], probability to apply crossover to a pair of parents
-%  > .mutation_probability, 1x1         mutation probability [0-1], probability to modify a gene in an individual (for each individuals and for each gene)
-%                                       if set to -1, this will run the dynamic mutation decreasing the probability from 1.0 to 0.0 through generations     
-%  > .verbose, bool                     boolean, if true prints out log for each epoch (number of epoch, best fitness of the epoch, variance in the population, best fit overall)
-%  > .draw_plot, bool                   boolean, if true draws plot at the end of each epoch
-%  > .extra_genes = 5                  number of extra genes for individual, it should be costant to 4 (check the function 'generateRandomChromosome' for more information)
-%  > .variance_generations, 1x1         variation of the best individual is calculated over the last (number) of generations
-%  > .normalize_weightDistance, bool    if true, while calculating the ik fitness, it will normalize the distances of each node from the orientation segment over the number of nodes (keep it to TRUE)
-    
-% Genetic Algorithm output:
-%  > pop, t+1 x n+4 x n_individuals     last generation population
-%  > fit_array, n_individuals x 4       fitness value, composed of 'ik fitness', 'number of nodes', 'rank fitness', 'index in the pop array' (check the function 'evaluate' for more information)
-
-% NOTE FOR EXECUTION, if you want to check how individuals are evolving:
-% > place a breakpoint at line 98 of 'runGeneticAlgorithm' as you run the script to pause it
-% > execute 'drawProblem2D(decodeIndividual(pop(:,:,1)))'
-% > remove breakpoint and continue the execution
-
-function [best_chrom, configurations] = experiment_main()
+function experiment_main()
     
     %---------------------PROBLEM DEFINITION--------------------- 
     global op;
@@ -46,104 +6,65 @@ function [best_chrom, configurations] = experiment_main()
 
     %%Testing Creating a struct for each algorithm??
 
-    numOfIteration = 20;
     %%Experiment Variables
 
-    eas.num_Of_Gen = 500;
-    eas.population = 500;
-    eas.crossover = 1;
-    eas.mutation = "random";
-    eas.survival = "full";
-    eas.selection = "Tournament";
+    numOfIteration = 20;    %%The amount of iteration
+
+    result.tasks = ["firstTask", "secondTask"]; %%Type wanted task function's names
+    
+    algo_series = ["ga", "bbbc", "pso", "de"]; %% Type wanted algorithm types in here
+    result.algorithms = algo_series;
+
+    eas.n_generations = 20;
+    eas.n_individuals = 10;
+    eas.ga.crossover_probability = 1;
+    eas.de.crossoverProbability = 1;
+    eas.ga.mutation_method = 'random';
+    eas.ga.mutation_probability = 0.2;  % -1 is dynamic 
+    eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
+    eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
     eas.crossover_method = "blxa";
-    eas.survival_alpha;
-    eas.penalty = "static";
+    eas.survival_alpha = 40;
+    eas.penalty_method = 'static';	% 'static', 'deb'
     eas.ranking_method = "penalty";
-
-    
-
-
-    eas.rankingSettings.minFit = 0;     % OUTPUT min IK fitness
-    eas.rankingSettings.maxFi = 0;      % OUTPUT max IK fitness  FIX THE TYPO
-    eas.rankingSettings.delta = 0;      % OUTPUT difference between max and min IK fitness
-    eas.rankingSettings.n_partitions = 0;       % OUTPUT overall number of partitions (delta/step_ik)
-    eas.rankingSettings.firstPartitionSize = 0; % OUTPUT number of individuals falling in the first partition (best ones)
-
-    eas.draw_plot = false;  % if you set this to true, your computer will likely explode
-    eas.verbose = true;
-    eas.normalize_weightDistance = true;    % deprecated
-    eas.variance_generations = 10; 
-    
-    eas.stopAtVariance_flag = false;    % if true, GA will stop when variance between solutions becomes < 0.000 (number of zeros are defined..
-    eas.stopAtVariance_zeros = 2;       % ...here)
-    eas.stopAtFitness_flag = false;     % if true, GA will stop when IK fitness becomes < 0.000 (number of zeros are defined..
-    eas.stopAtFitness_zeros = 2;        % ...here)
-    
-    eas.infeasible_subcount = 0;
-    eas.convergence0 = 0;
-    eas.convergence00 = 0;
-    
-    % indices for fit_array, these are constants do not change!
-
-    eas.fitIdx.ikMod = 1;
-    eas.fitIdx.nodes = 2;           % number of links to reach the target's orientation segment (overall sum)
-    eas.fitIdx.wiggly = 3;          % percentage of ondulation of the configuration (avg among configurations)
-    eas.fitIdx.nodesOnSegment = 4;  % number of links on the target's orientation segment (overall sum)
-    eas.fitIdx.totLengthMod = 5;
-    eas.fitIdx.ik = 6;              % IK fitness (avg among configurations)
-    eas.fitIdx.totLength = 7;       % total length of the robot (avg among configurations - maybe we should use max?)
-    eas.fitIdx.pen = 8;             % penalty for constraints
-    eas.fitIdx.rank = 9;            % rank, used as fitness for selection and survival operators
-    eas.fitIdx.id = 10;             % reference to chromosome in the array of population
-
     
     eas.fitIdx.parameterID = 11;    % reference to parameter which is using
     eas.fitIdx.algo = 12;           % type of algorithm that we are using
     eas.fitIdx.runTime = 13;        % running time in seconds
-    eas.fitIdx.taskID = 14;          % reference to iteration number
+    eas.fitIdx.taskID = 14;         % reference to task number
     eas.fitIdx.runID = 15;          % reference to iteration number
+    eas.fitIdx.chromID = 16;        % reference to chromosome number
     % extra genes in chromosome, it is a constant do not change!
 
-    eas.extra_genes = 4;
-
-    rng shuffle;
-
-    if eas.ga.mutation_probability == 1
-        typeOfMut = "Dynamic";
-    else
-        typeOfMut = round(eas.ga.mutation_probability,2);
+    result.output_matrix= zeros(numOfIteration*length(algo_series)*length(result.tasks),16); %% Output matrix will store every iteration on every settings
+    result.chromosome_mat = [];
+    count = 1;
+    for TaskID = 1:length(result.tasks)
+        switch result.tasks(TaskID)
+             case "firstTask"
+                firstTask();
+            case "secondTask"
+                secondTask();
+        end
+        for k = 1:length(algo_series)
+            eas.algorithm = algo_series(k);
+            %%There will be another for loop for parameters here
+            for i=1:numOfIteration
+                tStart = tic;
+                [best_chrom config fit_array]=main(1);
+                tEnd = toc(tStart);
+                fit_array(1,eas.fitIdx.parameterID) = 1;
+                fit_array(1,eas.fitIdx.algo) = k;
+                fit_array(1,eas.fitIdx.runTime) = tEnd;
+                fit_array(1,eas.fitIdx.taskID) = TaskID;
+                fit_array(1,eas.fitIdx.runID) = i;
+                fit_array(1,eas.fitIdx.chromID) = count;
+                
+                result.output_matrix(count,:) = fit_array(1, :);
+                result.chromosome_mat{count,1} = best_chrom;
+                count = count+1;
+            end
+        end
     end
-
-    pop = [];
-    fit_array = [];
-    
-    eas.algorithm = "ga"; % ga, bbbc, pso, or de
-
-    switch eas.algorithm
-        case "ga"
-            [pop, fit_array] = runGeneticAlgorithm(1);
-        case "bbbc"
-            [pop, fit_array] = runBBBC(1);
-        case "pso"
-            [pop, fit_array] = runPSO(1);
-        case "de"
-            [pop, fit_array] = runDE(1);
-    end
-
-    best_index = fit_array(1,eas.fitIdx.id);
-    best_chrom = pop(:,:,best_index);
-    
-    configurations = decodeIndividual(best_chrom);
-    drawProblem3D(configurations);
-    
-    if fit_array(1,eas.fitIdx.pen) == 0
-        isBestFeasible = "feas";
-    else
-        isBestFeasible = "unfeas";
-    end
-    r=1; %this is for experiments to keep track of which run we are executing. remove when running experiments
-    tit = "RUN: " + num2str(r) + ", IK: " + num2str(fit_array(1,eas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,eas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,eas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,eas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
-    title(tit); 
-    disp(num2str(fit_array(1,eas.fitIdx.pen)))
-    disp("hello")
+    save("exp1", result);
 end

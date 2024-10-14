@@ -38,14 +38,23 @@
 % > execute 'drawProblem2D(decodeIndividual(pop(:,:,1)))'
 % > remove breakpoint and continue the execution
 
-function [best_chrom, configurations] = main()
+
+%%Parameter exp_flag stands for experimental flag. It can be null which
+%%will cause assigning default variable as false
+function [best_chrom, configurations, fit_array] = main(exp_flag)
     
     %---------------------PROBLEM DEFINITION--------------------- 
     global op;
     global eas;
-
-    firstTask();
-
+    
+    if nargin == 0
+        exp_flag=0;
+    end
+    if(~exp_flag)
+        %firstTask();
+    end
+    
+    
     eas.rankingSettings.minFit = 0;     % OUTPUT min IK fitness
     eas.rankingSettings.maxFi = 0;      % OUTPUT max IK fitness  FIX THE TYPO
     eas.rankingSettings.delta = 0;      % OUTPUT difference between max and min IK fitness
@@ -79,8 +88,10 @@ function [best_chrom, configurations] = main()
     eas.fitIdx.rank = 9;            % rank, used as fitness for selection and survival operators
     eas.fitIdx.id = 10;             % reference to chromosome in the array of population
     % extra genes in chromosome, it is a constant do not change!
+    
 
     eas.extra_genes = 4;
+    
 
     rng shuffle;
 
@@ -92,8 +103,10 @@ function [best_chrom, configurations] = main()
 
     pop = [];
     fit_array = [];
-    
-    eas.algorithm = "ga"; % ga, bbbc, pso, or de
+
+    if(~exp_flag)
+        eas.algorithm = "ga"; % ga, bbbc, pso, or de
+    end
 
     switch eas.algorithm
         case "ga"
@@ -110,7 +123,9 @@ function [best_chrom, configurations] = main()
     best_chrom = pop(:,:,best_index);
     
     configurations = decodeIndividual(best_chrom);
-    drawProblem3D(configurations);
+    if(~exp_flag)
+        drawProblem3D(configurations);
+    end
     
     if fit_array(1,eas.fitIdx.pen) == 0
         isBestFeasible = "feas";
