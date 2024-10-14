@@ -4,7 +4,7 @@ maxLength = retrieveMaxLength(targets,base);
 
 n_targets = size(targets,1);
 
-intersections = struct('Obstacles',[],'StopsAt',[]);
+intersections(n_targets) = struct('Obstacles',[],'StopsAt',[]);
 targetsUnitVectors = zeros(size(targets,1),3);
 for i=1:n_targets
     startPoint = targets(i,1:3);
