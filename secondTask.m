@@ -2,19 +2,21 @@ function secondTask()
     global op;          
     op.home_base = [0 0 0 0 0];
 
-    t1 = [-23.1 40 100 ];
-    t2 = [23.1 40 100 ];
-    t3 = [46.2 0 100];
-    t4 = [-46.2 0 100];
-    t5 = [-60 0 100 ];
-    t6 = [60 0 100];
+    t1 = [25 -43.301 100 ];
+    t2 = [25 43.301 100 ];
+    t5 = [-25 43.301 100];
+    t6 = [-25 -43.301 100];
+    t3 = [-50 0 100 ];
+    t4 = [50 0 100];
 
-    op.targets = [  %t1 -15 -15;
-                    % t2 -15 15;
-                    % t3 -15 15;
-                    % t4  -15 -15;
-                    t5  0 -15;
-                    t6  0 15;
+    op.targets = [  
+                    
+                    t3  0 -45;
+                    t4  0 45;
+                    t1 45 16;
+                    t2 -45 16;
+                    t6 45 -16;
+                    t5 -45 -16;
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
     op.obstacles = [
@@ -44,8 +46,8 @@ function secondTask()
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 100;
-    eas.n_individuals = 100;
+    eas.n_generations = 2;
+    eas.n_individuals = 2;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
