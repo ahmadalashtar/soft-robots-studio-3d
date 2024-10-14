@@ -10,8 +10,8 @@ function firstTask()
                     % ]; %target [x y z ux uy uz cone_angle]
     op.obstacles = [
                     85 0 200 12.5 300;
-                    45 56.79492 200 12.5 300;
-                    45 -56.79492 200 12.5 300;
+                    45 45 200 12.5 300;
+                    45 -45 200 12.5 300;
                     145 -30 200 12.5 80;
                     145 30 200 12.5 80;
                     ]; %cylinder [x y z(base) radius height]
@@ -33,8 +33,8 @@ function firstTask()
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 20;
-    eas.n_individuals = 20;
+    eas.n_generations = 50;
+    eas.n_individuals = 50;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
