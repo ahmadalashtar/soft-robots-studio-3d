@@ -26,7 +26,8 @@ upperVertex2 = [obstacleX+radius, obstacleY-height];
 
 insideXZ = lineInsideRectangle(startPoint,endPoint,[upperVertex1; upperVertex2; lowerVertex2; lowerVertex1]);
 
-inside = insideXZ && insideYZ;
+insideXY = pointToSegment3D([obstacle(1:2) 0],[startPt(1:2) 0],[endPt(1:2) 0]);
+inside = insideXY && insideXZ && insideYZ;
 
 end
 
