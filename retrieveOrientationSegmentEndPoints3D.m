@@ -161,7 +161,7 @@ target = targets(targetIndex,:);
 collisionObstacles = obstacles(obstacleIndices,:);
 
 minLength = Inf;
-for i = 1 : size(obstacleIndices,1)
+for i = 1 : size(obstacleIndices,2)
     length  = norm(target(1:2)-collisionObstacles(i,1:2));
     if length < minLength
         minLength = length;
