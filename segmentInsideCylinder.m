@@ -26,7 +26,13 @@ upperVertex2 = [obstacleX+radius, obstacleY-height];
 
 insideXZ = lineInsideRectangle(startPoint,endPoint,[upperVertex1; upperVertex2; lowerVertex2; lowerVertex1]);
 
-insideXY = pointToSegment3D([obstacle(1:2) 0],[startPt(1:2) 0],[endPt(1:2) 0]);
+distance = pointToSegment3D([obstacle(1:2) 0],[startPt(1:2) 0],[endPt(1:2) 0]);
+if distance > obstacle(4)
+    insideXY = false;
+else
+    insideXY = true;
+end
+
 inside = insideXY && insideXZ && insideYZ;
 
 end
