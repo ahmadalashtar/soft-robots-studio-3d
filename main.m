@@ -89,8 +89,8 @@ function [best_chrom, configurations] = main()
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 50;
-    eas.n_individuals = 50;
+    eas.n_generations = 2;
+    eas.n_individuals = 2;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'

@@ -16,9 +16,11 @@ function intersects = collisionCheck(conf, nodes)
     intersects = false;
     for i = 1 : nUsedNodes - 1 
         for j = 1 : nObstacles
-            if segmentxcylinder(nodes(i,:),nodes(i+1,:),obstacles(j,:))
+            if veccol(nodes(i,:),nodes(i+1,:),obstacles(j,:))
                 intersects = true;
                 return;
+            else
+                drawProblem3D(conf);
             end
         end
     end
