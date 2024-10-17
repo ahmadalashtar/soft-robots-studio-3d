@@ -50,8 +50,9 @@ function [best_chrom, configurations, fit_array] = main(exp_flag)
     if nargin == 0
         exp_flag=0;
     end
+    
     if(~exp_flag)
-        %firstTask();
+        firstTask();
     end
     
     

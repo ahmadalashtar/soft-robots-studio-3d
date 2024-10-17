@@ -1,26 +1,45 @@
-function firstTask(exp_flag)
+function thirdTask(exp_flag)
     global op;
     if nargin == 0
         exp_flag=0;
     end
     op.home_base = [0 0 0 0 0];
 
-    t1 = [145 -30 115 ];
-    t2 = [145 30 115 ];
-    op.targets = [  t1 -15 75;
-                    t2 15 75;
+    t1 = [-80 40 100 ];
+    t2 = [-80 -40 100 ];
+    t3 = [-40 80 100];
+    t4 = [40 80 100];
+    t5 = [80 40 100 ];
+    t6 = [80 -40 100];
+    t7 = [-40 -80 100];
+    t8 = [40 -80 100];
+    op.targets = [  
+                    
+                    t1 -60 -20;
+                    t2 60 -20;
+                    t3 -60 -55;
+                    t4 -60 55;
+                    t5 -60 20;
+                    t6 60 20;
+                    t7 55 -60;
+                    t8 55 60;
+
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
     op.obstacles = [
-                    85 0 200 12.5 300;
-                    45 56.79492 200 12.5 300;
-                    45 -56.79492 200 12.5 300;
-                    145 -30 200 12.5 80;
-                    145 30 200 12.5 80;
+                    -50 20 100  10 80;
+                    -50 -20 100 10 80;
+                    -20 50 100 10 80;
+                    20 50 100 10 80;
+                    50 20 100 10 80;
+                    50 -20 100 10 80;
+                    -20 -50 100 10 80;
+                    20 -50 100 10 80;
+                    
                     ]; %cylinder [x y z(base) radius height]
 
     op.n_links = 20;
-    op.length_domain = [25 100];
+    op.length_domain = [5 40];
 
     op.first_angle.is_fixed = true;
     op.angle_domain = [-45 45];
@@ -37,8 +56,8 @@ function firstTask(exp_flag)
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
     if ~exp_flag
-        eas.n_generations = 100;
-        eas.n_individuals = 100;
+        eas.n_generations = 2;
+        eas.n_individuals = 2;
         eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
         eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
         eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'

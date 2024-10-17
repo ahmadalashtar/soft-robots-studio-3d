@@ -10,7 +10,7 @@ function experiment_main()
 
     numOfIteration = 20;    %%The amount of iteration
 
-    result.tasks = ["firstTask", "secondTask"]; %%Type wanted task function's names
+    result.tasks = ["firstTask", "thirdTask"]; %%Type wanted task function's names
     
     algo_series = ["ga", "bbbc", "pso", "de"]; %% Type wanted algorithm types in here
     result.algorithms = algo_series;
@@ -41,10 +41,12 @@ function experiment_main()
     count = 1;
     for TaskID = 1:length(result.tasks)
         switch result.tasks(TaskID)
-             case "firstTask"
-                firstTask();
+            case "firstTask"
+                firstTask(1);
             case "secondTask"
-                secondTask();
+                secondTask(1);
+            case "thirdTask"
+                thirdTask(1);
         end
         for k = 1:length(algo_series)
             eas.algorithm = algo_series(k);
