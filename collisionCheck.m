@@ -4,8 +4,10 @@ function intersects = collisionCheck(conf)
     nObstacles = size(obstacles,1);
 
     nodes = solveForwardKinematics3D(conf,op.home_base,0);
-    nUsedLinks = 0;
-    for i = 1:size(conf,1)
+    confSize = size(conf,1);
+    nUsedLinks = confSize;
+
+    for i = 1:confSize
         if conf(i,3)==0
             nUsedLinks = i-1;
             break;
