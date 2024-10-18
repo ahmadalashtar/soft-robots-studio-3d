@@ -64,7 +64,7 @@ function [pop, fit_array_P] = runDE(exp)
             fprintf('OND %d%%, ', fit_array_P(1,eas.fitIdx.wiggly));
             fprintf('LoS %d, ', fit_array_P(1,eas.fitIdx.nodesOnSegment));
             fprintf('Length %.3f', fit_array_P(1,eas.fitIdx.totLength));
-            
+
             % for i=1:1:size(comD,2)
             %     fprintf('%.4f', comD(i));
             %     if i~=size(comD,2)
@@ -72,7 +72,7 @@ function [pop, fit_array_P] = runDE(exp)
             %     end
             % end    
             % fprintf('] = %.4f', mean(comD));
-            
+
 %             if dynamic_mutation == true
 %                 fprintf(', Dynamic Mutation: %.4f', gas.mutation_probability);
 %             end

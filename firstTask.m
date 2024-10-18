@@ -37,12 +37,10 @@ function firstTask(exp_flag)
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
     if ~exp_flag
-        eas.n_generations = 100;
-        eas.n_individuals = 100;
-        eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
+        eas.n_generations = 10;
+        eas.n_individuals = 10;
         eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
         eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
-        eas.ga.crossover_method = 'blxa';  % 'blxa'
         eas.ga.crossover_probability = 0.8;
         eas.ga.mutation_method = 'random';   % 'random', 'modifiedRandom'
         eas.ga.mutation_probability = 0.2;  % -1 is dynamic 
@@ -60,8 +58,6 @@ function firstTask(exp_flag)
     
         % settings of rank partitioning algorithm
         eas.ranking_method = 'penalty';     % 'penalty', 'separation'
-        eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
-        eas.rankingSettings.step_len = 5;
     end
 
 end

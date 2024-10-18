@@ -66,6 +66,7 @@ function [best_chrom, configurations, fit_array] = main(exp_flag)
     eas.verbose = true;
     eas.normalize_weightDistance = true;    % deprecated
     eas.variance_generations = 10; 
+    eas.obstacle_avoidance = false;
     
     eas.stopAtVariance_flag = false;    % if true, GA will stop when variance between solutions becomes < 0.000 (number of zeros are defined..
     eas.stopAtVariance_zeros = 2;       % ...here)
@@ -106,7 +107,7 @@ function [best_chrom, configurations, fit_array] = main(exp_flag)
     fit_array = [];
 
     if(~exp_flag)
-        eas.algorithm = "ga"; % ga, bbbc, pso, or de
+        eas.algorithm = "de"; % ga, bbbc, pso, or de
     end
 
     switch eas.algorithm
@@ -133,9 +134,11 @@ function [best_chrom, configurations, fit_array] = main(exp_flag)
     else
         isBestFeasible = "unfeas";
     end
-    r=1; %this is for experiments to keep track of which run we are executing. remove when running experiments
-    tit = "RUN: " + num2str(r) + ", IK: " + num2str(fit_array(1,eas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,eas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,eas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,eas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
-    title(tit); 
-    disp(num2str(fit_array(1,eas.fitIdx.pen)))
-    disp("hello")
+    if(~exp_flag)
+        r=1; %this is for experiments to keep track of which run we are executing. remove when running experiments
+        tit = "RUN: " + num2str(r) + ", IK: " + num2str(fit_array(1,eas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,eas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,eas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,eas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
+        title(tit); 
+        disp(num2str(fit_array(1,eas.fitIdx.pen)))
+        disp("hello")
+    end
 end
