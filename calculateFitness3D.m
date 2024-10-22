@@ -119,27 +119,6 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
             end
             dist2target = dist2target - l;
         end
-
-%         %----CUT ROBOT if the angles were right :(
-%         configurations = decodeIndividual(chrom); 
-%         conf = configurations(:,:,ceili2);
-% %         drawProblem2D(configurations);
-%         robot_points = solveForwardKinematics3D(conf,op.home_base,false);
-%         for j=ee_index:1:n_links
-%             l = chrom(n_targets*2+1,j);
-%             dist2target = norm(robot_points(j,:)-t(1:3));
-%             if(dist2target<l)
-%                 %cut here
-%                 %%EMİR reduced everything by 1
-%                 lastNode_index = j;
-%                 chrom(i,n_links+3) = lastNode_index;
-%                 chrom(i,n_links+4) = dist2target; %cut length
-%                 chrom(i+1,n_links+3) = lastNode_index;
-%                 chrom(i+1,n_links+4) = dist2target; %cut length
-%                 sumLinksOnSegment = sumLinksOnSegment + chrom(i,n_links+3) - chrom(i,n_links+1) + 1;%%EMİR i didn't touch this
-%                 break;
-%             end
-%         end
         
         %----calculate robot total length
         %%EMİR reduced for loop by 1
@@ -196,29 +175,3 @@ function [dist_mat, ee_index] = calculateMinDistance_FromOrientationSegment(robo
     end
     dist_mat = dist_mat(1:ee_index,:);  % cut all nodes after the minimum (it means the robot will not stop grow in that direction from now on)
 end
-
-
-% Calculate the angle between the robot (at the current end effector) and the target's orientation segment
-% Uses voronoi rotation to make the angle calculation simpler
-
-
-% input: 
-% - v1: a 3D vector as [x y z]
-% - v2: a 3D vector as [x y z]
-% output:
-% - angles: the difference in angles to go from v2 to v1 as a rotation on x
-% and rotation on y in respect to Z
-
-% input: 
-% - v1: a 2D vector on zx or zy
-% - v2: a 2D vector on zx or zy
-% output:
-% - angle: the difference in angle to go from v2 to v1 in respect to the
-% v1(1) and v2(1)
-
-
-
-% % Calculate the area of a triangle given its three vertices
-% function [area] = calculateTriangleArea(p1,p2,p3)
-%     area = abs((p1(1)*p2(2)+p2(1)*p3(2)+p3(1)*p1(2)-p1(2)*p2(1)-p2(2)*p3(1)-p3(2)*p1(1))/2.0);
-% end
