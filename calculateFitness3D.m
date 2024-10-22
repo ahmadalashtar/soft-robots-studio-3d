@@ -46,7 +46,6 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
     n_targets = size(op.targets,1);
     n_links = op.n_links;
     
-    
     if draw_plot
         configurations = decodeIndividual(chrom); 
         drawProblem3D(configurations);
@@ -58,10 +57,7 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         thisConf_totLength = 0;
 
         configurations = decodeIndividual(chrom);
-        conf = configurations(:,:,ceili2);
-        % dist_normalization = norm(t(1:2)-op.home_base(1:2));    % might be useful if we add different objectives to the fitness that have different degree of representation
-        
-
+        conf = configurations(:,:,ceili2);        
         
         %----CALCULATE MIN DISTANCE FROM ROBOT TO TARGET'S ORIENTATION SEGMENT AND LAST ANGLE
         robot_points = solveForwardKinematics3D(conf,op.home_base,false);
@@ -70,37 +66,26 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         chrom(i+1,n_links+1) = ee_index;  % this is the index of the closest node to the target's orientation segment
         sumLinks = sumLinks + chrom(i,n_links+1)-1;
         
-        % % draw distances from robot to segment (for DEBUG and PAPER FIGURES)
-        % areas_vect = zeros(1,size(dist_mat,1));
         if draw_plot==true
             for j = 1:1:ee_index
                 n_proj = dist_mat(j,2:3);
                 plot([robot_points(j,1),n_proj(1)],[robot_points(j,2),n_proj(2)],'--o','Color','k'); 
             end 
         end
-        
-        
-       
 
         fit = dist_mat(ee_index);        
         fitness(1) = fitness(1) + fit;
-        % for k = 2:size(robot_points,1)-1
+
         ee_link_index = ee_index -1 ;
         [final_angle_x, final_angle_y] = solveInverseKinematics3D(conf,robot_points,ee_link_index,op.targets(ceili2,1:3));
         [final_angle_x, final_angle_y] = optimizeAngle(final_angle_x, final_angle_y);
-        % [final_angle_x, final_angle_y]= calculateLastAngle(robot_points, k, robot_points(k+1,:));
         % end
-        %%EMİR commented out the extra x and y removed i+1 and made both
-        %%n_links + 2
         chrom(i,n_links+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
         chrom(i+1,n_links+2) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
-        %chrom(i+1,n_links+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
-        %chrom(i+1,n_links+3) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
         
          %----CUT ROBOT
         configurations = decodeIndividual(chrom); 
         conf = configurations(:,:,ceili2);
-%         drawProblem2D(configurations);
         robot_points = solveForwardKinematics3D(conf,op.home_base,false);
         ee_point = robot_points(ee_index, :);
         dist2target = norm(ee_point-t(1:3));
@@ -108,7 +93,6 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
             l = chrom(n_targets*2+1,j);
             if(dist2target<l)
                 %cut here
-                %%EMİR reduced everything by 1
                 lastNode_index = j;
                 chrom(i,n_links+3) = lastNode_index;
                 chrom(i,n_links+4) = dist2target; %cut length
@@ -121,18 +105,16 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         end
         
         %----calculate robot total length
-        %%EMİR reduced for loop by 1
         for j=1:1:chrom(i,n_links+3)-1
             thisConf_totLength = thisConf_totLength + chrom(n_targets*2+1,j);
         end
-        %%this got reduced by 1 too EMİR
         thisConf_totLength = thisConf_totLength + chrom(i,n_links+4);
         totLength = max(thisConf_totLength,totLength);
     end
     
     fitness(1) = fitness(1) / n_targets;  % normalize the fitness among number of targets/configurations
     fitness(2) = sumLinks; % / n_targets;
-    fitness(3) = fix(calculateUndulation(chrom) * 100);    % already normalized
+    fitness(3) = calculateUndulation(chrom) * 100;    % already normalized
     fitness(4) = sumLinksOnSegment; %/ n_targets;   
     fitness(5) = totLength;
     if draw_plot==true
