@@ -19,8 +19,6 @@ function intersects = collisionCheck(conf, nodes)
             if veccol(nodes(i,:),nodes(i+1,:),obstacles(j,:))
                 intersects = true;
                 return;
-            else
-                drawProblem3D(conf);
             end
         end
     end

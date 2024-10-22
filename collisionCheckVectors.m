@@ -1,4 +1,4 @@
-function vectors = collisionCheckVectors(minLength, angleLimitPositiveX, angleLimitNegativeX, angleLimitPositiveY, angleLimitNegativeY, targetAngleX, targetAngleY, startPoint)
+function vectors = collisionCheckVectors(minLength, targetAngleX, targetAngleY, startPoint)
 
     % if targetAngleX > angleLimitPositiveX || targetAngleX < angleLimitNegativeX
     %     disp("Target X angle should be within bounds")
