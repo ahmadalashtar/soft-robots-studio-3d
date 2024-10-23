@@ -13,7 +13,7 @@ function experiment_main()
 
     result.tasks = ["firstTask", "thirdTask"]; %%Type wanted task function's names
     
-    algo_series = ["bbbc", "de" "pso" "ga"]; %% Type wanted algorithm types in here %"bbbc","ga","pso","de"
+    algo_series = ["bbbc"]; %% Type wanted algorithm types in here %"bbbc","ga","pso","de"
     result.algorithms = algo_series;
        
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
@@ -55,21 +55,17 @@ function experiment_main()
     eas.pso.socialConstant = 2;
 
 
-   
-
     %%Parameters Array
 
-    result.parameters.ga.mutation_probability = [-1 0.2 0.4 0.6];
     result.parameters.ga.crossover_alpha = [0.5 0.419 0.381]; 
-
-    result.parameters.de.variant = [1 2 3 4 5 6]; %%Find paper for all
-    result.parameters.de.scalingFactor = [0.5  0.75 1.0];
+    result.parameters.ga.mutation_probability = [-1 0.2 0.4 0.6];
 
     result.parameters.pso.omega = [0.6  0.8  1.0];
     result.parameters.pso.cognitiveConstant = [2.0 2.5 5.0];
     result.parameters.pso.socialConstant = [0.5 1.0 1.5];
 
-   
+    result.parameters.de.variant = [1 2 3 4 5 6]; %%Find paper for all
+    result.parameters.de.scalingFactor = [0.5  0.75 1.0];
 
 
 
@@ -99,7 +95,7 @@ function experiment_main()
                         
                         for z = 1:length(result.parameters.ga.crossover_alpha)
                                 eas.ga.crossover_alpha = result.parameters.ga.crossover_alpha(z);
-                                iteration(numOfIteration,count,TaskID,k, [a z 0]);
+                                iteration(numOfIteration,count,TaskID,k, [a z]);
                                 count = count + numOfIteration;
                         end
 
@@ -110,7 +106,7 @@ function experiment_main()
                             
                             eas.de.variant = result.parameters.de.variant(b);
                             eas.de.scalingFactor = result.parameters.de.scalingFactor(b_2);
-                            iteration(numOfIteration,count,TaskID,k, [b b_2 0]);
+                            iteration(numOfIteration,count,TaskID,k, [b b_2]);
                             count = count + numOfIteration;
 
                         end
@@ -133,7 +129,7 @@ function experiment_main()
                     end
 
                 case "bbbc"
-                    iteration(numOfIteration,count,TaskID,k, [0 0 0]);
+                    iteration(numOfIteration,count,TaskID,k);
                     count = count + numOfIteration;
 
                  end
