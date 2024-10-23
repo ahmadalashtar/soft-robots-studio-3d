@@ -160,13 +160,13 @@ function mutant = mutateVector(pop,row,column,targetIndex,fittestPopIndex,xr1,xr
         case 1
             mutant = xr1+F*(xr2-xr3); %xr1+F(xr2−xr3)
         case 2
-            mutant = best+F*(xr1-xr2); %xbest+F(xr1−xr2)
+            mutant = best(row,column)+F*(xr1-xr2); %xbest+F(xr1−xr2)
         case 3 
             mutant = xr1+F*(xr2-xr3)+F*(xr4-xr5); %xr1+F(xr2−xr3)+F(xr4−xr5)
         case 4
-            mutant = best+F*(xr1-xr2)+F*(xr3-xr4); %xbest+F(xr1−xr2)+F(xr3−xr4)
+            mutant = best(row,column)+F*(xr1-xr2)+F*(xr3-xr4); %xbest+F(xr1−xr2)+F(xr3−xr4)
         case 5
-            mutant = xi+F*(best-xi)+F*(xr1-xr2); %xi+F(xbest−xi)+F(xr1−xr2)
+            mutant = xi+F*(best(row,column)-xi)+F*(xr1-xr2); %xi+F(xbest−xi)+F(xr1−xr2)
         case 6
             mutant = xi + (xr1-xi)*rand() + F*(xr2-xr3); %xi+rand(xr1−xi)+F(xr2−xr3)
     end
