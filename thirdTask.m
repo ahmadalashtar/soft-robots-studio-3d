@@ -1,5 +1,6 @@
 function thirdTask(exp_flag)
     global op;
+
     if nargin == 0
         exp_flag=0;
     end
@@ -82,5 +83,5 @@ function thirdTask(exp_flag)
         eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
         eas.rankingSettings.step_len = 5;
     end
-
+        
 end

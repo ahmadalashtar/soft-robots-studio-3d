@@ -54,7 +54,7 @@ function firstTask(exp_flag)
         
         eas.de.scalingFactor = 0.85;
         eas.de.crossoverProbability = 0.8;
-        eas.de.variant = 1; % 1: rand/1 2: best/1 3: rand/2 4: best/2 5: current-to-best/1 6: current-to-rand/1
+        eas.de.variant = 2; % 1: rand/1 2: best/1 3: rand/2 4: best/2 5: current-to-best/1 6: current-to-rand/1
     
         % settings of rank partitioning algorithm
         eas.ranking_method = 'penalty';     % 'penalty', 'separation'

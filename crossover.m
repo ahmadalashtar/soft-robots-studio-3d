@@ -16,7 +16,7 @@ function [o1, o2] = crossover(p1, p2)
         % do crossover
         switch eas.ga.crossover_method
             case 'blxa'
-                alpha = 0.5;
+                alpha = eas.ga.crossover_alpha;%%This will become eas.ga.alpha_crossover // changed it, it was hardcode 0.5
                 if(eas.obstacle_avoidance==true)
                     o1 = blendCrossover_obstacleAvoidance(p1, p2, alpha);
                     o2 = blendCrossover_obstacleAvoidance(p1, p2, alpha);
