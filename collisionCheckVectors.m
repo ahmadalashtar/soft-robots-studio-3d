@@ -1,4 +1,4 @@
-function vectors = collisionCheckVectors(minLength, targetAngleX, targetAngleY, startPoint)
+function vectors = collisionCheckVectors(minLength, targetAngleX, targetAngleY, startPoint, currentAngleX, currentAngleY)
 
     % if targetAngleX > angleLimitPositiveX || targetAngleX < angleLimitNegativeX
     %     disp("Target X angle should be within bounds")
@@ -17,15 +17,15 @@ function vectors = collisionCheckVectors(minLength, targetAngleX, targetAngleY, 
     XincrementAmount = 2;
     YincrementAmount = 2;
 
-    if targetAngleX < 0
+    if targetAngleX < currentAngleX
         XincrementAmount = XincrementAmount * -1;
     end
-    if targetAngleY < 0
+    if targetAngleY < currentAngleY
         YincrementAmount = YincrementAmount * -1;
     end
 
-    for j = 0:XincrementAmount:targetAngleY
-        for i = 0:YincrementAmount:targetAngleX
+    for j = currentAngleY:YincrementAmount:targetAngleY
+        for i = currentAngleX:XincrementAmount:targetAngleX
 
             angle_radX = deg2rad(i);
             angle_radY = deg2rad(j);
@@ -47,17 +47,17 @@ function vectors = collisionCheckVectors(minLength, targetAngleX, targetAngleY, 
 
     vectors = vectors(1:index-1, :);
 
-    % origin = zeros(index - 1, 3);
-    % figure;
-    % quiver3(origin(:,1), origin(:,2), origin(:,3), ...
-    %         vectors(:,1), vectors(:,2), vectors(:,3), 0, 'r');
-    % 
-    % xlabel('X');
-    % ylabel('Y');
-    % zlabel('Z');
-    % title('3D Vectors XY');
-    % axis equal;
-    % grid on;
-    % view(3);
+    origin = zeros(index - 1, 3);
+    figure;
+    quiver3(origin(:,1), origin(:,2), origin(:,3), ...
+            vectors(:,1), vectors(:,2), vectors(:,3), 0, 'r');
+
+    xlabel('X');
+    ylabel('Y');
+    zlabel('Z');
+    title('3D Vectors XY');
+    axis equal;
+    grid on;
+    view(3);
 
 end
