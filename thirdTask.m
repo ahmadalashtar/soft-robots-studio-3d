@@ -12,8 +12,6 @@ function thirdTask()
     t8 = [40 -80 100];
     op.targets = [  
                     
-                    t1 -60 -20;
-                    t2 60 -20;
                     t3 -60 -55;
                     t4 -60 55;
                     t5 -60 20;
@@ -24,8 +22,6 @@ function thirdTask()
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
     op.obstacles = [
-                    -50 20 100  10 80;
-                    -50 -20 100 10 80;
                     -20 50 100 10 80;
                     20 50 100 10 80;
                     50 20 100 10 80;
