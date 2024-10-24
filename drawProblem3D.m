@@ -1,6 +1,6 @@
 function [] = drawProblem3D(robot_configurations)
     global op;
-    f = figure;
+    f = gcf;
     hold on;
     axis equal;
     xlabel('x');

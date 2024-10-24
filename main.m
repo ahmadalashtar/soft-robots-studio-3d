@@ -72,7 +72,7 @@ function [best_chrom, configurations] = main()
                     ]; %cylinder [x y z(base) radius height]
 
     op.n_links = 20;
-    op.length_domain = [5 100];
+    op.length_domain = [20 100];
 
     op.first_angle.is_fixed = true;
     op.angle_domain = [-30 30];
