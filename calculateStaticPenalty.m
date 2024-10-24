@@ -96,8 +96,11 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
 
             angle_X = atand(abs(nodes(i+1, 1) - nodes(i, 1))/abs(nodes(i+1, 3) - nodes(i, 3)));
             angle_Y = atand(abs(nodes(i+1, 2) - nodes(i, 2))/abs(nodes(i+1, 3) - nodes(i, 3)));
+            prevAngle_X = atand(abs(nodes(i,1) - nodes(i-1,1))/abs(nodes(i,3) - nodes(i-1,3)));
+            prevAngle_Y = atand(abs(nodes(i,2) - nodes(i-1,2))/abs(nodes(i,3) - nodes(i - 1,3)));
 
-            vectors = collisionCheckVectors(op.length_domain(1), angle_X, angle_Y, nodes(i,:));
+            vectors = collisionCheckVectors(op.length_domain(1), angle_X, angle_Y, nodes(i,:), prevAngle_X, prevAngle_Y);
+            
             if vectorObstacleCheck(vectors, op.obstacles, nodes(i,:))
                 g(9) = g(9) + 1;
             end
