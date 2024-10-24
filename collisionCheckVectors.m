@@ -1,4 +1,4 @@
-function vectors = collisionCheckVectors(minLength, targetAngleX, targetAngleY, startPoint, currentAngleX, currentAngleY)
+function vectors = collisionCheckVectors(minLength, targetAngleX, targetAngleY, startPoint, currentAngleX, currentAngleY, R)
 
     % if targetAngleX > angleLimitPositiveX || targetAngleX < angleLimitNegativeX
     %     disp("Target X angle should be within bounds")
@@ -26,12 +26,13 @@ function vectors = collisionCheckVectors(minLength, targetAngleX, targetAngleY, 
 
 
     for i = currentAngleX:XincrementAmount:targetAngleX
+        newR = R;
 
         angle_radX = deg2rad(i);
         
         unit_vector1 = [1, 0, 0; 0, cos(angle_radX), -sin(angle_radX); 0, sin(angle_radX), cos(angle_radX)];
-
-        new_unitVector = unit_vector1;
+        
+        new_unitVector = unit_vector1 * newR;
         tcp_coords = (new_unitVector * [0 0 minLength]')';
         newCoords = tcp_coords + startPoint;
         
@@ -47,11 +48,12 @@ function vectors = collisionCheckVectors(minLength, targetAngleX, targetAngleY, 
         index = index + 1;
     end
     for j = currentAngleY:YincrementAmount:targetAngleY
+        newR = R;
         angle_radY = deg2rad(j);
 
         unit_vector2 = [cos(angle_radY), 0, sin(angle_radY); 0, 1, 0; -sin(angle_radY), 0, cos(angle_radY)];
 
-        new_unitVector = unit_vector1 * unit_vector2;
+        new_unitVector = unit_vector1 * unit_vector2 * newR;
         tcp_coords = (new_unitVector * [0 0 minLength]')';
         newCoords = tcp_coords + startPoint;
 

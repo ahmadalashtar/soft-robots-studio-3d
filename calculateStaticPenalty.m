@@ -44,7 +44,7 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
         conf = configurations(:,:,ceil(i/2));
         % check intersections for every segment of each configuration of the robot
                 
-        nodes = solveForwardKinematics3D(conf,op.home_base,0);
+        [nodes, RArray] = solveForwardKinematics3D(conf,op.home_base,0);
 
         intersections = intersections + collisionCheck(conf, nodes);
 
@@ -91,8 +91,6 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
             end
         end
         nUsedNodes = nUsedLinks + 1;
-        
-        R = eye(3);
 
         for i = 1:1:nUsedNodes - 1
 
@@ -107,7 +105,7 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
                 prevAngle_Y = op.home_base(5);
             end
 
-            vectors = collisionCheckVectors(op.length_domain(1), angle_X, angle_Y, nodes(i,:), prevAngle_X, prevAngle_Y, R);
+            vectors = collisionCheckVectors(op.length_domain(1), angle_X, angle_Y, nodes(i,:), prevAngle_X, prevAngle_Y, RArray{i});
 
             if vectorObstacleCheck(vectors, op.obstacles, nodes(i,:))
                 g(9) = g(9) + 1;
