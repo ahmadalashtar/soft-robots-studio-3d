@@ -22,11 +22,11 @@ function thirdTask()
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
     op.obstacles = [
-                    -20 50 100 10 80;
+                    35 35 100 10 80;
                     20 50 100 10 80;
                     50 20 100 10 80;
                     50 -20 100 10 80;
-                    -20 -50 100 10 80;
+                    35 -35 100 10 80;
                     20 -50 100 10 80;
                     
                     ]; %cylinder [x y z(base) radius height]
