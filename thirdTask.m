@@ -2,8 +2,6 @@ function thirdTask()
     global op;          
     op.home_base = [0 0 0 0 0];
 
-    t1 = [-80 40 100 ];
-    t2 = [-80 -40 100 ];
     t3 = [-40 80 100];
     t4 = [40 80 100];
     t5 = [80 40 100 ];
@@ -12,12 +10,12 @@ function thirdTask()
     t8 = [40 -80 100];
     op.targets = [  
                     
-                    t3 -60 -55;
-                    t4 -60 55;
-                    t5 -60 20;
-                    t6 60 20;
-                    t7 55 -60;
-                    t8 55 60;
+                    t3 -38.659808254090095 -17.346065292669948;
+                    t4 -28.8 29.6;
+                    t5 -32.005383208083494 25.004301778398400;
+                    t6 36 30;
+                    t7 38.659808254090095 -17.346065292669948;
+                    t8 28.8 29.6;
 
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
@@ -32,7 +30,7 @@ function thirdTask()
                     ]; %cylinder [x y z(base) radius height]
 
     op.n_links = 20;
-    op.length_domain = [5 40];
+    op.length_domain = [10 30];
 
     op.first_angle.is_fixed = true;
     op.angle_domain = [-45 45];
@@ -48,15 +46,15 @@ function thirdTask()
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 2;
-    eas.n_individuals = 2;
+    eas.n_generations = 500;
+    eas.n_individuals = 500;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
     eas.ga.crossover_method = 'blxa';  % 'blxa'
-    eas.ga.crossover_probability = 0.8;
+    eas.ga.crossover_probability = 1;
     eas.ga.mutation_method = 'random';   % 'random', 'modifiedRandom'
-    eas.ga.mutation_probability = 0.2;  % -1 is dynamic 
+    eas.ga.mutation_probability = -1;  % -1 is dynamic 
     eas.survival_alpha = 40;    %this is the percentage of elites that will stay in the new population
     eas.penalty_method = 'static';	% 'static', 'deb'
     
