@@ -12,5 +12,6 @@ function thereIsCollision = vectorObstacleCheck(vectors, obstacles, startPoint)
             end
         end
     end
+    thereIsCollision = false;
 end
 

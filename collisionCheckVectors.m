@@ -46,18 +46,18 @@ function vectors = collisionCheckVectors(minLength, targetAngleX, targetAngleY, 
     end
 
     vectors = vectors(1:index-1, :);
-
-    origin = zeros(index - 1, 3);
-    figure;
-    quiver3(origin(:,1), origin(:,2), origin(:,3), ...
-            vectors(:,1), vectors(:,2), vectors(:,3), 0, 'r');
-
-    xlabel('X');
-    ylabel('Y');
-    zlabel('Z');
-    title('3D Vectors XY');
-    axis equal;
-    grid on;
-    view(3);
+    % 
+    % origin = zeros(index - 1, 3);
+    % figure;
+    % quiver3(origin(:,1), origin(:,2), origin(:,3), ...
+    %         vectors(:,1), vectors(:,2), vectors(:,3), 0, 'r');
+    % 
+    % xlabel('X');
+    % ylabel('Y');
+    % zlabel('Z');
+    % title('3D Vectors XY');
+    % axis equal;
+    % grid on;
+    % view(3);
 
 end
