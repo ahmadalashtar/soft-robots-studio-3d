@@ -4,8 +4,8 @@ function firstTask()
 
     t1 = [145 -30 115 ];
     t2 = [145 30 115 ];
-    op.targets = [  t1 -15 75;
-                    t2 15 75;
+    op.targets = [  t1 -12.994616791916506 56.293413183225340;
+                    t2 12.994616791916506 56.293413183225340;
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
     op.obstacles = [
@@ -17,7 +17,7 @@ function firstTask()
                     ]; %cylinder [x y z(base) radius height]
 
     op.n_links = 20;
-    op.length_domain = [25 100];
+    op.length_domain = [25 50];
 
     op.first_angle.is_fixed = true;
     op.angle_domain = [-45 45];
@@ -33,15 +33,15 @@ function firstTask()
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 50;
-    eas.n_individuals = 50;
+    eas.n_generations = 500;
+    eas.n_individuals = 1000;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
     eas.ga.crossover_method = 'blxa';  % 'blxa'
-    eas.ga.crossover_probability = 0.8;
+    eas.ga.crossover_probability = 1;
     eas.ga.mutation_method = 'random';   % 'random', 'modifiedRandom'
-    eas.ga.mutation_probability = 0.2;  % -1 is dynamic 
+    eas.ga.mutation_probability = -1;  % -1 is dynamic 
     eas.survival_alpha = 40;    %this is the percentage of elites that will stay in the new population
     eas.penalty_method = 'static';	% 'static', 'deb'
     
