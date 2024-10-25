@@ -82,7 +82,8 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
 %            gas.infeasible_running_stats(1) = nextM;
 
         end
-
+        
+        clf;
         nUsedLinks = 0;
         for i = 1:size(conf,1)
             if conf(i,3)==0
@@ -91,21 +92,24 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
             end
         end
         nUsedNodes = nUsedLinks + 1;
+        drawProblem3D(conf);
 
-        for i = 1:1:nUsedNodes - 1
+        for i = 2:1:nUsedNodes-1
 
-            angle_X = chrom(1, i);
-            angle_Y = chrom(2, i);
-
-            if i-1 ~= 0
-                prevAngle_X = chrom(1, i-1);
-                prevAngle_Y = chrom(2, i-1);
+            currNode = nodes(i,:);
+            if i-1 < 1
+                prevNode = nodes(i,:);
+                nexNode = nodes(i+1,:);
+            elseif i+1 > nUsedNodes
+                prevNode = nodes(i-1,:);
+                nexNode = nodes(i,:);
             else
-                prevAngle_X = op.home_base(4);
-                prevAngle_Y = op.home_base(5);
+                prevNode = nodes(i-1,:);
+                nexNode = nodes(i+1,:);
             end
 
-            vectors = collisionCheckVectors(op.length_domain(1), angle_X, angle_Y, nodes(i,:), prevAngle_X, prevAngle_Y, RArray{i});
+            vectors = pathVectors(transpose(prevNode), transpose(currNode), transpose(nexNode), op.length_domain(1));
+            
 
             if vectorObstacleCheck(vectors, op.obstacles, nodes(i,:))
                 g(9) = g(9) + 1;
