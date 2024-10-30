@@ -93,17 +93,17 @@ function [best_chrom, configurations] = main()
     pop = [];
     fit_array = [];
     
-    eas.algorithm = "ga"; % ga, bbbc, pso, or de
+    eas.algorithm = "de"; % ga, bbbc, pso, or de
 
     switch eas.algorithm
         case "ga"
-            [pop, fit_array] = runGeneticAlgorithm(1);
+            [pop, fit_array,fitnessPerGeneration] = runGeneticAlgorithm(1);
         case "bbbc"
-            [pop, fit_array] = runBBBC(1);
+            [pop, fit_array,fitnessPerGeneration] = runBBBC(1);
         case "pso"
-            [pop, fit_array] = runPSO(1);
+            [pop, fit_array,fitnessPerGeneration] = runPSO(1);
         case "de"
-            [pop, fit_array] = runDE(1);
+            [pop, fit_array,fitnessPerGeneration] = runDE(1);
     end
 
     best_index = fit_array(1,eas.fitIdx.id);

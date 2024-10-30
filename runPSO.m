@@ -1,4 +1,4 @@
-function [localBests, localBestsFitness] = runPSO(exp)
+function [localBests, localBestsFitness,fitnesses] = runPSO(exp)
     
     global eas;
     global op;
@@ -34,6 +34,7 @@ function [localBests, localBestsFitness] = runPSO(exp)
         swarm = applySurvival(swarm,oldSwarm);
         fittest = eas.pso.globalBest;
         bestFitness = fittest.fitness;
+        fitnesses(gen,:) = bestFitness;
         % calculate variance over the last 'varianceGen' generations
         
         queue(qIndex)=bestFitness(eas.fitIdx.ik);     % variance is on ik fitness only (ranking fitness depends on the current population, so it makes no sense to compare the rank of individuals from different generations)

@@ -1,4 +1,4 @@
-function [pop, fit_array_P] = runBBBC(exp)
+function [pop, fit_array_P,fitnesses] = runBBBC(exp)
     
     global eas;       % big bang-big crunch settings
 
@@ -19,7 +19,7 @@ function [pop, fit_array_P] = runBBBC(exp)
     %--EVALUATION
     [pop, fit_array_P] = evaluate(pop);
     [fit_array_P] = rankingEvaluation(fit_array_P);
-
+    fitnesses = fit_array_P;
     %--ITERATIONS
 
     for gen = 1 : eas.n_generations
@@ -77,7 +77,7 @@ function [pop, fit_array_P] = runBBBC(exp)
         if eas.stopAtFitness_flag == true && round(fit_array_P(1,1), eas.stopAtFitness_zeros) == 0
             break;
         end
-
+        fitnesses(gen,:) = fit_array_P(1,:);
     end    
 
 end

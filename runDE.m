@@ -5,7 +5,7 @@
 % OUTPUT: 
 % 'pop' is the population at the last generation of the algorithm [t+1 x n+4 x n_individuals]
 % 'fit_array', is a matrix with fitness values, composed of 'ik fitness', 'number of nodes', 'rank fitness', 'index in the pop array'[n_individuals x 4]
-function [pop, fit_array_P] = runDE(exp)
+function [pop, fit_array_P, fitnesses] = runDE(exp)
     
     global eas; % genetic algorithm settings
     
@@ -27,7 +27,7 @@ function [pop, fit_array_P] = runDE(exp)
     %--EVALUATION
     [pop, fit_array_P] = evaluate(pop);
     [fit_array_P] = rankingEvaluation(fit_array_P);
-    
+    fitnesses = fit_array_P;
     %--ITERATIONS
     for gen=1:eas.n_generations
         mutants = calculateMutantVectors(pop, fit_array_P);
@@ -100,7 +100,7 @@ function [pop, fit_array_P] = runDE(exp)
             break;
         end
         
-         
+         fitnesses(gen,:) = fit_array_P(1,:);
     end  % place a breakpoint here as you run the algorithm to pause, and check how the individuals are evolving by plotting the best one with 'drawProblem2D(decodeIndividual(pop(:,:,1)))'
 
     %--FOR EXPERIMENT FILEs
