@@ -38,13 +38,13 @@
 % > execute 'drawProblem2D(decodeIndividual(pop(:,:,1)))'
 % > remove breakpoint and continue the execution
 
-function [best_chrom, configurations] = main()
+function [best_chrom, configurations] = main(run)
     
     %---------------------PROBLEM DEFINITION--------------------- 
     global op;
     global eas;
 
-    firstTask();
+    fourthTask();
 
     eas.rankingSettings.minFit = 0;     % OUTPUT min IK fitness
     eas.rankingSettings.maxFi = 0;      % OUTPUT max IK fitness  FIX THE TYPO
@@ -93,7 +93,7 @@ function [best_chrom, configurations] = main()
     pop = [];
     fit_array = [];
     
-    eas.algorithm = "de"; % ga, bbbc, pso, or de
+    eas.algorithm = "ga"; % ga, bbbc, pso, or de
 
     switch eas.algorithm
         case "ga"
@@ -105,7 +105,7 @@ function [best_chrom, configurations] = main()
         case "de"
             [pop, fit_array,fitnessPerGeneration] = runDE(1);
     end
-
+    save("fitness" + num2str(run),"fitnessPerGeneration")
     best_index = fit_array(1,eas.fitIdx.id);
     best_chrom = pop(:,:,best_index);
     

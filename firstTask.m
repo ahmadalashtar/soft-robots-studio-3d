@@ -33,8 +33,8 @@ function firstTask()
 
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 500;
-    eas.n_individuals = 1000;
+    eas.n_generations = 10;
+    eas.n_individuals = 10;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'

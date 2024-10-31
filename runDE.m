@@ -102,20 +102,6 @@ function [pop, fit_array_P, fitnesses] = runDE(exp)
         
          fitnesses(gen,:) = fit_array_P(1,:);
     end  % place a breakpoint here as you run the algorithm to pause, and check how the individuals are evolving by plotting the best one with 'drawProblem2D(decodeIndividual(pop(:,:,1)))'
-
-    %--FOR EXPERIMENT FILEs
-    for i=eas.n_individuals:-1:1
-        if(round(variance_array(i),1) > 0)
-            eas.convergence0 = i-eas.variance_generations;
-            break;
-        end
-    end
-    for i=eas.n_individuals:-1:1
-        if(round(variance_array(i),2) > 0)
-            eas.convergence00 = i-eas.variance_generations;
-            break;
-        end
-    end
     
 end
 
