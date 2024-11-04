@@ -18,7 +18,7 @@ function u = compute_unit_vector(input)
            -sin(rot_y_rad), 0, cos(rot_y_rad)];
     
     % Combined rotation matrix (first rotate around y, then around x)
-    R =  R_y*R_x;
+    R =  R_x*R_y;
     
     % Initial unit vector along the z-axis
     initial_vector = [0 0 1];

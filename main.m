@@ -41,80 +41,13 @@
 function [best_chrom, configurations] = main()
     
     %---------------------PROBLEM DEFINITION--------------------- 
-    global op;          % optimization problem
-    op.plane_z = 1000;
-    op.home_base = [0 0 0 0 0];
 
-    t1 = [100 30 200 ];
-    % t2 = [100 -30 200  ];
-    % t3 = [50 50 50];
-    
-    %t2 = [100 100 100];
-    %t3 = [-400 500 op.plane_z-53];
-    % u1 = (op.home_base(1:3)-t1)/norm(op.home_base(1:3)-t1);
-    % u2 = (op.home_base(1:3)-t2)/norm(op.home_base(1:3)-t2);
-    % u3 = (op.home_base(1:3)-t3)/norm(op.home_base(1:3)-t3);
-    % [x1, y1, ~] = vector2Angles(u1)
-    % [x2, y2, ~] = vector2Angles(u2)
-    % [x3, y3, ~] = vector2Angles(u3)
-    op.targets = [ 
-        % t1 180 5 ;
-                    % t2 -30 -30 ;
-                    t1 0 50;
-                    % t2 0 50;
-                    % t2 180 0;
-
-                    ]; %target [x y z ux uy uz cone_angle]
-                    % ]; %target [x y z ux uy uz cone_angle]
-    op.obstacles = [
-                     
-                     0 30 120 20 100
-                    ]; %cylinder [x y z(base) radius height]
-
-    op.n_links = 20;
-    op.length_domain = [20 100];
-
-    op.first_angle.is_fixed = true;
-    op.angle_domain = [-30 30];
-    op.first_angle.angle = 0;
-    op.end_points = retrieveOrientationSegmentEndPoints3D(op.targets,op.obstacles,op.home_base);  % retrieve the end points for each target's orientation segment
-    disp(segment2UnitVector(op.targets(1,1:3),op.end_points(1,:)))
-    
-    % % drawProblem3D([]);
-
-    %---------------------EA SETTINGS---------------------    
+    global op;
     global eas;
 
-    
+    firstTask();
 
-    eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 2;
-    eas.n_individuals = 2;
-    eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
-    eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
-    eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
-    eas.ga.crossover_method = 'blxa';  % 'blxa'
-    eas.ga.crossover_probability = 0.9;
-    eas.ga.mutation_method = 'random';   % 'random', 'modifiedRandom'
-    eas.ga.mutation_probability = 0.4;  % -1 is dynamic 
-    eas.survival_alpha = 40;    %this is the percentage of elites that will stay in the new population
-    eas.penalty_method = 'static';	% 'static', 'deb'
-    
-    eas.pso.omega = 0.75;
-    eas.pso.cognitiveConstant = 1;
-    eas.pso.socialConstant = 2;
-    eas.pso.globalBest = struct('position',[],'fitness',[]);
-    
-    eas.de.scalingFactor = 0.85;
-    eas.de.crossoverProbability = 0.8;
-    eas.de.variant = 1; % 1: rand/1 2: best/1 3: rand/2 4: best/2 5: current-to-best/1 6: current-to-rand/1
-    
-    % settings of rank partitioning algorithm
-    eas.ranking_method = 'penalty';     % 'penalty', 'separation'
-    eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
-    eas.rankingSettings.step_len = 5;
-    
     eas.rankingSettings.minFit = 0;     % OUTPUT min IK fitness
     eas.rankingSettings.maxFi = 0;      % OUTPUT max IK fitness  FIX THE TYPO
     eas.rankingSettings.delta = 0;      % OUTPUT difference between max and min IK fitness
@@ -190,4 +123,5 @@ function [best_chrom, configurations] = main()
     tit = "RUN: " + num2str(r) + ", IK: " + num2str(fit_array(1,eas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,eas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,eas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,eas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
     title(tit); 
     disp(num2str(fit_array(1,eas.fitIdx.pen)))
+    disp("hello")
 end
