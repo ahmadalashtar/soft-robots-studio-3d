@@ -1,5 +1,6 @@
-function pathVectorsArr = pathVectors(p1, p2, p3, minLength)
+function [col] = pathVectors(p1, p2, p3, minLength, obstacles)
     pathVectorsArr = {};
+    col = false;
 
     firstP = p2 - p1;
     firstP = firstP / norm(firstP);
@@ -36,15 +37,31 @@ function pathVectorsArr = pathVectors(p1, p2, p3, minLength)
     incrementAmount = 3;
 
     pathVectorsArr{1} = curP;
+    pathVectorsArr{1} = minLength * pathVectorsArr{1} + p2;
+    for j = 1:size(obstacles, 1)
+        if veccol(p2, [pathVectorsArr{1}(1),pathVectorsArr{1}(2),pathVectorsArr{1}(3);], obstacles(j,:))
+            col = true;
+            return;
+        end
+    end
+    index = 2;
     while acosd(dot(curP, firstP, 1)) + incrementAmount <= acosd(dot(firstP, tarP, 1))
         curP = rotateKAxis(curP, K, incrementAmount);
-        pathVectorsArr{end + 1} = curP; 
+        pathVectorsArr{end + 1} = curP;
+        pathVectorsArr{index} = minLength * pathVectorsArr{index} + p2;
+        for j = 1:size(obstacles, 1)
+            if veccol(p2, [pathVectorsArr{index}(1),pathVectorsArr{index}(2),pathVectorsArr{index}(3);], obstacles(j,:))
+                col = true;
+                return;
+            end
+        end
+        index = index + 1;
     end
 
-    for i = 1:size(pathVectorsArr, 2)
-        pathVectorsArr{i} = minLength * pathVectorsArr{i} + p2;
-        plotVector(p2, pathVectorsArr{i}, 'g');
-    end
+    % for i = 1:size(pathVectorsArr, 2)
+    %     pathVectorsArr{i} = minLength * pathVectorsArr{i} + p2;
+    %     %plotVector(p2, pathVectorsArr{i}, 'g');
+    % end
 end
 
 

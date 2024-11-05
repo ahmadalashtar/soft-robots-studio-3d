@@ -46,7 +46,7 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
         conf = configurations(:,:,ceil(i/2));
         % check intersections for every segment of each configuration of the robot
                 
-        [nodes, RArray] = solveForwardKinematics3D(conf,op.home_base,0);
+        [nodes] = solveForwardKinematics3D(conf,op.home_base,0);
 
         intersections = intersections + collisionCheck(conf, nodes);
 
@@ -71,52 +71,13 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
 
         end
 
-        clf;
-        nUsedLinks = 0;
-        for i = 1:size(conf,1)
-            if conf(i,3)==0
-                nUsedLinks = i-1;
-                break;
-            end
-        end
-        nUsedNodes = nUsedLinks + 1;
-        drawProblem3D(conf);
-
-        for i = 2:1:nUsedNodes-1
-
-            currNode = nodes(i,:);
-            if i-1 < 1
-                prevNode = nodes(i,:);
-                nexNode = nodes(i+1,:);
-            elseif i+1 > nUsedNodes
-                prevNode = nodes(i-1,:);
-                nexNode = nodes(i,:);
-            else
-                prevNode = nodes(i-1,:);
-                nexNode = nodes(i+1,:);
-            end
-
-            vectors = pathVectors(transpose(prevNode), transpose(currNode), transpose(nexNode), op.length_domain(1));
-            
-
-            if vectorObstacleCheck(vectors, op.obstacles, nodes(i,:))
-                g(9) = g(9) + 1;
-            end
-        end
-
-
         % what if the epsilon node was directly on the target? Enter
         % Constraint #7
-
-        % forward kinematics to get the coordinates
-        configurations = decodeIndividual(chrom);
-        conf = configurations(:,:,targetIndex);
-        nodePoints = solveForwardKinematics3D(conf,op.home_base,0);
 
         % get the coordinates of the target and its endpoint
         target = op.targets(targetIndex,1:3);
         epsilonIndex = chrom(i,n_links+1);
-        epsilonNode = nodePoints(epsilonIndex,:);
+        epsilonNode = nodes(epsilonIndex,:);
         endPoint = op.end_points(targetIndex,:);
 
         %translate the epsildon, target, and its endpoint to the origin, so
@@ -138,6 +99,29 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
             g(7) = 1;
         else
             g(7)=0;
+        end
+
+        for j = 2:1:epsilonIndex
+
+            currNode = nodes(j,:);
+            if j-1 < 1
+                prevNode = nodes(j,:);
+                nexNode = nodes(j+1,:);
+            elseif j+1 > epsilonIndex
+                prevNode = nodes(j-1,:);
+                nexNode = nodes(j,:);
+            else
+                prevNode = nodes(j-1,:);
+                nexNode = nodes(j+1,:);
+            end
+
+            collisioning = pathVectors(transpose(prevNode), transpose(currNode), transpose(nexNode), op.length_domain(1), op.obstacles);
+            
+
+            if (collisioning)
+                 g(9) = g(9) + 1;
+                 break;
+            end
         end
 
         gScalar = gScalar + g*r';
