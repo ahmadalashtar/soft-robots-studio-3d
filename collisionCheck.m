@@ -1,13 +1,10 @@
-function intersects = collisionCheck(conf)
+function intersects = collisionCheck(conf, nodes)
     global op;
     obstacles = op.obstacles;
     nObstacles = size(obstacles,1);
 
-    nodes = solveForwardKinematics3D(conf,op.home_base,0);
-    confSize = size(conf,1);
-    nUsedLinks = confSize;
-
-    for i = 1:confSize
+    nUsedLinks = 0;
+    for i = 1:size(conf,1)
         if conf(i,3)==0
             nUsedLinks = i-1;
             break;
@@ -19,7 +16,7 @@ function intersects = collisionCheck(conf)
     intersects = false;
     for i = 1 : nUsedNodes - 1 
         for j = 1 : nObstacles
-            if segmentxcylinder(nodes(i,:),nodes(i+1,:),obstacles(j,:))
+            if veccol(nodes(i,:),nodes(i+1,:),obstacles(j,:))
                 intersects = true;
                 return;
             end

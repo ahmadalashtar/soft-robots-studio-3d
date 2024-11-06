@@ -41,10 +41,12 @@
 function [best_chrom, configurations] = main()
     
     %---------------------PROBLEM DEFINITION--------------------- 
+
     global op;
     global eas;
 
     firstTask();
+
 
     eas.rankingSettings.minFit = 0;     % OUTPUT min IK fitness
     eas.rankingSettings.maxFi = 0;      % OUTPUT max IK fitness  FIX THE TYPO
