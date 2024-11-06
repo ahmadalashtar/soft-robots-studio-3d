@@ -63,7 +63,7 @@ function [best_chrom, configurations, fit_array] = main(exp_flag)
     eas.rankingSettings.firstPartitionSize = 0; % OUTPUT number of individuals falling in the first partition (best ones)
 
     eas.draw_plot = false;  % if you set this to true, your computer will likely explode
-    eas.verbose = true;
+    eas.verbose = false;
     eas.normalize_weightDistance = true;    % deprecated
     eas.variance_generations = 10; 
     eas.obstacle_avoidance = false;

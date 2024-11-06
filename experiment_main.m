@@ -1,5 +1,6 @@
 function experiment_main()
-    
+    clear all
+    clc
     %---------------------PROBLEM DEFINITION--------------------- 
     global op;
     global eas;
@@ -8,12 +9,13 @@ function experiment_main()
     %%Testing Creating a struct for each algorithm??
 
     %%Experiment Variables
-    
-    numOfIteration = 10;    %%The amount of iteration
 
-    result.tasks = ["firstTask", "thirdTask"]; %%Type wanted task function's names
+    nameOfFile = "result";
+    numOfIteration = 10;    %%The amount of iteration
     
-    algo_series = ["bbbc", "de" "pso" "ga"]; %% Type wanted algorithm types in here %"bbbc","ga","pso","de"
+    result.tasks = ["firstTask", "fourthTask", "fifthTask"]; %%Type wanted task function's names
+    
+    algo_series = ["bbbc" "de" "pso" "ga"]; %% Type wanted algorithm types in here %"bbbc","ga","pso","de"
     result.algorithms = algo_series;
        
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
@@ -70,24 +72,27 @@ function experiment_main()
     result.parameters.pso.socialConstant = [0.5 1.0 1.5];
 
    
-
-
+    %%If entered file name is exist start the code from where it got
+    %%interruptted. We should implement that as well to prevent any
+    %%interventions
 
     result.output_matrix= zeros(numOfIteration*length(algo_series)*length(result.tasks),18); %% Output matrix will store every iteration on every settings
     result.chromosome_mat = [];
     count = 1;
+    save(nameOfFile,'result');
     for TaskID = 1:length(result.tasks)
         %%After each task, clear all so DE doesnt crash
         switch result.tasks(TaskID)
             case "firstTask"
                 firstTask(1);
-                disp("Help 1")
             case "secondTask"
-                %secondTask(1);
-                disp("Help 2")
+                secondTask(1);
             case "thirdTask"
                 thirdTask(1);
-                disp("Help 3")
+            case "fourthTask"
+                fourthTask(1);
+            case "fifthTask"
+                fifthTask(1);
         end
         for k = 1:length(algo_series)
             eas.algorithm = algo_series(k);
@@ -99,7 +104,7 @@ function experiment_main()
                         
                         for z = 1:length(result.parameters.ga.crossover_alpha)
                                 eas.ga.crossover_alpha = result.parameters.ga.crossover_alpha(z);
-                                iteration(numOfIteration,count,TaskID,k, [a z 0]);
+                                iteration(numOfIteration,count,TaskID,k, [a z 0], nameOfFile);
                                 count = count + numOfIteration;
                         end
 
@@ -110,7 +115,7 @@ function experiment_main()
                             
                             eas.de.variant = result.parameters.de.variant(b);
                             eas.de.scalingFactor = result.parameters.de.scalingFactor(b_2);
-                            iteration(numOfIteration,count,TaskID,k, [b b_2 0]);
+                            iteration(numOfIteration,count,TaskID,k, [b b_2 0], nameOfFile);
                             count = count + numOfIteration;
 
                         end
@@ -125,7 +130,7 @@ function experiment_main()
                                 eas.pso.omega = result.parameters.pso.omega(c);
                                 eas.pso.cognitiveConstant = result.parameters.pso.cognitiveConstant(c_2);
                                 eas.pso.socialConstant = result.parameters.pso.socialConstant(c_3);
-                                iteration(numOfIteration,count,TaskID,k, [c c_2 c_3]);
+                                iteration(numOfIteration,count,TaskID,k, [c c_2 c_3], nameOfFile);
                                 count = count + numOfIteration;
                                 
                             end
@@ -133,29 +138,11 @@ function experiment_main()
                     end
 
                 case "bbbc"
-                    iteration(numOfIteration,count,TaskID,k, [0 0 0]);
+                    iteration(numOfIteration,count,TaskID,k, [0 0 0], nameOfFile);
                     count = count + numOfIteration;
 
-                 end
-                    
-
-            % for i=1:numOfIteration
-            %     tStart = tic;
-            %     [best_chrom config fit_array]=main(1);
-            %     tEnd = toc(tStart);
-            %     fit_array(1,eas.fitIdx.parameterID) = 1;
-            %     fit_array(1,eas.fitIdx.algo) = k;
-            %     fit_array(1,eas.fitIdx.runTime) = tEnd;
-            %     fit_array(1,eas.fitIdx.taskID) = TaskID;
-            %     fit_array(1,eas.fitIdx.runID) = i;
-            %     fit_array(1,eas.fitIdx.chromID) = count;
-            % 
-            %     result.output_matrix(count,:) = fit_array(1, :);
-            %     result.chromosome_mat{count,1} = best_chrom;
-            %     count = count+1;
-            % end
+            end
         end
     end
-    save('result','result');
     spy()
 end

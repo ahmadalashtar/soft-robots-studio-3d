@@ -1,4 +1,4 @@
-function iteration(numOfIteration,count,TaskID,k,param)
+function iteration(numOfIteration,count,TaskID,k,param,nameOfFile)
     global eas
     global op
     global result
@@ -15,9 +15,9 @@ function iteration(numOfIteration,count,TaskID,k,param)
         fit_array(1,eas.fitIdx.parameterInd2) = param(2);
         fit_array(1,eas.fitIdx.parameterInd3) = param(3);
         
-        
         result.output_matrix(count,:) = fit_array(1, :);
         result.chromosome_mat{count,1} = best_chrom;
         count = count + 1;
+        save(nameOfFile,'result');
     end
 end
