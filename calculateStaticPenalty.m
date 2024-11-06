@@ -14,11 +14,13 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
     min_length = op.length_domain(1);
 
     for i = 1:2:n_targets*2
+        targetIndex = ceil(i/2);
         final_angle_x = chrom(i,n_links+2);
         final_angle_y = chrom(i+1,n_links+2);
         last_link_length = chrom(i,n_links+4);
 
-        g = zeros(1,6);     % array of penalty terms for each constraint
+        g = zeros(1,9);     % array of penalty terms for each constraint
+
         beta = 1;           % parameter of penalty method
 
         %--CONSTRAINT 1,2: final angle is between angle bounds
@@ -44,7 +46,9 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
         conf = configurations(:,:,ceil(i/2));
         % check intersections for every segment of each configuration of the robot
                 
-        intersections = intersections + collisionCheck(conf);
+        [nodes] = solveForwardKinematics3D(conf,op.home_base,0);
+
+        intersections = intersections + collisionCheck(conf, nodes);
 
         g(6) = intersections;
 
@@ -66,7 +70,60 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
 %            gas.infeasible_running_stats(1) = nextM;
 
         end
+
+        % what if the epsilon node was directly on the target? Enter
+        % Constraint #7
+
+        % get the coordinates of the target and its endpoint
+        target = op.targets(targetIndex,1:3);
+        epsilonIndex = chrom(i,n_links+1);
+        epsilonNode = nodes(epsilonIndex,:);
+        endPoint = op.end_points(targetIndex,:);
+
+        %translate the epsildon, target, and its endpoint to the origin, so
+        %that the target is on the origin 0 0 0
+        endPoint = endPoint - target;
+        epsilonNode = epsilonNode - target;
+
+        % calculate the angle between A the target and epsilon and B the
+        % target and its endpoint
+        codAngle = dot(epsilonNode,endPoint)/(norm(epsilonNode)*norm(endPoint));
+        angle = acosd(codAngle);
         
+        % if the result is NaN then the epsilon is exactly on the target.
+        % Penalize
+        if isnan(angle)
+            g(7) = 1;
+        % else if the angle is larger or equal to 90, penalize.
+        elseif angle >= 90
+            g(7) = 1;
+        else
+            g(7)=0;
+        end
+
+        for j = 2:1:epsilonIndex
+
+            currNode = nodes(j,:);
+            if j-1 < 1
+                prevNode = nodes(j,:);
+                nexNode = nodes(j+1,:);
+            elseif j+1 > epsilonIndex
+                prevNode = nodes(j-1,:);
+                nexNode = nodes(j,:);
+            else
+                prevNode = nodes(j-1,:);
+                nexNode = nodes(j+1,:);
+            end
+
+            collisioning = pathVectors(transpose(prevNode), transpose(currNode), transpose(nexNode), op.length_domain(1), op.obstacles);
+            
+
+            if (collisioning)
+                 g(9) = g(9) + 1;
+                 break;
+            end
+        end
+
         gScalar = gScalar + g*r';
     end
 end

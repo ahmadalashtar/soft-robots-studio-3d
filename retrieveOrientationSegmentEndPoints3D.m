@@ -1,43 +1,40 @@
 function [endPoints] = retrieveOrientationSegmentEndPoints3D(targets,obstacles,base)
-    
-    maxLength = retrieveMaxLength(targets,base);
-    
 
-    intersections = struct('Target',[],'Obstacle',[],'StopsAt',[]);
-    targetsUnitVectors = zeros(size(targets,1),3);
-    intersectionsIndex = 1;
-    for i=1:size(targets,1)
-        startPoint = targets(i,1:3);
-        u  = compute_unit_vector(targets(i,:));
-        targetsUnitVectors(i,:) = u;
-        endPoint = targets(i,1:3) - u*maxLength;
-        for j = 1:size(obstacles,1)
-            obstacle = obstacles(j,:);
-            if segmentxcylinder(startPoint,endPoint,obstacle)
-                intersections(intersectionsIndex).Target = i;
-                intersections(intersectionsIndex).Obstacle = [intersections(intersectionsIndex).Obstacle j];
-                intersectionsIndex = intersectionsIndex + 1;
-            end
+maxLength = retrieveMaxLength(targets,base);
+
+n_targets = size(targets,1);
+
+intersections(n_targets) = struct('Obstacles',[],'StopsAt',[]);
+targetsUnitVectors = zeros(size(targets,1),3);
+for i=1:n_targets
+    startPoint = targets(i,1:3);
+    u  = compute_unit_vector(targets(i,:));
+    targetsUnitVectors(i,:) = u;
+    endPoint = targets(i,1:3) - u*maxLength;
+    for j = 1:size(obstacles,1)
+        obstacle = obstacles(j,:);
+        if segmentxcylinder(startPoint,endPoint,obstacle)
+            intersections(i).Obstacles = [intersections(i).Obstacles j];
         end
     end
-    endPoints = targets(:,1:3) - targetsUnitVectors*maxLength;
-    
-    if isempty(intersections(1).Target)
-        return;
-    end
-    nIntersections = size(intersections,2);
-    for i = 1 : nIntersections
-        targetIndex = intersections(i).Target;
-        obstacleIndices = intersections(i).Obstacle;
-        intersections(i).StopsAt = nearestObstacleIDfromTarget(targetIndex,obstacleIndices,targets,obstacles);
-        stopsAtObstacleIndex = intersections(i).StopsAt;
-        target = targets(targetIndex,1:3);
-        endPoint = endPoints(targetIndex,:);
-        obstacle = obstacles(stopsAtObstacleIndex,:);
-        endPoints(targetIndex,1:3) = retrieveCoordinates(target,endPoint,obstacle);
-    end
-    
 end
+endPoints = targets(:,1:3) - targetsUnitVectors*maxLength;
+
+for i = 1 : n_targets
+    if isempty(intersections(i).Obstacles)
+        continue;
+    end
+    obstacleIndices = intersections(i).Obstacles;
+    intersections(i).StopsAt = nearestObstacleIDfromTarget(i,obstacleIndices,targets,obstacles);
+    stopsAtObstacleIndex = intersections(i).StopsAt;
+    target = targets(i,1:3);
+    endPoint = endPoints(i,:);
+    obstacle = obstacles(stopsAtObstacleIndex,:);
+    endPoints(i,1:3) = retrieveCoordinates(target,endPoint,obstacle);
+end
+
+end
+
 function coordinates = retrieveCoordinates(startPt,endPt,obstacle)
 coordinates = endPt;
 [inside,~,~] = segmentInsideCylinder(startPt,endPt,obstacle);
@@ -56,7 +53,7 @@ startPoint = [startPt(2) startPt(3)];
 endPoint = [endPt(2) endPt(3)];
 
 lowerVertex1 = [obstacleX-radius, obstacleY];
-lowerVertex2 = [obstacleX+radius, obstacleY]; 
+lowerVertex2 = [obstacleX+radius, obstacleY];
 upperVertex1 = [obstacleX-radius, obstacleY-height];
 upperVertex2 = [obstacleX+radius, obstacleY-height];
 
@@ -80,7 +77,7 @@ startPoint = [startPt(1) startPt(3)];
 endPoint = [endPt(1) endPt(3)];
 
 lowerVertex1 = [obstacleX-radius, obstacleY];
-lowerVertex2 = [obstacleX+radius, obstacleY]; 
+lowerVertex2 = [obstacleX+radius, obstacleY];
 upperVertex1 = [obstacleX-radius, obstacleY-height];
 upperVertex2 = [obstacleX+radius, obstacleY-height];
 
@@ -160,27 +157,28 @@ coordinates = [xInter, yInter];
 end
 
 function nearestObstacleIndex = nearestObstacleIDfromTarget(targetIndex,obstacleIndices,targets,obstacles)
-    target = targets(targetIndex,:);
-    collisionObstacles = obstacles(obstacleIndices,:);
+target = targets(targetIndex,:);
+collisionObstacles = obstacles(obstacleIndices,:);
 
-    minLength = Inf;
-    for i = 1 : size(obstacleIndices,1)
-        length  = norm(target(1:2)-collisionObstacles(i,1:2));
-        if length < minLength
-            minLength = length;
-            nearestObstacleIndex  = obstacleIndices(i);
-        end
+minLength = Inf;
+for i = 1 : size(obstacleIndices,2)
+    length  = norm(target(1:2)-collisionObstacles(i,1:2));
+    if length < minLength
+        minLength = length;
+        nearestObstacleIndex  = obstacleIndices(i);
     end
+end
 end
 
 function maxLength = retrieveMaxLength(targets,base)
-    maxLength = 0;
-    for i=1:size(targets,1)
-        target = targets(i,1:3);
-        length = norm(base(1:3)-target);
-        if length > maxLength
-            maxLength = length;
-        end
-        
+maxLength = 0;
+for i=1:size(targets,1)
+    target = targets(i,1:3);
+    length = norm(base(1:3)-target);
+    if length > maxLength
+        maxLength = length;
     end
+
+end
+maxLength = maxLength*2/3;
 end
