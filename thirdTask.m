@@ -4,46 +4,35 @@ function thirdTask()
     x = 107.3313;
     y = 53.6656;
 
-    t3 = [-y x 100];
-    t4 = [y x 100];
-    t5 = [x y 100 ];
-    t6 = [x -y 100];
-    t7 = [-y -x 100];
-    t8 = [y -x 100];
+    t3 = [-40 80 100];
+    t4 = [40 80 100];
+    t5 = [80 40 100 ];
+    t6 = [80 -40 100];
+    t7 = [-40 -80 100];
+    t8 = [40 -80 100];
     op.targets = [  
                     
-                    t3 -50.7 -24.2;
-
-                    t4 -50.4 24.95;
-
-                    t5 -34.3 45.7;
-
-                    t6 34.3 45.7;
-                    t7  50.2 -25.7;
-                    t8 50.2 25.7;
-
-
-                    % t3 -60 -55;
-                    % t4 -60 55;
-                    % t5 -60 20;
-                    % t6 60 20;
-                    % t7 55 -60;
-                    % t8 55 60;
+                    t3 -38.659808254090095 -17.346065292669948;
+                    t4 -28.8 29.6;
+                    t5 -32.005383208083494 25.004301778398400;
+                    t6 36 30;
+                    t7 38.659808254090095 -17.346065292669948;
+                    t8 28.8 29.6;
 
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
     op.obstacles = [
-                    -20 50 100 10 80;
+                    35 35 100 10 80;
                     20 50 100 10 80;
                     50 20 100 10 80;
                     50 -20 100 10 80;
-                    -20 -50 100 10 80;
+                    35 -35 100 10 80;
                     20 -50 100 10 80;
                     
                     ]; %cylinder [x y z(base) radius height]
 
     op.n_links = 20;
-    op.length_domain = [25 50];
+    op.length_domain = [10 30];
 
     op.first_angle.is_fixed = true;
     op.angle_domain = [-45 45];
@@ -60,7 +49,7 @@ function thirdTask()
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
     eas.n_generations = 500;
-    eas.n_individuals = 1000;
+    eas.n_individuals = 500;
     eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
     eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'

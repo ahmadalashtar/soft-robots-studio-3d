@@ -180,4 +180,5 @@ for i=1:size(targets,1)
     end
 
 end
+maxLength = maxLength*2/3;
 end
