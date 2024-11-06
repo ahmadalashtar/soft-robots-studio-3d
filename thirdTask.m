@@ -1,6 +1,8 @@
 function thirdTask()
     global op;          
     op.home_base = [0 0 0 0 0];
+    x = 107.3313;
+    y = 53.6656;
 
     t3 = [-40 80 100];
     t4 = [40 80 100];

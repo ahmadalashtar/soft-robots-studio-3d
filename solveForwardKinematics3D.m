@@ -1,4 +1,4 @@
-function coordinates = solveForwardKinematics3D(conf, base, draw)
+function [coordinates, Rarray] = solveForwardKinematics3D(conf, base, draw)
     % Number of transformations
     num_links = size(conf, 1);
     
@@ -15,15 +15,16 @@ function coordinates = solveForwardKinematics3D(conf, base, draw)
 
     % Store new position in coordinates matrix
     coordinates(1, :) = new_coordinates;
+    Rarray = cell(1, num_links+1);
 
     for i = 1:num_links
+        Rarray{i} = R;
         angleX = conf(i,1);
         angleY = conf(i,2);
         growth = conf(i,3);
         [new_coordinates,R] = rotateTranslate(coordinates(i,:),angleX,angleY,growth,R);
         % Store new position in coordinates matrix
         coordinates(i+1, :) = new_coordinates;
-        
     end
 end
 
