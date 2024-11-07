@@ -11,7 +11,7 @@ function experiment_main()
     %%Experiment Variables
 
     nameOfFile = "result";
-    numOfIteration = 10;    %%The amount of iteration
+    numOfIteration = 2;    %%The amount of iteration
     
     result.tasks = ["firstTask", "fourthTask", "fifthTask"]; %%Type wanted task function's names
     
@@ -78,7 +78,47 @@ function experiment_main()
 
     result.output_matrix= zeros(numOfIteration*length(algo_series)*length(result.tasks),18); %% Output matrix will store every iteration on every settings
     result.chromosome_mat = [];
+    
+    % Initialize a counter for total iterations and a variable to track the current iteration
+    total_iterations = 0;
+    iteration_count = 0;
     count = 1;
+    
+    % Step 1: Calculate total number of iterations for progress tracking
+    for TaskID = 1:length(result.tasks)
+        switch result.tasks(TaskID)
+            case "firstTask"
+                firstTask(1);
+            case "fourthTask"
+                fourthTask(1);
+            case "fifthTask"
+                fifthTask(1);
+        end
+        
+        % Calculate the total number of iterations for the current task
+        for k = 1:length(algo_series)
+            eas.algorithm = algo_series(k);
+            
+            switch eas.algorithm
+                case "ga"
+                    total_iterations = total_iterations + ...
+                        length(result.parameters.ga.mutation_probability) * ...
+                        length(result.parameters.ga.crossover_alpha);
+                case "de"
+                    total_iterations = total_iterations + ...
+                        length(result.parameters.de.variant) * ...
+                        length(result.parameters.de.scalingFactor);
+                case "pso"
+                    total_iterations = total_iterations + ...
+                        length(result.parameters.pso.omega) * ...
+                        length(result.parameters.pso.cognitiveConstant) * ...
+                        length(result.parameters.pso.socialConstant);
+                case "bbbc"
+                    total_iterations = total_iterations + 1;
+            end
+        end
+    end
+
     save(nameOfFile,'result');
     for TaskID = 1:length(result.tasks)
         %%After each task, clear all so DE doesnt crash
@@ -104,6 +144,13 @@ function experiment_main()
                         
                         for z = 1:length(result.parameters.ga.crossover_alpha)
                                 eas.ga.crossover_alpha = result.parameters.ga.crossover_alpha(z);
+                                
+                                iteration_count = iteration_count + 1;
+                                %Print Progress
+                                fprintf('Task %d, Algorithm %s | Mutation Probability: %.2f Crossover Alpha: %.2f Completion Percentage: %.2f%%\n', ...
+                                TaskID, eas.algorithm, eas.ga.mutation_probability, ...
+                                eas.ga.crossover_alpha, (iteration_count / total_iterations) * 100);
+
                                 iteration(numOfIteration,count,TaskID,k, [a z 0], nameOfFile);
                                 count = count + numOfIteration;
                         end
@@ -115,6 +162,12 @@ function experiment_main()
                             
                             eas.de.variant = result.parameters.de.variant(b);
                             eas.de.scalingFactor = result.parameters.de.scalingFactor(b_2);
+
+                            iteration_count = iteration_count + 1;
+                            % Print progress
+                            fprintf('Task %d, Algorithm %s| Variant: %d Scaling Factor: %.2f Completion Percentage: %.2f%%\n', ...
+                            TaskID, eas.algorithm,result.parameters.de.variant(b),result.parameters.de.scalingFactor(b_2),(iteration_count / total_iterations) * 100);
+
                             iteration(numOfIteration,count,TaskID,k, [b b_2 0], nameOfFile);
                             count = count + numOfIteration;
 
@@ -122,6 +175,7 @@ function experiment_main()
                     end
                     
                 case "pso"
+                    fprintf("Beginning PSO\n");
                     for c = 1:length(result.parameters.pso.omega)
                         
                         for c_2 = 1:length(result.parameters.pso.cognitiveConstant)
@@ -130,6 +184,17 @@ function experiment_main()
                                 eas.pso.omega = result.parameters.pso.omega(c);
                                 eas.pso.cognitiveConstant = result.parameters.pso.cognitiveConstant(c_2);
                                 eas.pso.socialConstant = result.parameters.pso.socialConstant(c_3);
+
+                                iteration_count = iteration_count + 1;
+                                % Print progress
+
+                                fprintf('Task %d, Algorithm %s | Omega: %.2f Cognitive Constant: %.2f Social Constant: %.2f Completion Percentage: %.2f%%\n', ...
+                                TaskID, eas.algorithm, result.parameters.pso.omega(c), ...
+                                result.parameters.pso.cognitiveConstant(c_2), ...
+                                result.parameters.pso.socialConstant(c_3), ...
+                                (iteration_count / total_iterations) * 100);
+
+                                
                                 iteration(numOfIteration,count,TaskID,k, [c c_2 c_3], nameOfFile);
                                 count = count + numOfIteration;
                                 
@@ -138,6 +203,12 @@ function experiment_main()
                     end
 
                 case "bbbc"
+
+                    iteration_count = iteration_count + 1;
+                    % Print progress
+                    fprintf('Task %d, Algorithm %s: %.2f%% Complete\n', ...
+                    TaskID, eas.algorithm, (iteration_count / total_iterations) * 100);
+
                     iteration(numOfIteration,count,TaskID,k, [0 0 0], nameOfFile);
                     count = count + numOfIteration;
 
