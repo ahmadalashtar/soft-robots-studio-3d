@@ -61,7 +61,7 @@ function [pop, fit_array_P] = runDE(exp)
             fprintf('IK %.3f ', fit_array_P(1,eas.fitIdx.ik));
             fprintf('(1st P: %.3f-%.3f, #%d), ', eas.rankingSettings.minFit, eas.rankingSettings.minFit + eas.rankingSettings.step_ik, eas.rankingSettings.firstPartitionSize);
             fprintf('LtS %d, ', fit_array_P(1,eas.fitIdx.nodes));
-            fprintf('OND %d%%, ', fit_array_P(1,eas.fitIdx.wiggly));
+            fprintf('UND %d%%, ', round(fit_array_P(1,eas.fitIdx.wiggly)));
             fprintf('LoS %d, ', fit_array_P(1,eas.fitIdx.nodesOnSegment));
             fprintf('Length %.3f', fit_array_P(1,eas.fitIdx.totLength));
             
