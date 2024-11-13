@@ -29,16 +29,12 @@ function [und] = calculateUndulation(chrom)
         end
             signsX = zeros(1,nNodesToCheck-2);
             signsY = zeros(1,nNodesToCheck-2);
-            for j = 1 : nNodesToCheck-3
+            for j = 1 : nNodesToCheck-2
                 point1 = nodes(j,:);
                 point2 = nodes(j+1,:);
                 point3 = nodes(j+2,:);
                 vector1 = point2-point1;
                 vector2 = point3-point2;
-
-                % normalize
-                vector1 = vector1/norm(vector1);
-                vector2 = vector2/norm(vector2);
 
                 signsX(j) = getRotationSign(vector1(2:3),vector2(2:3));
                 % reversed so that it's calculated the same, to understand
@@ -74,15 +70,13 @@ function [sign] = getRotationSign(vector1,vector2)
     y2 = vector2(2);
     
 
-    % first case: no change
-    if y1 == y2 && x1 == x2
-        sign = 0;
-        return;
-    end
-
-    angle1 = atan2(y1,x1);
-    angle2 = atan2(y2,x2);
+    angle1 = atan2d(y1,x1);
+    angle2 = atan2d(y2,x2);
     
     difference = angle1 - angle2;
-    sign = (difference/difference)*(-1);
+    if ~difference
+        sign = 0;
+    else
+        sign = (abs(difference)/difference);
+    end
 end
