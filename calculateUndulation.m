@@ -12,13 +12,13 @@ function [und] = calculateUndulation(chrom)
         row = i*2-1;
         conf = configurations(:,:,i);
         nodes = solveForwardKinematics3D(conf,op.home_base,0);
-        lastNode = chrom(row, n_links + 1);
-        if lastNode < 3
+        epsilon = chrom(row, n_links + 1);
+        if epsilon < 3
             continue;
         end
-            signsX = zeros(1,lastNode-2);
-            signsY = zeros(1,lastNode-2);
-            for j = 1 : lastNode-3
+            signsX = zeros(1,epsilon-2);
+            signsY = zeros(1,epsilon-2);
+            for j = 1 : epsilon-3
                 point1 = nodes(j,:);
                 point2 = nodes(j+1,:);
                 point3 = nodes(j+2,:);
@@ -46,7 +46,7 @@ function [und] = calculateUndulation(chrom)
                     undulations(i) = undulations(i) + 1;
                 end
             end
-        undulations(i) = undulations(i) / (lastNode-2);
+        undulations(i) = undulations(i) / (epsilon-2);
     end
     und = mean2(undulations);
 end
