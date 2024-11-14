@@ -14,43 +14,36 @@ function [und] = calculateUndulation(chrom)
         nodes = solveForwardKinematics3D(conf,op.home_base,0);
         epsilon = chrom(row, n_links + 1);
         nNodes = size(nodes,1);
-        if epsilon < nNodes
-            nNodesToCheck = epsilon + 1;
-        else
-            disp("epsilon is not less than number of nodes");
-            disp("epsilon: " + num2str(epsilon));
-            disp("number of nodes: " + num2str(nNodes));
-            nNodesToCheck = nNodes;
-        end
+        nNodesToCheck = min(epsilon + 1,nNodes);
         if nNodesToCheck < 4
             continue;
         end
-            signsX = zeros(1,nNodesToCheck-2);
-            signsY = zeros(1,nNodesToCheck-2);
-            for j = 1 : nNodesToCheck-2
-                point1 = nodes(j,:);
-                point2 = nodes(j+1,:);
-                point3 = nodes(j+2,:);
-                vector1 = point2-point1;
-                vector2 = point3-point2;
+        signsX = zeros(1,nNodesToCheck-2);
+        signsY = zeros(1,nNodesToCheck-2);
+        for j = 1 : nNodesToCheck-2
+            point1 = nodes(j,:);
+            point2 = nodes(j+1,:);
+            point3 = nodes(j+2,:);
+            vector1 = point2-point1;
+            vector2 = point3-point2;
 
-                signsX(j) = getRotationSign(vector1(2:3),vector2(2:3));
-                % reversed so that it's calculated the same, to understand
-                % this, darw the rotation axes on a paper.
-                signsY(j) = getRotationSign([vector1(3) vector1(1)],[vector2(3) vector2(1)]);
-            end
+            signsX(j) = getRotationSign(vector1(2:3),vector2(2:3));
+            % reversed so that it's calculated the same, to understand
+            % this, darw the rotation axes on a paper.
+            signsY(j) = getRotationSign([vector1(3) vector1(1)],[vector2(3) vector2(1)]);
+        end
 
-            % check if the first sign is positive, negative, or zero
-            for j = 1:size(signsX,2)-1
-                if signsX(j) ~= signsX(j+1) 
-                    undulations(i) = undulations(i) + 1;
-                end
+        % check if the first sign is positive, negative, or zero
+        for j = 1:size(signsX,2)-1
+            if signsX(j) ~= signsX(j+1) 
+                undulations(i) = undulations(i) + 1;
             end
-            for j = 1:size(signsY,2)-1
-                if signsY(j) ~= signsY(j+1) 
-                    undulations(i) = undulations(i) + 1;
-                end
+        end
+        for j = 1:size(signsY,2)-1
+            if signsY(j) ~= signsY(j+1) 
+                undulations(i) = undulations(i) + 1;
             end
+        end
         undulations(i) = undulations(i) / 2;
         undulations(i) = undulations(i) / (nNodesToCheck-3);
     end
