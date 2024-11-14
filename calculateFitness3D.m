@@ -28,7 +28,11 @@
 % 'chrom' is the evaluated chromosome [t*2+1 x n+4] with added information in the extra genes%%EMİR modified it to +4
 % 'fitness' a scalar numeric value representing the fitness of the chromosome
 function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
-
+    arguments
+        chrom;
+        draw_plot = 0;
+    end
+    
     global op;  % optimization problem
     global eas;  % genetic algorithm settings
     
