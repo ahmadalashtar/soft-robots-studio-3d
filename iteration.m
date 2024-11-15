@@ -19,6 +19,8 @@ function iteration(TaskID,k,param,nameOfFile)
         result.chromosome_mat{eas.count,1} = best_chrom;
         eas.count = eas.count + 1;
         result.settings = eas;
+        fprintf("%d ",i);
         save(nameOfFile,'result');
     end
+    fprintf("\n");
 end
