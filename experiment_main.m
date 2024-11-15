@@ -9,7 +9,7 @@ function experiment_main()
     %%Testing Creating a struct for each algorithm??
 
     %%Experiment Variables
-    nameOfFile = "expX";
+    nameOfFile = "exp08_11";
     nameOfFile = strcat('experiments/', nameOfFile, '.mat');
     if isfile(nameOfFile)
         load(nameOfFile);
@@ -26,15 +26,15 @@ function experiment_main()
         
         result.tasks = ["firstTask", "fourthTask", "fifthTask"]; %%Type wanted task function's names
         
-        result.algo_series = ["bbbc" "de" "pso" "ga"]; %% Type wanted algorithm types in here %"bbbc","ga","pso","de"
+        result.algo_series = ["pso"]; %% Type wanted algorithm types in here %"bbbc","ga","pso","de"
            
         eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
         eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
         eas.rankingSettings.step_len = 5;
     
-        eas.numOfIteration = 2;    %%The amount of iteration
-        eas.n_generations = 4;
-        eas.n_individuals = 10;
+        eas.numOfIteration = 20;    %%The amount of iteration
+        eas.n_generations = 350;
+        eas.n_individuals = 500;
         eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
         eas.crossover_method = "blxa";
         eas.survival_alpha = 40;
