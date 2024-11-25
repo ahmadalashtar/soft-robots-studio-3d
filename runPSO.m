@@ -56,7 +56,7 @@ function [localBests, localBestsFitness] = runPSO(exp)
             fprintf('IK %.3f ', bestFitness(eas.fitIdx.ik));
             fprintf('(1st P: %.3f-%.3f, #%d), ', eas.rankingSettings.minFit, eas.rankingSettings.minFit + eas.rankingSettings.step_ik, eas.rankingSettings.firstPartitionSize);
             fprintf('LtS %d, ', bestFitness(eas.fitIdx.nodes));
-            fprintf('OND %d%%, ', bestFitness(eas.fitIdx.wiggly));
+            fprintf('UND %d%%, ', round(bestFitness(eas.fitIdx.wiggly)));
             fprintf('LoS %d, ', bestFitness(eas.fitIdx.nodesOnSegment));
             fprintf('Length %.3f', bestFitness(eas.fitIdx.totLength));
             
