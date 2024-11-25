@@ -28,7 +28,11 @@
 % 'chrom' is the evaluated chromosome [t*2+1 x n+4] with added information in the extra genes%%EMİR modified it to +4
 % 'fitness' a scalar numeric value representing the fitness of the chromosome
 function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
-
+    arguments
+        chrom;
+        draw_plot = 0;
+    end
+    
     global op;  % optimization problem
     global eas;  % genetic algorithm settings
     
@@ -46,7 +50,6 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
     n_targets = size(op.targets,1);
     n_links = op.n_links;
     
-    
     if draw_plot
         configurations = decodeIndividual(chrom); 
         drawProblem3D(configurations);
@@ -58,10 +61,7 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         thisConf_totLength = 0;
 
         configurations = decodeIndividual(chrom);
-        conf = configurations(:,:,ceili2);
-        % dist_normalization = norm(t(1:2)-op.home_base(1:2));    % might be useful if we add different objectives to the fitness that have different degree of representation
-        
-
+        conf = configurations(:,:,ceili2);        
         
         %----CALCULATE MIN DISTANCE FROM ROBOT TO TARGET'S ORIENTATION SEGMENT AND LAST ANGLE
         robot_points = solveForwardKinematics3D(conf,op.home_base,false);
@@ -70,37 +70,26 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         chrom(i+1,n_links+1) = ee_index;  % this is the index of the closest node to the target's orientation segment
         sumLinks = sumLinks + chrom(i,n_links+1)-1;
         
-        % % draw distances from robot to segment (for DEBUG and PAPER FIGURES)
-        % areas_vect = zeros(1,size(dist_mat,1));
         if draw_plot==true
             for j = 1:1:ee_index
                 n_proj = dist_mat(j,2:3);
                 plot([robot_points(j,1),n_proj(1)],[robot_points(j,2),n_proj(2)],'--o','Color','k'); 
             end 
         end
-        
-        
-       
 
         fit = dist_mat(ee_index);        
         fitness(1) = fitness(1) + fit;
-        % for k = 2:size(robot_points,1)-1
+
         ee_link_index = ee_index -1 ;
         [final_angle_x, final_angle_y] = solveInverseKinematics3D(conf,robot_points,ee_link_index,op.targets(ceili2,1:3));
         [final_angle_x, final_angle_y] = optimizeAngle(final_angle_x, final_angle_y);
-        % [final_angle_x, final_angle_y]= calculateLastAngle(robot_points, k, robot_points(k+1,:));
         % end
-        %%EMİR commented out the extra x and y removed i+1 and made both
-        %%n_links + 2
         chrom(i,n_links+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
         chrom(i+1,n_links+2) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
-        %chrom(i+1,n_links+2) = final_angle_x;   % thixs is the angle to align the robot to the target's orientation segment
-        %chrom(i+1,n_links+3) = final_angle_y;   % thixs is the angle to align the robot to the target's orientation segment
         
          %----CUT ROBOT
         configurations = decodeIndividual(chrom); 
         conf = configurations(:,:,ceili2);
-%         drawProblem2D(configurations);
         robot_points = solveForwardKinematics3D(conf,op.home_base,false);
         ee_point = robot_points(ee_index, :);
         dist2target = norm(ee_point-t(1:3));
@@ -108,7 +97,6 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
             l = chrom(n_targets*2+1,j);
             if(dist2target<l)
                 %cut here
-                %%EMİR reduced everything by 1
                 lastNode_index = j;
                 chrom(i,n_links+3) = lastNode_index;
                 chrom(i,n_links+4) = dist2target; %cut length
@@ -119,41 +107,18 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
             end
             dist2target = dist2target - l;
         end
-
-%         %----CUT ROBOT if the angles were right :(
-%         configurations = decodeIndividual(chrom); 
-%         conf = configurations(:,:,ceili2);
-% %         drawProblem2D(configurations);
-%         robot_points = solveForwardKinematics3D(conf,op.home_base,false);
-%         for j=ee_index:1:n_links
-%             l = chrom(n_targets*2+1,j);
-%             dist2target = norm(robot_points(j,:)-t(1:3));
-%             if(dist2target<l)
-%                 %cut here
-%                 %%EMİR reduced everything by 1
-%                 lastNode_index = j;
-%                 chrom(i,n_links+3) = lastNode_index;
-%                 chrom(i,n_links+4) = dist2target; %cut length
-%                 chrom(i+1,n_links+3) = lastNode_index;
-%                 chrom(i+1,n_links+4) = dist2target; %cut length
-%                 sumLinksOnSegment = sumLinksOnSegment + chrom(i,n_links+3) - chrom(i,n_links+1) + 1;%%EMİR i didn't touch this
-%                 break;
-%             end
-%         end
         
         %----calculate robot total length
-        %%EMİR reduced for loop by 1
         for j=1:1:chrom(i,n_links+3)-1
             thisConf_totLength = thisConf_totLength + chrom(n_targets*2+1,j);
         end
-        %%this got reduced by 1 too EMİR
         thisConf_totLength = thisConf_totLength + chrom(i,n_links+4);
         totLength = max(thisConf_totLength,totLength);
     end
     
     fitness(1) = fitness(1) / n_targets;  % normalize the fitness among number of targets/configurations
     fitness(2) = sumLinks; % / n_targets;
-    fitness(3) = fix(calculateUndulation(chrom) * 100);    % already normalized
+    fitness(3) = calculateUndulation(chrom) * 100;    % already normalized
     fitness(4) = sumLinksOnSegment; %/ n_targets;   
     fitness(5) = totLength;
     if draw_plot==true
@@ -195,71 +160,4 @@ function [dist_mat, ee_index] = calculateMinDistance_FromOrientationSegment(robo
         ee_index = 2;   % in case the closest point turns out to be the robot base, go one further; this configuration is going to be probably infeasible due to the last angle anyways
     end
     dist_mat = dist_mat(1:ee_index,:);  % cut all nodes after the minimum (it means the robot will not stop grow in that direction from now on)
-end
-
-
-% Calculate the angle between the robot (at the current end effector) and the target's orientation segment
-% Uses voronoi rotation to make the angle calculation simpler
-
-
-% input: 
-% - v1: a 3D vector as [x y z]
-% - v2: a 3D vector as [x y z]
-% output:
-% - angles: the difference in angles to go from v2 to v1 as a rotation on x
-% and rotation on y in respect to Z
-
-% input: 
-% - v1: a 2D vector on zx or zy
-% - v2: a 2D vector on zx or zy
-% output:
-% - angle: the difference in angle to go from v2 to v1 in respect to the
-% v1(1) and v2(1)
-
-
-
-% % Calculate the area of a triangle given its three vertices
-% function [area] = calculateTriangleArea(p1,p2,p3)
-%     area = abs((p1(1)*p2(2)+p2(1)*p3(2)+p3(1)*p1(2)-p1(2)*p2(1)-p2(2)*p3(1)-p3(2)*p1(1))/2.0);
-% end
-
-function [und] = calculateUndulation(chrom)
-
-    global op;  % optimization problem
-    global eas;  % genetic algorithm settings
-    
-    n_targets = size(op.targets,1);
-    n_links = size(chrom,2) - eas.extra_genes;
-    
-    changes_x = zeros(n_targets,1);       % count changes in direction 
-    changes_y = zeros(n_targets,1);       % count changes in direction
-    
-    % count changes in direction for each configuration
-    for i = 1:2:n_targets*2
-        ceili2 = ceil(i/2);
-        lastNode = chrom(i, n_links + 1);                 % get last node
-        angleSigns_x = chrom(i,1:lastNode);               % get angles until cut
-        angleSigns_y = chrom(i+1,1:lastNode);             % get angles until cut
-        angleSigns_x(lastNode) = chrom(i,n_links + 2);    % replace last angle
-        angleSigns_y(lastNode) = chrom(i+1,n_links + 3);    % replace last angle
-        angleSigns_x = sign(angleSigns_x);                % get signs of angles
-        angleSigns_y = sign(angleSigns_y);                % get signs of angles
-        angleSigns_x = angleSigns_x(angleSigns_x~=0);     % remove any zeros from angles (love this matlab function)
-        angleSigns_y = angleSigns_y(angleSigns_y~=0);     % remove any zeros from angles (love this matlab function)
-        for j = 2:size(angleSigns_x,2)
-            if angleSigns_x(j) ~= angleSigns_x(j-1)
-                changes_x(ceili2) = changes_x(ceili2) + 1;
-            end
-        end
-        for j = 2:size(angleSigns_y,2)
-            if angleSigns_y(j) ~= angleSigns_y(j-1)
-                changes_y(ceili2) = changes_y(ceili2) + 1;
-            end
-        end
-        changes_x(ceili2) = changes_x(ceili2) / lastNode;             % normalize on the number of nodes
-        changes_y(ceili2) = changes_y(ceili2) / lastNode;             % normalize on the number of nodes
-    end
-    und_x = mean(changes_x);
-    und_y = mean(changes_y);
-    und = (und_x + und_y)/2;
 end
