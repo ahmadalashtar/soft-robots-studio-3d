@@ -40,7 +40,7 @@ end
     op.first_angle.angle = 0;
     op.end_points = retrieveOrientationSegmentEndPoints3D(op.targets,op.obstacles,op.home_base);  % retrieve the end points for each target's orientation segment
     
-    % % drawProblem3D([]);
+    drawProblem3D([]);
 
     %---------------------EA SETTINGS---------------------    
     global eas;

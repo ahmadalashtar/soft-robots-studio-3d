@@ -16,8 +16,6 @@ function isColliding = veccol(startPoint, endPoint, obstacle)
     cylinderTop = obstaclePos(3);             %top Z-coordinate of the cylinder
     cylinderBottom = cylinderTop - length;    %bottom Z-coordinate of the cylinder
 
-    %plotter()
-
     if (startPoint(3) < cylinderBottom && endPoint(3) < cylinderBottom) || ...
        (startPoint(3) > cylinderTop && endPoint(3) > cylinderTop)
         isColliding = false;
@@ -25,62 +23,64 @@ function isColliding = veccol(startPoint, endPoint, obstacle)
     end
 
     lineVector = endPoint - startPoint;
+    trimmedStart = startPoint;
+    trimmedEnd = endPoint;
+
     lineLength = norm(lineVector);
 
-    if lineLength == 0
-        isColliding = false;
-        return;
-    end
-
-    direction = lineVector / lineLength;
-
     if startPoint(3) < cylinderBottom
-        tStart = (cylinderBottom - startPoint(3)) / lineVector(3);
-        trimmedStart = startPoint + tStart * lineVector;
+        t = (cylinderBottom - startPoint(3)) / lineVector(3);
+        trimmedStart = startPoint + t * lineVector;
     elseif startPoint(3) > cylinderTop
-        tEnd = (cylinderTop - startPoint(3)) / lineVector(3);
-        trimmedStart = startPoint + tEnd * lineVector;
-    else
-        trimmedStart = startPoint;
-    end
-    
-
-    if endPoint(3) > cylinderTop
-        tEnd = (cylinderTop - startPoint(3)) / lineVector(3);
-        trimmedEnd = startPoint + tEnd * lineVector;
-    elseif endPoint(3) < cylinderBottom
-        tEnd = (cylinderBottom - startPoint(3)) / lineVector(3);
-        trimmedEnd = startPoint + tEnd * lineVector;
-    else
-        trimmedEnd = endPoint;
+        t = (cylinderTop - startPoint(3)) / lineVector(3);
+        trimmedStart = startPoint + t * lineVector;
     end
 
-    d = obstaclePos - trimmedStart;
+    if endPoint(3) < cylinderBottom
+        t = (cylinderBottom - startPoint(3)) / lineVector(3);
+        trimmedEnd = startPoint + t * lineVector;
+    elseif endPoint(3) > cylinderTop
+        t = (cylinderTop - startPoint(3)) / lineVector(3);
+        trimmedEnd = startPoint + t * lineVector;
+    end
 
-    projLength = dot(d, direction);
-
-    trimmedLineVector = trimmedEnd - trimmedStart;
-    trimmedLineLength = norm(trimmedLineVector);
-    
+    direction = trimmedEnd - trimmedStart;
+    % segmentLength = norm(direction);
+    % if segmentLength == 0
+    %     closestPoint = trimmedStart;
+    % else
+    %     direction = direction / segmentLength;
+    % 
+    %     d = obstaclePos - trimmedStart;
+    %     projLength = dot(d, direction);
+    % 
+    %     if projLength < 0
+    %         closestPoint = trimmedStart;
+    %     elseif projLength > segmentLength
+    %         closestPoint = trimmedEnd;
+    %     else
+    %         closestPoint = trimmedStart + projLength * direction;
+    %     end
+    % end
     %if projection is lower than the limit, startPoint is the closest
     %if projection is bigger than the limit, the endPoint is the closest
-    if projLength < 0
-        closestPointOnLine = trimmedStart;
-    elseif projLength > trimmedLineLength
-        closestPointOnLine = trimmedEnd;
-    else
-        closestPointOnLine = trimmedStart + projLength * direction;
-    end
 
-    distanceToCylinderBase = norm(closestPointOnLine(1:2) - obstaclePos(1:2));
+    %distanceToCylinderBase = distanceLinePoint(startPoint(1:2), endPoint(1:2), obstacle(1:2));
 
-    isWithinHeight = closestPointOnLine(3) >= cylinderBottom && closestPointOnLine(3) <= cylinderTop;
+    distanceToCylinderBase = distanceLinePoint(trimmedStart(1:2), trimmedEnd(1:2), obstaclePos(1:2));
 
-    isColliding = distanceToCylinderBase <= radius && isWithinHeight;
-
+    isColliding = distanceToCylinderBase <= radius;
+    
+    %plotter(startPoint, endPoint, obstacle);
 end
 
-function plotter()
+function distance = distanceLinePoint(startPoint, endPoint, comparisonPoint)
+    numerator = abs((endPoint(1) - startPoint(1)) * (startPoint(2) - comparisonPoint(2)) - (startPoint(1) - comparisonPoint(1)) * (endPoint(2) - startPoint(2)));
+	denominator = sqrt((endPoint(1) - startPoint(1)) ^ 2 + (endPoint(2) - startPoint(2)) ^ 2);
+	distance = numerator ./ denominator;
+end
+
+function plotter(startPoint, endPoint, obstacle)
 
     % startPoint = [71.0412, -6.09121, 100.871];
     % endPoint = [94.3988, -13.6421, 105.333];
@@ -89,10 +89,6 @@ function plotter()
     %startPoint = [35.4352, -33.9399, 113.338];
     %endPoint = [47.9788, -33.4889, 113.528];
     %obstacle = [45 -45 200 12.5 300];
-
-    startPoint = [26 0 14];
-    endPoint = [14 0 9];
-    obstacle = [20 0 10 5 5];
     
     obstaclePos = obstacle(1:3);
     radius = obstacle(4);
@@ -109,6 +105,8 @@ function plotter()
     scatter3(endPoint(1), endPoint(2), endPoint(3), 100, 'red', 'filled');
 
     plot3([startPoint(1), endPoint(1)], [startPoint(2), endPoint(2)], [startPoint(3), endPoint(3)], 'b', 'LineWidth', 2);
+
+    %scatter3(closestPoint(1), closestPoint(2), closestPoint(3), 100, 'blue');
 
     [X, Y, Z] = cylinder(radius);
     Z = Z * height + cylinderBottom;
