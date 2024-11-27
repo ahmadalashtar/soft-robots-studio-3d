@@ -71,7 +71,9 @@ function isColliding = veccol(startPoint, endPoint, obstacle)
 
     isColliding = distanceToCylinderBase <= radius;
     
-    %plotter(startPoint, endPoint, obstacle);
+    % if isColliding
+    %     plotter(startPoint, endPoint, obstacle);
+    % end
 end
 
 function distance = distanceLinePoint(startPoint, endPoint, comparisonPoint)
