@@ -67,19 +67,23 @@ function isColliding = veccol(startPoint, endPoint, obstacle)
 
     %distanceToCylinderBase = distanceLinePoint(startPoint(1:2), endPoint(1:2), obstacle(1:2));
 
-    distanceToCylinderBase = distanceLinePoint(trimmedStart(1:2), trimmedEnd(1:2), obstaclePos(1:2));
+    [distanceToCylinderBase, isOnSegment] = distanceLinePoint(trimmedStart(1:2), trimmedEnd(1:2), obstaclePos(1:2));
 
-    isColliding = distanceToCylinderBase <= radius;
+    isColliding = distanceToCylinderBase <= radius && isOnSegment;
     
-    % if isColliding
-    %     plotter(startPoint, endPoint, obstacle);
-    % end
+    if isColliding
+        plotter(startPoint, endPoint, obstacle);
+    end
 end
 
-function distance = distanceLinePoint(startPoint, endPoint, comparisonPoint)
+function [distance, isOnSegment] = distanceLinePoint(startPoint, endPoint, comparisonPoint)
     numerator = abs((endPoint(1) - startPoint(1)) * (startPoint(2) - comparisonPoint(2)) - (startPoint(1) - comparisonPoint(1)) * (endPoint(2) - startPoint(2)));
 	denominator = sqrt((endPoint(1) - startPoint(1)) ^ 2 + (endPoint(2) - startPoint(2)) ^ 2);
 	distance = numerator ./ denominator;
+    isOnSegment = (comparisonPoint(1) >= min(startPoint(1), endPoint(1))) && ...
+                      (comparisonPoint(1) <= max(startPoint(1), endPoint(1))) && ...
+                      (comparisonPoint(2) >= min(startPoint(2), endPoint(2))) && ...
+                      (comparisonPoint(2) <= max(startPoint(2), endPoint(2)));
 end
 
 function plotter(startPoint, endPoint, obstacle)
