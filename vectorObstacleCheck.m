@@ -7,7 +7,7 @@ function thereIsCollision = vectorObstacleCheck(vectors, obstacles, startPoint)
         currVector = [currVector(1), currVector(2), currVector(3)];
         
         for j = 1:size(obstacles, 1)
-            if veccol(startPoint, currVector, obstacles(j,:))
+            if segmentxcylinder(startPoint, currVector, obstacles(j,:))
                 thereIsCollision = true;
                 return;
             end

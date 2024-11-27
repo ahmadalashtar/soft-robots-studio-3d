@@ -37,14 +37,14 @@ function isColliding = veccol(startPoint, endPoint, obstacle)
     end
 
     if endPoint(3) < cylinderBottom
-        t = (cylinderBottom - startPoint(3)) / lineVector(3);
-        trimmedEnd = startPoint + t * lineVector;
+        t = (cylinderBottom - trimmedStart(3)) / lineVector(3);
+        trimmedEnd = trimmedStart + t * lineVector;
     elseif endPoint(3) > cylinderTop
-        t = (cylinderTop - startPoint(3)) / lineVector(3);
-        trimmedEnd = startPoint + t * lineVector;
+        t = (cylinderTop - trimmedStart(3)) / lineVector(3);
+        trimmedEnd = trimmedStart + t * lineVector;
     end
 
-    direction = trimmedEnd - trimmedStart;
+    %direction = trimmedEnd - trimmedStart;
     % segmentLength = norm(direction);
     % if segmentLength == 0
     %     closestPoint = trimmedStart;
@@ -67,23 +67,29 @@ function isColliding = veccol(startPoint, endPoint, obstacle)
 
     %distanceToCylinderBase = distanceLinePoint(startPoint(1:2), endPoint(1:2), obstacle(1:2));
 
-    [distanceToCylinderBase, isOnSegment] = distanceLinePoint(trimmedStart(1:2), trimmedEnd(1:2), obstaclePos(1:2));
 
-    isColliding = distanceToCylinderBase <= radius && isOnSegment;
-    
-    if isColliding
-        plotter(startPoint, endPoint, obstacle);
-    end
+    [distanceToCylinderBase] = distanceLinePoint(trimmedStart(1:2), trimmedEnd(1:2), obstaclePos(1:2));
+
+    isColliding = distanceToCylinderBase <= radius;
+
+    %plotter(startPoint, endPoint, obstacle);
+
 end
 
-function [distance, isOnSegment] = distanceLinePoint(startPoint, endPoint, comparisonPoint)
-    numerator = abs((endPoint(1) - startPoint(1)) * (startPoint(2) - comparisonPoint(2)) - (startPoint(1) - comparisonPoint(1)) * (endPoint(2) - startPoint(2)));
-	denominator = sqrt((endPoint(1) - startPoint(1)) ^ 2 + (endPoint(2) - startPoint(2)) ^ 2);
-	distance = numerator ./ denominator;
-    isOnSegment = (comparisonPoint(1) >= min(startPoint(1), endPoint(1))) && ...
-                      (comparisonPoint(1) <= max(startPoint(1), endPoint(1))) && ...
-                      (comparisonPoint(2) >= min(startPoint(2), endPoint(2))) && ...
-                      (comparisonPoint(2) <= max(startPoint(2), endPoint(2)));
+function [distance, onSegment] = distanceLinePoint(startPoint, endPoint, comparisonPoint)
+    if startPoint(1) == endPoint(1) && endPoint(1) == comparisonPoint(1)
+        distance = min([abs(startPoint(2) - comparisonPoint(2)), abs(endPoint(2) - comparisonPoint(2))]);
+        return;
+    elseif startPoint(2) == endPoint(2) && endPoint(2) == comparisonPoint(2)
+        distance = min([abs(startPoint(1) - comparisonPoint(1)), abs(endPoint(1) - comparisonPoint(1))]);
+        return;
+    end
+
+    numerator = abs((endPoint(1) - startPoint(1)) * (startPoint(2) - comparisonPoint(2)) - ...
+                    (startPoint(1) - comparisonPoint(1)) * (endPoint(2) - startPoint(2)));
+    denominator = sqrt((endPoint(1) - startPoint(1))^2 + (endPoint(2) - startPoint(2))^2);
+    distance = numerator ./ denominator;
+
 end
 
 function plotter(startPoint, endPoint, obstacle)

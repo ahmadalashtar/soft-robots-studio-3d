@@ -39,7 +39,7 @@ function [col] = pathVectors(p1, p2, p3, minLength, obstacles)
     pathVectorsArr{1} = curP;
     pathVectorsArr{1} = minLength * pathVectorsArr{1} + p2;
     for j = 1:size(obstacles, 1)
-        if veccol(p2, [pathVectorsArr{1}(1),pathVectorsArr{1}(2),pathVectorsArr{1}(3);], obstacles(j,:))
+        if segmentxcylinder(p2, [pathVectorsArr{1}(1),pathVectorsArr{1}(2),pathVectorsArr{1}(3);], obstacles(j,:))
             col = true;
             return;
         end
@@ -50,7 +50,7 @@ function [col] = pathVectors(p1, p2, p3, minLength, obstacles)
         pathVectorsArr{end + 1} = curP;
         pathVectorsArr{index} = minLength * pathVectorsArr{index} + p2;
         for j = 1:size(obstacles, 1)
-            if veccol(p2, [pathVectorsArr{index}(1),pathVectorsArr{index}(2),pathVectorsArr{index}(3);], obstacles(j,:))
+            if segmentxcylinder(p2, [pathVectorsArr{index}(1),pathVectorsArr{index}(2),pathVectorsArr{index}(3);], obstacles(j,:))
                 col = true;
                 return;
             end
