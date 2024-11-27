@@ -68,6 +68,8 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
         [dist_mat, ee_index] = calculateMinDistance_FromOrientationSegment(robot_points,[op.targets(ceili2,1:3);op.end_points(ceili2,:)]);
         chrom(i,n_links+1) = ee_index;  % this is the index of the closest node to the target's orientation segment
         chrom(i+1,n_links+1) = ee_index;  % this is the index of the closest node to the target's orientation segment
+        chrom(i,n_links+3) = op.n_links;  % this is the index of the closest node to the target's orientation segment
+        chrom(i+1,n_links+3) = op.n_links;  % this is the index of the closest node to the target's orientation segment
         sumLinks = sumLinks + chrom(i,n_links+1)-1;
         
         if draw_plot==true
