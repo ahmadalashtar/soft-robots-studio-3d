@@ -1,4 +1,4 @@
-function intersects = collisionCheck(nodes, obstacles, ~)
+function intersects = collisionCheck(conf, nodes, obstacles)
     nObstacles = size(obstacles,1);
     
     nUsedLinks = 0;
@@ -8,13 +8,13 @@ function intersects = collisionCheck(nodes, obstacles, ~)
             break;
         end
     end
-    
+
     nUsedNodes = nUsedLinks + 1;
 
     intersects = false;
     for i = 1 : nUsedNodes - 1
         for j = 1 : nObstacles
-            if segmentxcylinder(nodes(i,:),nodes(i+1,:),obstacles(j,:))
+            if veccol(nodes(i,:),nodes(i+1,:),obstacles(j,:))
                 intersects = true;
                 return;
             end

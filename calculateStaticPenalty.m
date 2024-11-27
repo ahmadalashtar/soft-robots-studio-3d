@@ -48,7 +48,7 @@ function [gScalar] = calculateStaticPenalty(chrom, r)
                 
         [nodes] = solveForwardKinematics3D(conf,op.home_base,0);
 
-        intersections = intersections + collisionCheck(nodes, op.obstacles, chrom(i, end-1));
+        intersections = intersections + collisionCheck(conf, nodes, op.obstacles);
 
         g(6) = intersections;
 

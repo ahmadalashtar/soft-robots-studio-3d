@@ -68,29 +68,51 @@ function isColliding = veccol(startPoint, endPoint, obstacle)
     %distanceToCylinderBase = distanceLinePoint(startPoint(1:2), endPoint(1:2), obstacle(1:2));
 
 
-    [distanceToCylinderBase] = distanceLinePoint(trimmedStart(1:2), trimmedEnd(1:2), obstaclePos(1:2));
+    [closest_x, closest_y] = closestPointOnSegment(trimmedStart(1), trimmedStart(2), trimmedEnd(1), trimmedEnd(2), obstaclePos(1), obstaclePos(2));
+
+    distanceToCylinderBase = sqrt((closest_x - obstaclePos(1))^2 + (closest_y - obstaclePos(2))^2);
 
     isColliding = distanceToCylinderBase <= radius;
 
-    %plotter(startPoint, endPoint, obstacle);
-
+    %if isColliding
+        %plotter(startPoint, endPoint, obstacle);
+    %end
 end
 
-function [distance, onSegment] = distanceLinePoint(startPoint, endPoint, comparisonPoint)
-    if startPoint(1) == endPoint(1) && endPoint(1) == comparisonPoint(1)
-        distance = min([abs(startPoint(2) - comparisonPoint(2)), abs(endPoint(2) - comparisonPoint(2))]);
-        return;
-    elseif startPoint(2) == endPoint(2) && endPoint(2) == comparisonPoint(2)
-        distance = min([abs(startPoint(1) - comparisonPoint(1)), abs(endPoint(1) - comparisonPoint(1))]);
-        return;
-    end
+function [closest_x, closest_y] = closestPointOnSegment(ax, ay, bx, by, px, py)
+    abx = bx - ax;
+    aby = by - ay;
 
-    numerator = abs((endPoint(1) - startPoint(1)) * (startPoint(2) - comparisonPoint(2)) - ...
-                    (startPoint(1) - comparisonPoint(1)) * (endPoint(2) - startPoint(2)));
-    denominator = sqrt((endPoint(1) - startPoint(1))^2 + (endPoint(2) - startPoint(2))^2);
-    distance = numerator ./ denominator;
+    apx = px - ax;
+    apy = py - ay;
 
+    ab_ap_product = apx * abx + apy * aby;
+
+    ab_magnitude_squared = abx^2 + aby^2;
+
+    t = ab_ap_product / ab_magnitude_squared;
+
+    t = max(0, min(1, t));
+
+    closest_x = ax + t * abx;
+    closest_y = ay + t * aby;
 end
+
+% function [distance, onSegment] = distanceLinePoint(startPoint, endPoint, comparisonPoint)
+%     if startPoint(1) == endPoint(1) && endPoint(1) == comparisonPoint(1)
+%         distance = min([abs(startPoint(2) - comparisonPoint(2)), abs(endPoint(2) - comparisonPoint(2))]);
+%         return;
+%     elseif startPoint(2) == endPoint(2) && endPoint(2) == comparisonPoint(2)
+%         distance = min([abs(startPoint(1) - comparisonPoint(1)), abs(endPoint(1) - comparisonPoint(1))]);
+%         return;
+%     end
+% 
+%     numerator = abs((endPoint(1) - startPoint(1)) * (startPoint(2) - comparisonPoint(2)) - ...
+%                     (startPoint(1) - comparisonPoint(1)) * (endPoint(2) - startPoint(2)));
+%     denominator = sqrt((endPoint(1) - startPoint(1))^2 + (endPoint(2) - startPoint(2))^2);
+%     distance = numerator ./ denominator;
+% 
+% end
 
 function plotter(startPoint, endPoint, obstacle)
 

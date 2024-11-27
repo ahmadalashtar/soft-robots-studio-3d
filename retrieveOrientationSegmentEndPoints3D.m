@@ -13,7 +13,7 @@ for i=1:n_targets
     endPoint = targets(i,1:3) - u*maxLength;
     for j = 1:size(obstacles,1)
         obstacle = obstacles(j,:);
-        if segmentxcylinder(startPoint,endPoint,obstacle)
+        if veccol(startPoint,endPoint,obstacle)
             intersections(i).Obstacles = [intersections(i).Obstacles j];
         end
     end
