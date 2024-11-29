@@ -19,7 +19,7 @@ for i = 1:2:n_targets*2
     final_angle_y = chrom(i+1,n_links+2);
     last_link_length = chrom(i,n_links+4);
 
-    g = zeros(1,9);     % array of penalty terms for each constraint
+    g = zeros(1,8);     % array of penalty terms for each constraint
 
     beta = 1;           % parameter of penalty method
 
@@ -119,7 +119,7 @@ for i = 1:2:n_targets*2
 
 
         if (collisioning)
-            g(9) = g(9) + 1;
+            g(8) = g(8) + 1;
             break;
         end
     end
