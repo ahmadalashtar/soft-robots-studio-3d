@@ -2,8 +2,8 @@
 %
 % INPUT: none
 %
-% OUTPUT: 
-% 'pop' is the population at the last generation of the algorithm [t+1 x n+4 x n_individuals]
+% OUTPUT:
+% 'pop' is the population at the last generation of the algorithm [t*2+1 x n+4 x n_individuals]
 % 'fit_array', is a matrix with fitness values, composed of 'ik fitness', 'number of nodes', 'rank fitness', 'index in the pop array'[n_individuals x 4]
 function [best, bestFitness] = runGeneticAlgorithm(exp)
     
@@ -15,23 +15,23 @@ function [best, bestFitness] = runGeneticAlgorithm(exp)
         eas.n_individuals = 2;
     end
 
-    % in case a funny user decides to have an odd number of idividuals in the population...
-    if mod(eas.n_individuals,2) ~= 0
-        eas.n_individuals = eas.n_individuals + 1;
-    end
-    
-    
-    
-    %---------------DYNAMIC MUTATION---------------
-    dynamic_mutation = false;
-    if eas.ga.mutation_probability == -1.0
-        mp_increment = 1.0 /eas.n_generations;    
-        eas.ga.mutation_probability = 1.0;
-        dynamic_mutation = true;
-    end
-    
-    %--RANDOM INITIALIZATION
-    pop = initializeRandomPopulation();  % pop is [t+1 x n+4 x n_individuals]
+% in case a funny user decides to have an odd number of idividuals in the population...
+if mod(eas.n_individuals,2) ~= 0
+    eas.n_individuals = eas.n_individuals + 1;
+end
+
+
+
+%---------------DYNAMIC MUTATION---------------
+dynamic_mutation = false;
+if eas.ga.mutation_probability == -1.0
+    mp_increment = 1.0 /eas.n_generations;
+    eas.ga.mutation_probability = 1.0;
+    dynamic_mutation = true;
+end
+
+%--RANDOM INITIALIZATION
+pop = initializeRandomPopulation();  % pop is [t+1 x n+4 x n_individuals]
 
     %--EVALUATION
     [pop, fit_array_P] = evaluate(pop);

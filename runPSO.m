@@ -40,6 +40,7 @@ function [best, bestFitness] = runPSO(exp)
             fprintf('Length %.3f', bestFitness(eas.fitIdx.totLength));
             fprintf('\n');
         end
+
     end    
     localBests = localBestToArray(swarm);
     localBestsFitness = localBestsFitnessToArray(swarm);

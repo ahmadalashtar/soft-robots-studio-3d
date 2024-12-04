@@ -2,7 +2,7 @@ function [best, bestFitness] = runBBBC(exp)
     
     global eas;       % big bang-big crunch settings
 
-    rng shuffle
+rng shuffle
 
     % in case a funny user decides to have a negative number or zero for individuals in the population...
     if eas.n_individuals <= 0
@@ -19,9 +19,9 @@ function [best, bestFitness] = runBBBC(exp)
     bestIndex = bestFitness(eas.fitIdx.id);
     best = pop(:,:,bestIndex);
 
-    %--ITERATIONS
+%--ITERATIONS
 
-    for gen = 1 : eas.n_generations
+for gen = 1 : eas.n_generations
 
         %--BIG CRUNCH
         cMass = bigCrunchPhase(pop,fit_array_P);
@@ -58,7 +58,7 @@ function [best, bestFitness] = runBBBC(exp)
             fprintf('\n');
         end
 
-    end    
+end
 
 end
 

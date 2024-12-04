@@ -1,6 +1,8 @@
 function firstTask()
     global op;          
     op.home_base = [0 0 0 0 0];
+    
+    op.plains = [-100, 200];
 
     t1 = [145 -30 115 ];
     t2 = [145 30 115 ];
