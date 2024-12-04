@@ -24,18 +24,18 @@ for i = 1:2:n_targets*2
     beta = 1;           % parameter of penalty method
 
     %--CONSTRAINT 1,2: final angle is between angle bounds
-    g(1) = abs(min(0,final_angle_x - min_angle_x))^beta;
+    g(1) = ceil(abs(min(0,final_angle_x - min_angle_x))^beta);
 
-    g(2) = abs(min(0,max_angle_x - final_angle_x))^beta;
+    g(2) = ceil(abs(min(0,max_angle_x - final_angle_x))^beta);
 
-    g(3) = abs(min(0,final_angle_y - min_angle_y))^beta;
+    g(3) = ceil(abs(min(0,final_angle_y - min_angle_y))^beta);
 
-    g(4) = abs(min(0,max_angle_y - final_angle_y))^beta;
+    g(4) = ceil(abs(min(0,max_angle_y - final_angle_y))^beta);
 
     %--CONSTRAINT 3: final link length is > min link length, only if there is only 1 link on the target's orientation segment
     linksOnSegment = chrom(i,n_links+3) - (chrom(i,n_links+1)-1);
     if linksOnSegment <= 1
-        g(5) = abs(min(0,last_link_length - min_length))^beta;
+        g(5) = ceil(abs(min(0,last_link_length - min_length))^beta);
     else
         g(5) = 0;
     end
