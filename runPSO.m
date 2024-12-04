@@ -1,4 +1,4 @@
-function [localBests, localBestsFitness] = runPSO(exp)
+function [best, bestFitness] = runPSO(exp)
     
     global eas;
     rng shuffle
@@ -8,8 +8,6 @@ function [localBests, localBestsFitness] = runPSO(exp)
         eas.n_individuals = 1;
     end
     
-    global eas;
-
 
     n_individuals = eas.n_individuals;
 
@@ -25,7 +23,7 @@ function [localBests, localBestsFitness] = runPSO(exp)
         swarm = applySurvival(swarm,oldSwarm);
         fittest = eas.pso.globalBest;
         bestFitness = fittest.fitness;        
-
+        best = fittest.position;
         %--VERBOSE (SHOW LOG)
         if eas.verbose
             fprintf('[%d.%d]\t', exp, gen);
@@ -50,6 +48,7 @@ function [localBests, localBestsFitness] = runPSO(exp)
     % fitness = fitnessToArray(swarm);
     % positions = positionsToArray(swarm);
 end
+
 function localBests = localBestToArray(swarm)
     rows = size(swarm(1).position,1);
     columns = size(swarm(1).position,2);
