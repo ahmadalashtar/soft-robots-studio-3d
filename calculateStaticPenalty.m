@@ -85,7 +85,7 @@ for i = 1:2:n_targets*2
 
     
 
-    intersections = intersections + collisionCheck(nodes, op.obstacles,chrom(i,n_links+3));
+    intersections = intersections + collisionCheck(nodes, op.obstacles,chrom(i,n_links+3), op.plains);
 
     g(7) = intersections;
 

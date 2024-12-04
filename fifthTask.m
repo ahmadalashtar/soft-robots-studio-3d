@@ -1,5 +1,8 @@
 function fifthTask()
-    global op;          
+    global op;  
+
+    op.plains = [-25 50];
+    
     op.home_base = [0 0 0 0 0];
     
     t1 = [75 -70 50 ];
