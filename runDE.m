@@ -142,10 +142,12 @@ minAngle = op.angle_domain(1);
 maxAngle = op.angle_domain(2);
 if row == lengthsIndex
     % swarm(i).position(j,k) = max(min(swarm(i).position(j,k),maxLength),minLength); %Clamping (Saturation)
-    mutant = mod(mutant,maxLength-minLength+1) + minLength; % Wrapping (Modulus Operator)
+    % mutant = mod(mutant,maxLength-minLength+1) + minLength; % Wrapping (Modulus Operator)
+    mutant = max(min(mutant,maxLength),minLength);
 else
     % swarm(i).position(j,k) = max(min(swarm(i).position(j,k),maxAngle),minAngle) + minAngle; % Clamping (Saturation)
-    mutant = mod(abs(mutant),maxAngle-minAngle+1) + minAngle; % Wrapping (Modulus Operator)
+    % mutant = mod(abs(mutant),maxAngle-minAngle+1) + minAngle; % Wrapping (Modulus Operator)
+    mutant = max(min(mutant,maxAngle),minAngle);
 end
 
 end

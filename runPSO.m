@@ -186,11 +186,11 @@ function swarm = updatePosition(swarm)
                 swarm(i).position(j,k) = swarm(i).position(j,k) + swarm(i).velocity(j,k); 
                 % swarm(i).position(j,k) = swarm(i).position(j,k) + swarm(i).velocity(j,k)/abs(swarm(i).velocity(j,k)); 
                 if j == lengthsIndex
-                    % swarm(i).position(j,k) = max(min(swarm(i).position(j,k),maxLength),minLength); %Clamping (Saturation)
-                    swarm(i).position(j,k) = mod(swarm(i).position(j,k),maxLength-minLength+1) + minLength; % Wrapping (Modulus Operator)  
+                    swarm(i).position(j,k) = max(min(swarm(i).position(j,k),maxLength),minLength); %Clamping (Saturation)
+                    % swarm(i).position(j,k) = mod(swarm(i).position(j,k),maxLength-minLength+1) + minLength; % Wrapping (Modulus Operator)  
                 else
-                    % swarm(i).position(j,k) = max(min(swarm(i).position(j,k),maxAngle),minAngle) + minAngle; % Clamping (Saturation)
-                    swarm(i).position(j,k) = mod(abs(swarm(i).position(j,k)),maxAngle-minAngle+1) + minAngle; % Wrapping (Modulus Operator)  
+                    swarm(i).position(j,k) = max(min(swarm(i).position(j,k),maxAngle),minAngle); % Clamping (Saturation)
+                    % swarm(i).position(j,k) = mod(abs(swarm(i).position(j,k)),maxAngle-minAngle+1) + minAngle; % Wrapping (Modulus Operator)  
                 end
                 
             end
