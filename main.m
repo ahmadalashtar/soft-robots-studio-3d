@@ -92,36 +92,29 @@ function [best_chrom, configurations] = main()
         typeOfMut = round(eas.ga.mutation_probability,2);
     end
 
-    pop = [];
-    fit_array = [];
     
-    eas.algorithm = "ga"; % ga, bbbc, pso, or de
+    eas.algorithm = "de"; % ga, bbbc, pso, or de
 
     switch eas.algorithm
         case "ga"
-            [pop, fit_array] = runGeneticAlgorithm(1);
+            [best, bestFitness] = runGeneticAlgorithm(1);
         case "bbbc"
-            [pop, fit_array] = runBBBC(1);
+            [best, bestFitness] = runBBBC(1);
         case "pso"
-            [pop, fit_array] = runPSO(1);
+            [best, bestFitness] = runPSO(1);
         case "de"
-            [pop, fit_array] = runDE(1);
+            [best, bestFitness] = runDE(1);
     end
-
-    best_index = fit_array(1,eas.fitIdx.id);
-    best_chrom = pop(:,:,best_index);
     
-    configurations = decodeIndividual(best_chrom);
+    configurations = decodeIndividual(best);
     drawProblem3D(configurations);
     
-    if fit_array(1,eas.fitIdx.pen) == 0
+    if bestFitness(1,eas.fitIdx.pen) == 0
         isBestFeasible = "feas";
     else
         isBestFeasible = "unfeas";
     end
     r=1; %this is for experiments to keep track of which run we are executing. remove when running experiments
-    tit = "RUN: " + num2str(r) + ", IK: " + num2str(fit_array(1,eas.fitIdx.ik)) + ", LtS: " + num2str(fit_array(1,eas.fitIdx.nodes)) + ", OND: " + num2str(fit_array(1,eas.fitIdx.wiggly)) + "%, LoS: " + num2str(fit_array(1,eas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
+    tit = "RUN: " + num2str(r) + ", IK: " + num2str(bestFitness(1,eas.fitIdx.ik)) + ", LtS: " + num2str(bestFitness(1,eas.fitIdx.nodes)) + ", OND: " + num2str(bestFitness(1,eas.fitIdx.wiggly)) + "%, LoS: " + num2str(bestFitness(1,eas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
     title(tit); 
-    disp(num2str(fit_array(1,eas.fitIdx.pen)))
-    disp("hello")
 end
