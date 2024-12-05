@@ -46,7 +46,7 @@ function [best, configurations, bestFitness] = main(exp_flag)
     %---------------------PROBLEM DEFINITION--------------------- 
     
     global eas;
-    
+    eas.adapative_pen_mult = 1;
     if nargin == 0
         exp_flag=0;
     end
@@ -63,7 +63,7 @@ function [best, configurations, bestFitness] = main(exp_flag)
     eas.rankingSettings.firstPartitionSize = 0; % OUTPUT number of individuals falling in the first partition (best ones)
 
     eas.draw_plot = false;  % if you set this to true, your computer will likely explode
-    eas.verbose = false;
+    eas.verbose = true;
     eas.normalize_weightDistance = true;    % deprecated
     eas.variance_generations = 10; 
     eas.obstacle_avoidance = false;
@@ -107,6 +107,16 @@ function [best, configurations, bestFitness] = main(exp_flag)
     if(~exp_flag)
         eas.algorithm = "de"; % ga, bbbc, pso, or de
     end
+
+    if(eas.penalty_method == "adaptive")
+    
+        eas.adaptive_pen_mult = 50;
+        eas.adaptive_array = [];
+
+    end
+        
+    
+    
 
     switch eas.algorithm
         case "ga"

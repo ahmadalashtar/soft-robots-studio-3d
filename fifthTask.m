@@ -31,6 +31,7 @@ for i = 1:size(op.targets,1)
     op.targets(i,5) = roty;
 
 end
+    op.plains = [-25 125];
     op.obstacles = [
                     25 -5  50 5 75;
                     25 5   50 5 75;

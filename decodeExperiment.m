@@ -3,8 +3,8 @@ function decodeExperiment()
     clc
     global op
     global eas
-    load("exp15_11.mat");
-    experiment_Index = 2056;
+    load("fifthTask_Test.mat");
+    experiment_Index = 24;
 
     eas = result.settings;
 

@@ -24,8 +24,7 @@ function [pop, fit_array] = evaluate(pop)
         % it will be useful when we sort 'fit_array', because 'pop' will not be sorted
         fit_array(i,eas.fitIdx.id) = i;
     end
-    
-    
+   
     fit_array = checkConstraints(pop, fit_array);
 
 end

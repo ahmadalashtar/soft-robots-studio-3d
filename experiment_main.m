@@ -5,11 +5,11 @@ function experiment_main()
     global op;
     global eas;
     global result;
-
+    
     %%Testing Creating a struct for each algorithm??
 
     %%Experiment Variables
-    nameOfFile = "exp-testing7";
+    nameOfFile = "adaptive_test_64";
     nameOfFile = strcat('experiments/', nameOfFile, '.mat');
     if isfile(nameOfFile)
         load(nameOfFile);
@@ -24,22 +24,24 @@ function experiment_main()
         eas.count = result.output_matrix(end, 15);
     else
         
-        result.tasks = ["firstTask", "fourthTask", "fifthTask"]; %%Type wanted task function's names
+        result.tasks = [ "fifthTask" ]; %%Type wanted task function's names
         
-        result.algo_series = ["bbbc", "ga","pso","de"]; %% Type wanted algorithm types in here %"bbbc","ga","pso","de"
+        result.algo_series = ["ga"]; %% Type wanted algorithm types in here %"bbbc","ga","pso","de"
            
         eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
         eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
         eas.rankingSettings.step_len = 5;
     
+        eas.adaptive_size = 10;
+        eas.adaptive_pen_mult = 50;
         eas.numOfIteration = 2;    %%The amount of iteration
-        eas.n_generations = 10;
-        eas.n_individuals = 10;
+        eas.n_generations = 350;
+        eas.n_individuals = 500;
         eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
         eas.crossover_method = "blxa";
         eas.survival_alpha = 40;
-        eas.penalty_method = 'static';	% 'static', 'deb'
-        eas.ranking_method = "penalty";
+        eas.penalty_method = 'adaptive';	% 'static', 'deb','adaptive' 
+        eas.ranking_method = "penalty"; 
         
         eas.fitIdx.algo = 11;           % type of algorithm that we are using
         eas.fitIdx.runTime = 12;        % running time in seconds
@@ -65,13 +67,13 @@ function experiment_main()
         eas.pso.omega = 0.75;
         eas.pso.cognitiveConstant = 1;
         eas.pso.socialConstant = 2;
-    
+                
     
     
         %%Parameters Array
     
-        result.parameters.ga.mutation_probability = [-1.0 0.2 0.4 0.6];
-        result.parameters.ga.crossover_alpha = [0.5 0.419 0.381]; 
+        result.parameters.ga.mutation_probability = [0.4 0.6];
+        result.parameters.ga.crossover_alpha = [0.381]; 
     
         result.parameters.de.variant = [1 2 3 4 5 6]; %%Find paper for all
         result.parameters.de.scalingFactor = [0.5  0.75 1.0];

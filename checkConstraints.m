@@ -18,6 +18,14 @@ function [fit_array] = checkConstraints(pop, fit_array)
                             fit_array(i,eas.fitIdx.ik) = fit_array(i,eas.fitIdx.ik) + fit_array(i,eas.fitIdx.pen);
                         end
                     end
+                case 'adaptive'
+                    for i=1:eas.n_individuals
+                        index = fit_array(i,eas.fitIdx.id);
+                        fit_array(i,eas.fitIdx.pen) = eas.adaptive_pen_mult * calculateStaticPenalty(pop(:,:,index),[100 100 100 100 100 100 100 100]);
+                        if eas.ranking_method == "penalty"
+                            fit_array(i,eas.fitIdx.ik) = fit_array(i,eas.fitIdx.ik) + fit_array(i,eas.fitIdx.pen);
+                        end
+                    end
             end
 end
 

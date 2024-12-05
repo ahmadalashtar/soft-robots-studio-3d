@@ -5,12 +5,11 @@ function experiment_main()
     global op;
     global eas;
     global result;
-
+    
     %%Testing Creating a struct for each algorithm??
 
     %%Experiment Variables
-
-    nameOfFile = "expX";
+    nameOfFile = "adaptive_test_1";
     nameOfFile = strcat('experiments/', nameOfFile, '.mat');
     if isfile(nameOfFile)
         load(nameOfFile);
@@ -27,20 +26,22 @@ function experiment_main()
         
         result.tasks = ["firstTask", "fourthTask", "fifthTask"]; %%Type wanted task function's names
         
-        result.algo_series = ["bbbc" "de" "pso" "ga"]; %% Type wanted algorithm types in here %"bbbc","ga","pso","de"
+        result.algo_series = ["ga"]; %% Type wanted algorithm types in here %"bbbc","ga","pso","de"
            
         eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
         eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
         eas.rankingSettings.step_len = 5;
     
+        eas.adaptive_size = 10;
+        eas.adaptive_pen_mult = 1;
         eas.numOfIteration = 2;    %%The amount of iteration
-        eas.n_generations = 4;
-        eas.n_individuals = 10;
+        eas.n_generations = 200;
+        eas.n_individuals = 500;
         eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
         eas.crossover_method = "blxa";
         eas.survival_alpha = 40;
-        eas.penalty_method = 'static';	% 'static', 'deb'
-        eas.ranking_method = "penalty";
+        eas.penalty_method = 'adaptive';	% 'static', 'deb','adaptive' 
+        eas.ranking_method = "penalty"; 
         
         eas.fitIdx.algo = 11;           % type of algorithm that we are using
         eas.fitIdx.runTime = 12;        % running time in seconds
@@ -66,7 +67,7 @@ function experiment_main()
         eas.pso.omega = 0.75;
         eas.pso.cognitiveConstant = 1;
         eas.pso.socialConstant = 2;
-    
+                
     
     
         %%Parameters Array
@@ -156,6 +157,7 @@ function experiment_main()
             %%There will be another for loop for parameters here
             switch eas.algorithm
                 case "ga"
+                    tic;
                     fprintf("*** Beginning ga ***\n");
                     for a = eas.currParameterArray(1):length(result.parameters.ga.mutation_probability)
                         
@@ -179,7 +181,9 @@ function experiment_main()
                         end
 
                     end
-                    fprintf("*** Finished ga ***");
+                    elapsedTime = toc;
+                    fprintf("*** Finished ga ***\n");
+                    fprintf('Total Execution Time: %.2f seconds\n', elapsedTime);
                                         
 
                 case "de"
@@ -190,7 +194,7 @@ function experiment_main()
                             
                             eas.de.variant = result.parameters.de.variant(b);
                             eas.de.scalingFactor = result.parameters.de.scalingFactor(b_2);
-
+                          
                             iteration(TaskID,k, [b b_2 0], nameOfFile);
                             eas.iteration_count = eas.iteration_count + 1;
                             % Print progress
@@ -203,7 +207,9 @@ function experiment_main()
                             end
                         end
                     end
-                    fprintf("*** Finished de ***\n ***");
+                    elapsedTime = toc;
+                    fprintf("*** Finished de ***\n");
+                    fprintf('Total Execution Time: %.2f seconds\n', elapsedTime);
                 case "pso"
                     fprintf("Beginning PSO\n");
                     tic;
@@ -239,9 +245,10 @@ function experiment_main()
                         
                     end
                     elapsedTime = toc;
-                    fprintf("*** Finished pso ***");
+                    fprintf("*** Finished pso ***\n");
                     fprintf('Total Execution Time: %.2f seconds\n', elapsedTime);
                 case "bbbc"
+                    tic;
                     fprintf("Beginning bbbc\n");
 
                     iteration(TaskID,k, [0 0 0], nameOfFile);
@@ -250,14 +257,16 @@ function experiment_main()
                     fprintf('Task %d, Algorithm %s: %.2f%% Complete\n', ...
                     TaskID, eas.algorithm, (eas.iteration_count / total_iterations) * 100);
                     eas.currIteration = 1;
+                    elapsedTime = toc;
                     fprintf("Finished bbbc\n");
+                    fprintf('Total Execution Time: %.2f seconds\n', elapsedTime);
 
             end
             eas.currParameterArray = [1 1 1];
         end
         eas.currAlgo = 1;
     end
-    printf("*** FINISHED EXPERIMENT ***");
+    fprintf("*** FINISHED EXPERIMENT ***");
     result.completeness = "DONE";
     save(nameOfFile, "result");
     spy()

@@ -63,12 +63,6 @@ pop = initializeRandomPopulation();  % pop is [t+1 x n+4 x n_individuals]
         bestPop = pop(:,:,bestPopIndex);
         [best, bestFitness] = updateBest(best,bestPop,bestFitness,bestPopFitness);
         
-        if(eas.penalty_method == "adaptive")
-            
-            adaptivePenCalculation(bestPopFitness);
-        end
-
-
         %--VERBOSE (SHOW LOG)
         if eas.verbose
             fprintf('[%d.%d]\t', exp, gen);
@@ -85,7 +79,7 @@ pop = initializeRandomPopulation();  % pop is [t+1 x n+4 x n_individuals]
             fprintf('Length %.3f', bestFitness(1,eas.fitIdx.totLength));
             fprintf('\n');
         end
-            
+      
                 
          %--DYNAMIC AGGIUSTMENTS
          if dynamic_mutation == true

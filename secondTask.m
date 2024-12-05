@@ -5,7 +5,7 @@ function secondTask(exp_flag)
     end
     op.home_base = [0 0 0 0 0];
 
-    op.plains = [20, 100];
+    op.plains = [-20, 100];
 
     t1 = [25 -43.301 100 ];
     t2 = [25 43.301 100 ];
