@@ -1,25 +1,14 @@
-function [localBests, localBestsFitness] = runPSO(exp)
+function [best, bestFitness] = runPSO(exp)
     
     global eas;
-    global op;
     rng shuffle
-
-    %--INITIALIZATION 
-    variance_array= zeros(1,eas.n_individuals);
-    queue=zeros(1,eas.variance_generations);   % queue used to calculate the variance of the last 'variance_generations' generations best individuals
-    qIndex = 1;
 
     % in case a funny user decides to have a negative number or zero for individuals in the population...
     if eas.n_individuals <= 0
         eas.n_individuals = 1;
     end
     
-    global eas;
 
-
-    n_targets = size(op.targets,1);
-    n_links = op.n_links;
-    extra_genes = eas.extra_genes;
     n_individuals = eas.n_individuals;
 
     swarm(n_individuals) = ...
@@ -33,18 +22,8 @@ function [localBests, localBestsFitness] = runPSO(exp)
         swarm = updateSwarm(swarm);
         swarm = applySurvival(swarm,oldSwarm);
         fittest = eas.pso.globalBest;
-        bestFitness = fittest.fitness;
-        % calculate variance over the last 'varianceGen' generations
-        
-        queue(qIndex)=bestFitness(eas.fitIdx.ik);     % variance is on ik fitness only (ranking fitness depends on the current population, so it makes no sense to compare the rank of individuals from different generations)
-        qIndex=qIndex+1;                    % the queue is implemented as a static array
-        if qIndex>size(queue,2)             % when the index reaches the end of the array
-            qIndex = 1;                     % goes back to 1
-        end
-        variance = var(nonzeros(queue));    % calculate variance
-        variance_array(gen)= variance;
-        
-
+        bestFitness = fittest.fitness;        
+        best = fittest.position;
         %--VERBOSE (SHOW LOG)
         if eas.verbose
             fprintf('[%d.%d]\t', exp, gen);
@@ -59,22 +38,7 @@ function [localBests, localBestsFitness] = runPSO(exp)
             fprintf('UND %d%%, ', round(bestFitness(eas.fitIdx.wiggly)));
             fprintf('LoS %d, ', bestFitness(eas.fitIdx.nodesOnSegment));
             fprintf('Length %.3f', bestFitness(eas.fitIdx.totLength));
-            
             fprintf('\n');
-        end
-
-        %--SPECIAL CONVERGENCE CONDITIONS
-    
-        % stop if the variance is 0.0000
-        if eas.stopAtVariance_flag == true
-            if (round(variance,eas.stopAtVariance_zeros) == 0) && (gen>eas.variance_generations*2)
-                break;
-            end
-        end
-        
-        % stop if we reached a fitness of 0.0000, this will likely never be true
-        if eas.stopAtFitness_flag == true && round(bestFitness(1), eas.stopAtFitness_zeros) == 0
-            break;
         end
 
     end    
@@ -85,6 +49,7 @@ function [localBests, localBestsFitness] = runPSO(exp)
     % fitness = fitnessToArray(swarm);
     % positions = positionsToArray(swarm);
 end
+
 function localBests = localBestToArray(swarm)
     rows = size(swarm(1).position,1);
     columns = size(swarm(1).position,2);
@@ -221,11 +186,11 @@ function swarm = updatePosition(swarm)
                 swarm(i).position(j,k) = swarm(i).position(j,k) + swarm(i).velocity(j,k); 
                 % swarm(i).position(j,k) = swarm(i).position(j,k) + swarm(i).velocity(j,k)/abs(swarm(i).velocity(j,k)); 
                 if j == lengthsIndex
-                    % swarm(i).position(j,k) = max(min(swarm(i).position(j,k),maxLength),minLength); %Clamping (Saturation)
-                    swarm(i).position(j,k) = mod(swarm(i).position(j,k),maxLength-minLength+1) + minLength; % Wrapping (Modulus Operator)  
+                    swarm(i).position(j,k) = max(min(swarm(i).position(j,k),maxLength),minLength); %Clamping (Saturation)
+                    % swarm(i).position(j,k) = mod(swarm(i).position(j,k),maxLength-minLength+1) + minLength; % Wrapping (Modulus Operator)  
                 else
-                    % swarm(i).position(j,k) = max(min(swarm(i).position(j,k),maxAngle),minAngle) + minAngle; % Clamping (Saturation)
-                    swarm(i).position(j,k) = mod(abs(swarm(i).position(j,k)),maxAngle-minAngle+1) + minAngle; % Wrapping (Modulus Operator)  
+                    swarm(i).position(j,k) = max(min(swarm(i).position(j,k),maxAngle),minAngle); % Clamping (Saturation)
+                    % swarm(i).position(j,k) = mod(abs(swarm(i).position(j,k)),maxAngle-minAngle+1) + minAngle; % Wrapping (Modulus Operator)  
                 end
                 
             end

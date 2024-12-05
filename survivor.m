@@ -16,7 +16,7 @@ function [nextGenPop, fit_array_NGP] = survivor(pop, offspring, fit_array_P, fit
     
     switch eas.survival_method 
         case 'non-elitist'
-            nextGenPop = pop;
+            nextGenPop = offspring;
             fit_array_NGP = fit_array_O;    % not much more to do here...
         case 'elitist_full'
             [nextGenPop, fit_array_NGP] = elitistSurvivalFull(pop, offspring, fit_array_P, fit_array_O);

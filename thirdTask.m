@@ -6,6 +6,11 @@ function thirdTask(exp_flag)
     end
     op.home_base = [0 0 0 0 0];
 
+    op.plains = [20, 100];
+
+    x = 107.3313;
+    y = 53.6656;
+
     t1 = [-80 40 100 ];
     t2 = [-80 -40 100 ];
     t3 = [-40 80 100];
