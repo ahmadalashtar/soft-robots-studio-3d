@@ -81,16 +81,20 @@ function experiment_main(data)
     
     
         %%Parameters Array
-    
-        result.parameters.ga.mutation_probability = data.mut;
-        result.parameters.ga.crossover_alpha = data.cross; 
-    
-        result.parameters.de.variant = data.variant; 
-        result.parameters.de.scalingFactor = data.scalingFactor;
-    
-        result.parameters.pso.omega = data.omega;
-        result.parameters.pso.cognitiveConstant = data.cognitiveConstant;
-        result.parameters.pso.socialConstant = data.socialConstant;
+		if(isfield(data, 'mut'))
+			result.parameters.ga.mutation_probability = data.mut;
+			result.parameters.ga.crossover_alpha = data.cross; 
+		end
+		if(isfield(data, 'variant'))
+			result.parameters.de.variant = data.variant; 
+			result.parameters.de.scalingFactor = data.scalingFactor;
+		end
+		
+		if(isfield(data, 'omega'))
+			result.parameters.pso.omega = data.omega;
+			result.parameters.pso.cognitiveConstant = data.cognitiveConstant;
+			result.parameters.pso.socialConstant = data.socialConstant;
+		end
     
        
         %%If entered file name is exist start the code from where it got

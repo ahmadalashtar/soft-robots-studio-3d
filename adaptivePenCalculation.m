@@ -1,7 +1,7 @@
 function adaptivePenCalculation(bestPopFitness)
     global eas;
-    eas.adaptationBeta_1 = 1.5;
-    eas.adaptationBeta_2 = 1.75
+    eas.adaptationBeta_1 = 1.75;
+    eas.adaptationBeta_2 = 1.30;
     max_adaptation_value = 200;
     min_adaptation_value = 1;
     
