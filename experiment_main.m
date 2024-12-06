@@ -1,15 +1,19 @@
-function experiment_main()
-    clear all
+function experiment_main(data)
+    clear op eas result
     clc
     %---------------------PROBLEM DEFINITION--------------------- 
     global op;
     global eas;
     global result;
+	
+	algorithms = string(data.algo)';
+    tasks = string(data.task)';
+    ComputerID = string(data.id);
     
     %%Testing Creating a struct for each algorithm??
 
     %%Experiment Variables
-    nameOfFile = "adaptive_test_64";
+	nameOfFile = strcat("exp-testing", ComputerID);
     nameOfFile = strcat('experiments/', nameOfFile, '.mat');
     if isfile(nameOfFile)
         load(nameOfFile);
@@ -24,9 +28,9 @@ function experiment_main()
         eas.count = result.output_matrix(end, 15);
     else
         
-        result.tasks = [ "fifthTask" ]; %%Type wanted task function's names
+        result.tasks = tasks; %%Type wanted task function's names
         
-        result.algo_series = ["ga"]; %% Type wanted algorithm types in here %"bbbc","ga","pso","de"
+        result.algo_series = algorithms; %% Type wanted algorithm types in here %"bbbc","ga","pso","de"
            
         eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
         eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
@@ -34,10 +38,16 @@ function experiment_main()
     
         eas.adaptive_size = 10;
         eas.adaptive_pen_mult = 50;
-        eas.numOfIteration = 2;    %%The amount of iteration
-        eas.n_generations = 350;
-        eas.n_individuals = 500;
-        eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
+		
+		
+        eas.numOfIteration = data.runs;    %%The amount of iteration
+        eas.n_generations = data.generation;
+        eas.n_individuals = data.pop;
+		if(isfield(data, 'elitist'))
+			eas.survival_method = data.elitist; % 'elitist_full', 'elitist_alpha', 'non-elitist'
+		else
+			eas.survival_method = 'non-elitist'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
+		end
         eas.crossover_method = "blxa";
         eas.survival_alpha = 40;
         eas.penalty_method = 'adaptive';	% 'static', 'deb','adaptive' 
@@ -72,15 +82,15 @@ function experiment_main()
     
         %%Parameters Array
     
-        result.parameters.ga.mutation_probability = [0.4 0.6];
-        result.parameters.ga.crossover_alpha = [0.381]; 
+        result.parameters.ga.mutation_probability = data.mut;
+        result.parameters.ga.crossover_alpha = data.cross; 
     
-        result.parameters.de.variant = [1 2 3 4 5 6]; %%Find paper for all
-        result.parameters.de.scalingFactor = [0.5  0.75 1.0];
+        result.parameters.de.variant = data.variant; 
+        result.parameters.de.scalingFactor = data.scalingFactor;
     
-        result.parameters.pso.omega = [0.6  0.8  1.0];
-        result.parameters.pso.cognitiveConstant = [2.0 2.5 5.0];
-        result.parameters.pso.socialConstant = [0.5 1.0 1.5];
+        result.parameters.pso.omega = data.omega;
+        result.parameters.pso.cognitiveConstant = data.cognitiveConstant;
+        result.parameters.pso.socialConstant = data.socialConstant;
     
        
         %%If entered file name is exist start the code from where it got
