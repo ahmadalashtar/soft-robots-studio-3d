@@ -24,6 +24,12 @@ function [best, bestFitness] = runPSO(exp)
         fittest = eas.pso.globalBest;
         bestFitness = fittest.fitness;        
         best = fittest.position;
+
+        if(eas.penalty_method == "adaptive")
+            
+            adaptivePenCalculation(bestFitness);
+        end
+
         %--VERBOSE (SHOW LOG)
         if eas.verbose
             fprintf('[%d.%d]\t', exp, gen);

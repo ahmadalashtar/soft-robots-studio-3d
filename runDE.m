@@ -44,7 +44,10 @@ function [best, bestFitness] = runDE(exp)
         bestPopIndex = bestPopFitness(eas.fitIdx.id);
         bestPop = pop(:,:,bestPopIndex);
         [best, bestFitness] = updateBest(best,bestPop,bestFitness,bestPopFitness);
-
+        if(eas.penalty_method == "adaptive")
+            
+            adaptivePenCalculation(bestPopFitness);
+        end
         %--VERBOSE (SHOW LOG)
         if eas.verbose
             fprintf('[%d.%d]\t', exp, gen);
