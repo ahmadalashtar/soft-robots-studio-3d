@@ -13,6 +13,7 @@ fitness = double.empty(0,18);
 for i = 1 : size(files,1)
     clear result;
     load(files(i).name);
+
     if result.algo_series == "bbbc"
         col11 = 1;
         col16 = 0; % first parameter
@@ -40,6 +41,10 @@ for i = 1 : size(files,1)
         chroms{count,1} = result.chromosome_mat{j,1};
         count = count + 1;
     end
+    if length(result.tasks) == 1
+        result.output_matrix(:,13) = 3;
+    end
+
     result.output_matrix(:,11) = col11;
     result.output_matrix(:,16) = col16;
     result.output_matrix(:,17) = col17;
