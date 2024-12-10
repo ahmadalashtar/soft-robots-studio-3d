@@ -1,5 +1,11 @@
-function fitness = rankPartitionExperiments()
-fliesWithRef = dir("exp-testing136");
+function [chroms, fitness] = combineExp(folderName)
+
+arguments
+    folderName = "exp-testing136";
+end
+
+addpath(folderName);
+fliesWithRef = dir(folderName);
 files = fliesWithRef(3:end);
 chroms = cell(100,1);
 count = 1;
@@ -40,5 +46,6 @@ for i = 1 : size(files,1)
     result.output_matrix(:,18) = col18;
     fitness = [fitness ;  result.output_matrix];
 end
+rmpath(folderName);
 % [fitness] = rankingEvaluation(fitness);
 end
