@@ -120,7 +120,7 @@ function [chrom, fitness] = calculateFitness3D(chrom, draw_plot)
     
     fitness(1) = fitness(1) / n_targets;  % normalize the fitness among number of targets/configurations
     fitness(2) = sumLinks; % / n_targets;
-    fitness(3) = calculateUndulation(chrom) * 100;    % already normalized
+    fitness(3) = round(calculateUndulation(chrom) * 100);    % already normalized
     fitness(4) = sumLinksOnSegment; %/ n_targets;   
     fitness(5) = totLength;
     if draw_plot==true
