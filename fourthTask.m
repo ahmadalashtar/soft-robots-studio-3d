@@ -1,4 +1,4 @@
-function fourthTask()
+function thirdTask()
     global op;          
     op.home_base = [0 0 0 0 0];
 
@@ -10,16 +10,19 @@ function fourthTask()
     t8 = [60 -120 100];
     op.targets = [  
                     
-                    t4 -60 2.2;
-                    t5 -4.3 60;
-                    t6 4.3 60;
-                    t8 60 2.2;
-                 ]; 
-% for i = 1:size(op.targets,1)
-%     [rotx, roty] = getAngleForTask(op.targets(i,1:3), [0 0 0]);
-%     op.targets(i,4) = rotx;
-%     op.targets(i,5) = roty;
-% end
+                    t4 -28.8 29.6;
+                    t5 -32.005383208083494 25.004301778398400;
+                    t6 36 30;
+                    t8 28.8 29.6;
+
+                    ]; %target [x y z ux uy uz cone_angle]
+                    % ]; %target [x y z ux uy uz cone_angle]
+for i = 1:size(op.targets,1)
+    [rotx, roty] = getAngleForTask(op.targets(i,1:3), [0 0 0]);
+    op.targets(i,4) = rotx;
+    op.targets(i,5) = roty;
+
+end
     op.obstacles = [
                     20 50 100 10 80;
                     50 20 100 10 80;
