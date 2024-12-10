@@ -1,5 +1,10 @@
-function fitness = rankPartitionExperiments()
-fliesWithRef = dir("exp-testing136");
+function [chroms, fitness] = combineExp(folderName)
+
+arguments
+    folderName = "exp-testing136";
+end
+
+fliesWithRef = dir(folderName);
 files = fliesWithRef(3:end);
 chroms = cell(100,1);
 count = 1;
