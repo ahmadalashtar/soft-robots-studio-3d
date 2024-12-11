@@ -195,6 +195,7 @@ function swarm = updatePosition(swarm)
                 
             end
         end
+        swarm(i).position(1:end-1,1) = 0;
     end
 end
 
@@ -270,6 +271,7 @@ function swarm = updateVelocity(swarm)
                     rand*c2*(gBest(j,k)-swarm(i).position(j,k));
             end
         end
+        swarm(i).velocity(1:end-1,1) = 0;
     end
 end
 

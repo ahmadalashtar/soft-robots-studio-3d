@@ -113,6 +113,7 @@ for k = 1 : individuals
         end
     end
 end
+mutants(1:end-1,1,:) = 0;
 end
 
 function mutant = mutateVector(pop,row,column,targetIndex,fittestPopIndex,xr1,xr2,xr3,xr4,xr5)
@@ -171,6 +172,5 @@ for k = 1 : individuals
         end
     end
 end
-
-
+trials(1:end-1,1,:) = 0;
 end

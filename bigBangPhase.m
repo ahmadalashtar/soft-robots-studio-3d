@@ -8,5 +8,5 @@ function [pop] = bigBangPhase(cMass, gen)
         indv = generateRandomIndividualBBBC(cMass, gen);   
         pop(:,:,i) = indv;
     end
-
+    pop(1:end-1,1,:) = 0;
 end

@@ -42,5 +42,5 @@ function [offspring] = variation(pop, matPool)
             error("A corrupted chromosome has been generated during crossover!\n");
         end
     end
-    
+    offspring(1:end-1,1,:) = 0;
 end
