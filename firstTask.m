@@ -6,20 +6,20 @@ function firstTask()
 
     t1 = [145 -30 115 ];
     t2 = [145 30 115 ];
-    op.targets = [  t1 -12.994616791916506 56.293413183225340;
-                    t2 12.994616791916506 56.293413183225340;
+    op.targets = [  t1 -15 75;
+                    t2 15 75;
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
     op.obstacles = [
                     85 0 200 12.5 300;
-                    45 45 200 12.5 300;
-                    45 -45 200 12.5 300;
+                    45 56.79492 200 12.5 300;
+                    45 -56.79492 200 12.5 300;
                     145 -30 200 12.5 80;
                     145 30 200 12.5 80;
                     ]; %cylinder [x y z(base) radius height]
 
     op.n_links = 20;
-    op.length_domain = [25 50];
+    op.length_domain = [25 100];
 
     op.first_angle.is_fixed = true;
     op.angle_domain = [-45 45];
