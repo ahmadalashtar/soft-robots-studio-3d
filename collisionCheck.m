@@ -1,4 +1,4 @@
-function intersects = collisionCheck(nodes,obstacles,nUsedNodes, plains)
+function intersects = collisionCheck(nodes,obstacles,nUsedNodes, planes)
 
 nObstacles = size(obstacles,1);
 
@@ -11,7 +11,7 @@ for i = 1 : nUsedNodes
             return;
         end
     end
-    if (nodes(i,3) < plains(1) || nodes(i,3) > plains(2))
+    if (nodes(i,3) < planes(1) || nodes(i,3) > planes(2))
         intersects = intersects + 1;
     end
 end

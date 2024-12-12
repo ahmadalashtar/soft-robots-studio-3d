@@ -50,12 +50,18 @@ function [best, configurations, bestFitness] = main(exp_flag)
     if nargin == 0
         exp_flag=0;
     end
-    
+    op.planes = [-20, 150];
+    op.n_links = 20;
+    op.length_domain = [25 50];
+    op.home_base = [0 0 0 0 0];
+    op.first_angle.is_fixed = true;
+    op.angle_domain = [-45 45];
+    op.first_angle.angle = 0;
     if(~exp_flag)
-        firstTask();
+        thirdTask();
     end
     
-    
+    setFixedEAsettings();
     eas.rankingSettings.minFit = 0;     % OUTPUT min IK fitness
     eas.rankingSettings.maxFi = 0;      % OUTPUT max IK fitness  FIX THE TYPO
     eas.rankingSettings.delta = 0;      % OUTPUT difference between max and min IK fitness
@@ -63,7 +69,7 @@ function [best, configurations, bestFitness] = main(exp_flag)
     eas.rankingSettings.firstPartitionSize = 0; % OUTPUT number of individuals falling in the first partition (best ones)
 
     eas.draw_plot = false;  % if you set this to true, your computer will likely explode
-    eas.verbose = false;
+    eas.verbose = true;
     eas.normalize_weightDistance = true;    % deprecated
     eas.variance_generations = 10; 
     eas.obstacle_avoidance = false;
@@ -90,6 +96,9 @@ function [best, configurations, bestFitness] = main(exp_flag)
     eas.fitIdx.rank = 9;            % rank, used as fitness for selection and survival operators
     eas.fitIdx.id = 10;             % reference to chromosome in the array of population
     % extra genes in chromosome, it is a constant do not change!
+
+    eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
+    eas.rankingSettings.step_len = 5;
     
 
     eas.extra_genes = 4;
@@ -105,7 +114,7 @@ function [best, configurations, bestFitness] = main(exp_flag)
 
     
     if(~exp_flag)
-        eas.algorithm = "de"; % ga, bbbc, pso, or de
+        eas.algorithm = "ga"; % ga, bbbc, pso, or de
     end
 
     if(eas.penalty_method == "adaptive")
@@ -130,8 +139,8 @@ function [best, configurations, bestFitness] = main(exp_flag)
     end
     
 
-    configurations = decodeIndividual(best);
-    drawProblem3D(configurations);
+    % ;
+    % drawProblem3D(configurations = decodeIndividual(best));
     
     if bestFitness(1,eas.fitIdx.pen) == 0
         isBestFeasible = "feas";
