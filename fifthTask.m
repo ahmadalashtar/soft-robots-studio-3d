@@ -1,10 +1,6 @@
 function fifthTask()
     global op;  
 
-    op.plains = [-25 50];
-    
-    op.home_base = [0 0 0 0 0];
-    
     t1 = [75 -70 50 ];
     t2 = [75 -50 50 ];
     t3 = [75 -30 50 ];
@@ -31,6 +27,7 @@ for i = 1:size(op.targets,1)
     op.targets(i,5) = roty;
 
 end
+    op.plains = [-25 125];
     op.obstacles = [
                     25 -5  50 5 75;
                     25 5   50 5 75;
