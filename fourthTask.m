@@ -1,8 +1,8 @@
-function thirdTask()
+function fourthTask()
     global op;          
     op.home_base = [0 0 0 0 0];
 
-    op.plains = [20 100];
+    op.plains = [-20 100];
 
     t4 = [60 120 100];
     t5 = [120 60 100 ];
