@@ -50,13 +50,7 @@ function [best, configurations, bestFitness] = main(exp_flag)
     if nargin == 0
         exp_flag=0;
     end
-    op.planes = [-20, 150];
-    op.n_links = 20;
-    op.length_domain = [25 50];
-    op.home_base = [0 0 0 0 0];
-    op.first_angle.is_fixed = true;
-    op.angle_domain = [-45 45];
-    op.first_angle.angle = 0;
+    
     if(~exp_flag)
         thirdTask();
     end

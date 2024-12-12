@@ -5,14 +5,14 @@ function thirdTask(exp_flag)
     end
     
     
-    t1 = [130 -70 145 ];
-    t2 = [130 -50 145 ];
-    t3 = [130 -30 145 ];
-    t4 = [130 -10 145];
-    t5 = [130 10 145 ];
-    t6 = [130 30 145];
-    t7 = [130 50 145];
-    t8 = [130 70 145];
+    t1 = [175 -163 50*2.3 ];
+    t2 = [175 -50*2.3 50*2.3 ];
+    t3 = [175 -30*2.3 50*2.3 ];
+    t4 = [175 -10*2.3 50*2.3];
+    t5 = [175 10*2.3 50*2.3 ];
+    t6 = [175 30*2.3 50*2.3];
+    t7 = [175 50*2.3 50*2.3];
+    t8 = [175 70*2.3 50*2.3];
     op.targets = [  
                     t1 0 0;
                     t2 0 0;
@@ -26,17 +26,23 @@ function thirdTask(exp_flag)
                     ]; %target [x y z ux uy uz cone_angle]
                     % ]; %target [x y z ux uy uz cone_angle]
 for i = 1:size(op.targets,1)
-    [rotx, roty] = getAngleForTask(op.targets(i,1:3), [0 0 50]);
+    [rotx, roty] = getAngleForTask(op.targets(i,1:3), [0 0 0]);
     op.targets(i,4) = rotx;
     op.targets(i,5) = roty;
 
 end
+    op.plains = [-25 125];
     op.obstacles = [
-                    50 -5  150 5 150;
-                    50 5   150 5 150;
-                    50 -22   150 5 150;
-                    50 22   150 5 150;
+                    25*2.3 -5*2.3  150 5*2.3 150;
+                    25*2.3 5*2.3   150 5*2.3 150;
+                    25*2.3 -22*2.3   150 5*2.3 150;
+                    25*2.3 22*2.3   150 5*2.3 150;
+                    25*2.3 -40*2.3   150 5*2.3 150;
+                    25*2.3 40*2.3   150 5*2.3 150;
+                    25*2.3 -50*2.3   150 5*2.3 150;
+                   25*2.3 50*2.3   150 5*2.3 150;
                     ]; %cylinder [x y z(base) radius height]
+
 
     
     op.end_points = retrieveOrientationSegmentEndPoints3D(op.targets,op.obstacles,op.home_base);  % retrieve the end points for each target's orientation segment
