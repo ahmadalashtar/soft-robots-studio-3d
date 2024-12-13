@@ -4,7 +4,14 @@ function thirdTask(exp_flag)
         exp_flag = 0;
     end
     
-    
+    op.planes = [-20, 150];
+    op.n_links = 20;
+    op.length_domain = [25 70];
+    op.home_base = [0 0 0 0 0];
+    op.first_angle.is_fixed = true;
+    op.angle_domain = [-45 45];
+    op.first_angle.angle = 0;
+
     t1 = [175 -163 50*2.3 ];
     t2 = [175 -50*2.3 50*2.3 ];
     t3 = [175 -30*2.3 50*2.3 ];

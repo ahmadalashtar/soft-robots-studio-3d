@@ -42,11 +42,10 @@
 %%Parameter exp_flag stands for experimental flag. It can be null which
 %%will cause assigning default variable as false
 function [best, configurations, bestFitness] = main(exp_flag)
-    
+    configurations = 0;
     %---------------------PROBLEM DEFINITION--------------------- 
     
     global eas;
-    eas.adapative_pen_mult = 1;
     if nargin == 0
         exp_flag=0;
     end
@@ -55,7 +54,10 @@ function [best, configurations, bestFitness] = main(exp_flag)
         thirdTask();
     end
     
-    setFixedEAsettings();
+    if ~exp_flag
+        setFixedEAsettings();
+    end
+
     eas.rankingSettings.minFit = 0;     % OUTPUT min IK fitness
     eas.rankingSettings.maxFi = 0;      % OUTPUT max IK fitness  FIX THE TYPO
     eas.rankingSettings.delta = 0;      % OUTPUT difference between max and min IK fitness

@@ -4,7 +4,7 @@ function iteration(TaskID,k,param,nameOfFile)
     global result
     for i=eas.currIteration:result.settings.numOfIteration
         tStart = tic;
-        [best_chrom config fit_array]=main(1);
+        [best_chrom, config, fit_array]=main(1);
         tEnd = toc(tStart);
         fit_array(1,eas.fitIdx.algo) = k;
         fit_array(1,eas.fitIdx.runTime) = tEnd;

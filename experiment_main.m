@@ -13,7 +13,7 @@ function experiment_main(data)
     %%Testing Creating a struct for each algorithm??
 
     %%Experiment Variables
-	nameOfFile = strcat("exp-testing", ComputerID);
+	nameOfFile = strcat("exp-testing-2-", ComputerID);
     nameOfFile = strcat('experiments/', nameOfFile, '.mat');
     if isfile(nameOfFile)
         load(nameOfFile);
@@ -50,7 +50,7 @@ function experiment_main(data)
 		end
         eas.crossover_method = "blxa";
         eas.survival_alpha = 40;
-        eas.penalty_method = 'adaptive';	% 'static', 'deb','adaptive' 
+        eas.penalty_method = 'static';	% 'static', 'deb','adaptive' 
         eas.ranking_method = "penalty"; 
         
         eas.fitIdx.algo = 11;           % type of algorithm that we are using
@@ -122,10 +122,10 @@ function experiment_main(data)
         switch result.tasks(TaskID)
             case "firstTask"
                 firstTask(1);
-            case "fourthTask"
-                fourthTask(1);
-            case "fifthTask"
-                fifthTask(1);
+            case "secondTask"
+                secondTask(1);
+            case "thirdTask"
+                thirdTask(1);
         end
         
         % Calculate the total number of iterations for the current task
@@ -179,10 +179,13 @@ function experiment_main(data)
 
                             eas.ga.mutation_probability = result.parameters.ga.mutation_probability(a);
                             eas.ga.crossover_alpha = result.parameters.ga.crossover_alpha(z);
-                            
+                            c = 1; %non-elitist
+                            if data.elitist == "elitist_full"
+                                c = 2; %elitist_full
+                            end
                             
 
-                            iteration(TaskID,k, [a z 0], nameOfFile);
+                            iteration(TaskID,k, [a z c], nameOfFile);
                             eas.iteration_count = eas.iteration_count + 1;
                             %Print Progress
                             fprintf('Task %d, Algorithm %s | Mutation Probability: %.2f Crossover Alpha: %.2f Completion Percentage: %.2f%%\n', ...

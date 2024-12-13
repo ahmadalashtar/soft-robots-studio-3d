@@ -4,6 +4,13 @@ function secondTask(exp_flag)
         exp_flag = 0;
     end
 
+    op.planes = [-20, 150];
+    op.n_links = 20;
+    op.length_domain = [25 70];
+    op.home_base = [0 0 0 0 0];
+    op.first_angle.is_fixed = true;
+    op.angle_domain = [-45 45];
+    op.first_angle.angle = 0;
 
     t4 = [60+10 120 145];
     t5 = [120+10 60 145 ];

@@ -61,12 +61,13 @@ pop = initializeRandomPopulation();  % pop is [t+1 x n+4 x n_individuals]
         bestPopFitness = fit_array_P(fit_array_P(:,eas.fitIdx.rank)==1,:);
         bestPopIndex = bestPopFitness(eas.fitIdx.id);
         bestPop = pop(:,:,bestPopIndex);
-        [best, bestFitness] = updateBest(best,bestPop,bestFitness,bestPopFitness);
-        
         if(eas.penalty_method == "adaptive")
             
             adaptivePenCalculation(bestPopFitness);
         end
+        [best, bestFitness] = updateBest(best,bestPop,bestFitness,bestPopFitness);
+        
+        
 
 
         %--VERBOSE (SHOW LOG)
