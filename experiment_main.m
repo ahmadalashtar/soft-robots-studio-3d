@@ -48,7 +48,7 @@ function experiment_main(data)
 		else
 			eas.survival_method = 'non-elitist'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
 		end
-        eas.crossover_method = "blxa";
+        
         eas.survival_alpha = 40;
         eas.penalty_method = 'static';	% 'static', 'deb','adaptive' 
         eas.ranking_method = "penalty"; 

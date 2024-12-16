@@ -3,14 +3,18 @@ function [] = setFixedEAsettings()
     global eas;
     eas.bbbc.crunchMethod = 'com'; % for bbbc
 
-    eas.n_generations = 200;
+    eas.n_generations = 300;
     eas.n_individuals = 350;
-    eas.survival_method = 'non-elitist'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
+    eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
+    eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
+    eas.rankingSettings.step_len = 5;
+    
     eas.ga.selection_method = 'tournament';    % 'tournament', 'proportionate'
     eas.ga.crossover_probability = 1.0;
     eas.ga.crossover_alpha = 0.419;
     eas.ga.mutation_method = 'random';   % 'random', 'modifiedRandom'
-    eas.ga.mutation_probability = -1;  % -1 is dynamic 
+    eas.ga.mutation_probability = -1;  % -1 is dynamic
+    eas.ga.crossover_method = "blxa";
     eas.survival_alpha = 40;    %this is the percentage of elites that will stay in the new population
     eas.penalty_method = 'static';	% 'static', 'adaptive'
     

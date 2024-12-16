@@ -53,18 +53,25 @@ pop = initializeRandomPopulation();  % pop is [t+1 x n+4 x n_individuals]
         %--EVALUATION
         [offspring, fit_array_O] = evaluate(offspring);
         [fit_array_O] = rankingEvaluation(fit_array_O);
-         
-        %--SURVIVOR
-        [pop, fit_array_P] = survivor(pop, offspring, fit_array_P, fit_array_O);
+
+
         
-        %--Update Best
-        bestPopFitness = fit_array_P(fit_array_P(:,eas.fitIdx.rank)==1,:);
+        if (eas.penalty_method == "adaptive")
+            fit_array_P(:,eas.fitIdx.ik) = fit_array_P(:,eas.fitIdx.ik) - fit_array_P(:,eas.fitIdx.pen);
+            fit_array_P = checkConstraints(pop, fit_array_P);
+            [pop, fit_array_P] = survivor(pop, offspring, fit_array_P, fit_array_O);
+            adaptivePenCalculation(fit_array_P(1,:));
+        else
+            [pop, fit_array_P] = survivor(pop, offspring, fit_array_P, fit_array_O);
+        end
+        
+        
+        %--SURVIVOR
+        bestPopFitness = fit_array_P(1,:);
         bestPopIndex = bestPopFitness(eas.fitIdx.id);
         bestPop = pop(:,:,bestPopIndex);
-        if(eas.penalty_method == "adaptive")
-            
-            adaptivePenCalculation(bestPopFitness);
-        end
+        %--Update Best
+
         [best, bestFitness] = updateBest(best,bestPop,bestFitness,bestPopFitness);
         
         

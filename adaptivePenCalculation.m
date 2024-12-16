@@ -1,7 +1,7 @@
 function adaptivePenCalculation(bestPopFitness)
     global eas;
-    eas.adaptationBeta_1 = 1.75;
-    eas.adaptationBeta_2 = 1.30;
+    eas.adaptationBeta_1 = 1.75
+    eas.adaptationBeta_2 = 1.05;
     min_adaptation_value = 1;
     
     
@@ -40,7 +40,7 @@ function adaptivePenCalculation(bestPopFitness)
         eas.adaptive_pen_mult = 1 * eas.adaptive_pen_mult;
     elseif fs && eas.adaptive_pen_mult > min_adaptation_value
         eas.adaptive_pen_mult = (1/eas.adaptationBeta_1) * eas.adaptive_pen_mult  ;
-    else
+    elseif unfs
         eas.adaptive_pen_mult = (eas.adaptationBeta_2) * eas.adaptive_pen_mult;
     end
 end

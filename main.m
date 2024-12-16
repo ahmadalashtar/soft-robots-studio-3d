@@ -93,10 +93,6 @@ function [best, configurations, bestFitness] = main(exp_flag)
     eas.fitIdx.id = 10;             % reference to chromosome in the array of population
     % extra genes in chromosome, it is a constant do not change!
 
-    eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
-    eas.rankingSettings.step_len = 5;
-    
-
     eas.extra_genes = 4;
     
 
@@ -147,6 +143,7 @@ function [best, configurations, bestFitness] = main(exp_flag)
     if(~exp_flag)
         r=1; %this is for experiments to keep track of which run we are executing. remove when running experiments
         tit = "RUN: " + num2str(r) + ", IK: " + num2str(bestFitness(1,eas.fitIdx.ik)) + ", LtS: " + num2str(bestFitness(1,eas.fitIdx.nodes)) + ", OND: " + num2str(bestFitness(1,eas.fitIdx.wiggly)) + "%, LoS: " + num2str(bestFitness(1,eas.fitIdx.nodesOnSegment)) + ", " + isBestFeasible + ", pop: " + eas.n_individuals + ", mut: " + typeOfMut;
-        title(tit); 
+        title(tit);
+        drawProblem3D(decodeIndividual(best));
     end
 end
