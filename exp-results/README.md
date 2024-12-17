@@ -34,6 +34,8 @@ eas.fitIdx.parameterInd2 = 17; % second parameter options index.
 
 eas.fitIdx.parameterInd3 = 18; % third parameter options index
 
+Algorithms: 1 BBBC 2 GA 3 DE 4 PSO
+
 GA:
 16: Mutation Probability
 17: Crossover Alpha
