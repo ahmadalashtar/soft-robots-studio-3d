@@ -40,13 +40,16 @@ GA:
 16: Mutation Probability
 17: Crossover Alpha
 18: 0
+19: 1 full_elitist 0 non-elitist
 
 DE:
 16: Variant
 17: Scaling Factor
 18: 0
+19: 1 full_elitist 0 non-elitist
 
 PSO:
 16: intertia weight
 17: Cognitive Constant
 18: Social Constant
+19: 1 full_elitist 0 non-elitist
