@@ -51,7 +51,7 @@ function [best, configurations, bestFitness] = main(exp_flag)
     end
     
     if(~exp_flag)
-        thirdTask();
+        secondTask();
     end
     
     if ~exp_flag
@@ -110,8 +110,6 @@ function [best, configurations, bestFitness] = main(exp_flag)
     end
 
     if(eas.penalty_method == "adaptive")
-    
-        eas.adaptive_pen_mult = 50;
         eas.adaptive_array = [];
 
     end

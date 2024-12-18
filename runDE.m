@@ -37,17 +37,21 @@ function [best, bestFitness] = runDE(exp)
         [fit_array_T] = rankingEvaluation(fit_array_T);
         
         %--SURVIVOR
-        [pop, fit_array_P] = survivor(pop, trials, fit_array_P, fit_array_T);
-        
+        if(eas.penalty_method == "adaptive")
+            fit_array_P(:,eas.fitIdx.ik) = fit_array_P(:,eas.fitIdx.ik) - fit_array_P(:,eas.fitIdx.pen);
+            fit_array_P = checkConstraints(pop, fit_array_P);
+            [pop, fit_array_P] = survivor(pop, trials, fit_array_P, fit_array_T);
+            adaptivePenCalculation(fit_array_P(1,:));    
+        else
+            [pop, fit_array_P] = survivor(pop, trials, fit_array_P, fit_array_T);
+        end
+
         %--Update Best
         bestPopFitness = fit_array_P(fit_array_P(:,eas.fitIdx.rank)==1,:);
         bestPopIndex = bestPopFitness(eas.fitIdx.id);
         bestPop = pop(:,:,bestPopIndex);
         [best, bestFitness] = updateBest(best,bestPop,bestFitness,bestPopFitness);
-        if(eas.penalty_method == "adaptive")
-            
-            adaptivePenCalculation(bestPopFitness);
-        end
+
         %--VERBOSE (SHOW LOG)
         if eas.verbose
             fprintf('[%d.%d]\t', exp, gen);

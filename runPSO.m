@@ -25,11 +25,6 @@ function [best, bestFitness] = runPSO(exp)
         bestFitness = fittest.fitness;        
         best = fittest.position;
 
-        if(eas.penalty_method == "adaptive")
-            
-            adaptivePenCalculation(bestFitness);
-        end
-
         %--VERBOSE (SHOW LOG)
         if eas.verbose
             fprintf('[%d.%d]\t', exp, gen);
@@ -105,9 +100,15 @@ function swarm = applySurvival(swarm, oldSwarm)
     oldSwarmFitness = fitnessToArray(oldSwarm);
     swarmFitness = fitnessToArray(swarm);
 
-
-    [positions, fitness] = ...
-        survivor(oldSwarmPositions, swarmPositions, oldSwarmFitness, swarmFitness);
+        %--SURVIVOR
+    if (eas.penalty_method == "adaptive")
+        oldSwarmFitness(:,eas.fitIdx.ik) = oldSwarmFitness(:,eas.fitIdx.ik) - oldSwarmFitness(:,eas.fitIdx.pen);
+        oldSwarmFitness = checkConstraints(oldSwarmPositions, oldSwarmFitness);
+        [positions, fitness] = survivor(oldSwarmPositions, swarmPositions, oldSwarmFitness, swarmFitness);
+        adaptivePenCalculation(oldSwarmFitness(1,:));
+    else
+        [positions, fitness] = survivor(oldSwarmPositions, swarmPositions, oldSwarmFitness, swarmFitness);
+    end
 
     for i = 1 : size(positions,3)
         swarm(i).position = positions(:,:,i);

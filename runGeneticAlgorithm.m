@@ -55,7 +55,7 @@ pop = initializeRandomPopulation();  % pop is [t+1 x n+4 x n_individuals]
         [fit_array_O] = rankingEvaluation(fit_array_O);
 
 
-        
+        %--SURVIVOR
         if (eas.penalty_method == "adaptive")
             fit_array_P(:,eas.fitIdx.ik) = fit_array_P(:,eas.fitIdx.ik) - fit_array_P(:,eas.fitIdx.pen);
             fit_array_P = checkConstraints(pop, fit_array_P);
@@ -66,11 +66,10 @@ pop = initializeRandomPopulation();  % pop is [t+1 x n+4 x n_individuals]
         end
         
         
-        %--SURVIVOR
+        %--Update Best
         bestPopFitness = fit_array_P(1,:);
         bestPopIndex = bestPopFitness(eas.fitIdx.id);
         bestPop = pop(:,:,bestPopIndex);
-        %--Update Best
 
         [best, bestFitness] = updateBest(best,bestPop,bestFitness,bestPopFitness);
         

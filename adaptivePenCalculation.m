@@ -5,7 +5,7 @@ function adaptivePenCalculation(bestPopFitness)
     min_adaptation_value = 1;
     
     
-    if(size(eas.adaptive_array) < 10)
+    if(size(eas.adaptive_array) < eas.adaptive_size)
         
         eas.adaptive_array{end+1} = bestPopFitness;
         return;
@@ -23,7 +23,7 @@ function adaptivePenCalculation(bestPopFitness)
     unfs = false;
     fs = false;
 
-    for i = 1:10
+    for i = 1:eas.adaptive_size
         pop = eas.adaptive_array{i};
         if (unfs && fs)
             break;
