@@ -50,9 +50,9 @@ function experiment_main(data)
 		end
         
         eas.survival_alpha = 40;
-        eas.penalty_method = 'static';	% 'static', 'deb','adaptive' 
+        eas.penalty_method = 'adaptive';	% 'static', 'deb','adaptive' 
         eas.ranking_method = "penalty";
-        eas.bbbc.crunchMethod = 'com'; % for bbbc
+        eas.bbbc.crunchMethod = 'fittest'; % for bbbc
         
         eas.fitIdx.algo = 11;           % type of algorithm that we are using
         eas.fitIdx.runTime = 12;        % running time in seconds

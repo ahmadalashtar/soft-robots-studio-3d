@@ -1,7 +1,7 @@
 function [] = setFixedEAsettings()
     %---------------------EA SETTINGS---------------------    
     global eas;
-    eas.bbbc.crunchMethod = 'com'; % for bbbc
+    eas.bbbc.crunchMethod = 'fittest'; % for bbbc
 
     eas.n_generations = 150;
     eas.n_individuals = 300;

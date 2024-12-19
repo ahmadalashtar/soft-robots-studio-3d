@@ -18,7 +18,7 @@ function data = GetFromServer(ip, maxDelay)
 		data = webread(url, options);
 		if isfield(data, 'message')
 			fprintf('Stopping with message : %s\nI ran %d experiments.\n', data.message, i);
-            !start selfDestruct.bat
+            %!start selfDestruct.bat
             
 			return
 		end
@@ -27,7 +27,7 @@ function data = GetFromServer(ip, maxDelay)
 		delay = round(minDelay + (maxDelay - minDelay) * rand());
         fprintf("Finished Experiment. Delaying for %d seconds before asking for another.\n", delay);
 		%nameOfFile = strcat("exp-testing", string(data.id));
-        nameOfFile = strcat("exp-testing-2-", ComputerID);
+        nameOfFile = strcat("exp-testing-2-", string(data.id));
 		nameOfFile = strcat('experiments/', nameOfFile, '.mat');
 		uploadFileToServerAsJSON(nameOfFile, url, computerName, data.id)
 
