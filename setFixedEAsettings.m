@@ -5,7 +5,7 @@ function [] = setFixedEAsettings()
 
     eas.n_generations = 150;
     eas.n_individuals = 300;
-    eas.survival_method = 'non-elitist'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
+    eas.survival_method = 'elitist_full'; % 'elitist_full', 'elitist_alpha', 'non-elitist'
     eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
     eas.rankingSettings.step_len = 5;
     
@@ -16,7 +16,7 @@ function [] = setFixedEAsettings()
     eas.ga.mutation_probability = -1;  % -1 is dynamic
     eas.ga.crossover_method = "blxa";
     eas.survival_alpha = 40;    %this is the percentage of elites that will stay in the new population
-    eas.penalty_method = 'adaptive';	% 'static', 'adaptive'
+    eas.penalty_method = 'frequency';	% 'static', 'adaptive'
     eas.adaptive_size = 10;
     eas.adaptive_pen_mult = 50;
 

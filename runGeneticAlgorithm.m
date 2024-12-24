@@ -73,7 +73,6 @@ pop = initializeRandomPopulation();  % pop is [t+1 x n+4 x n_individuals]
 
         [best, bestFitness] = updateBest(best,bestPop,bestFitness,bestPopFitness);
         
-        
 
 
         %--VERBOSE (SHOW LOG)

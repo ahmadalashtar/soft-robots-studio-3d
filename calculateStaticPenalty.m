@@ -119,7 +119,6 @@ for i = 1:2:n_targets*2
             break;
         end
     end
-
     gScalar = gScalar + g*r';
 end
 end

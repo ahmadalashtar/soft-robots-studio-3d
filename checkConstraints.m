@@ -26,6 +26,15 @@ function [fit_array] = checkConstraints(pop, fit_array)
                             fit_array(i,eas.fitIdx.ik) = fit_array(i,eas.fitIdx.ik) + fit_array(i,eas.fitIdx.pen);
                         end
                     end
+                case 'frequency'
+                    frequency_weights = calculateViolationFrequency(pop);
+                    for i=1:eas.n_individuals
+                        index = fit_array(i,eas.fitIdx.id);
+                        fit_array(i,eas.fitIdx.pen) = calculateStaticPenalty(pop(:,:,index),frequency_weights);
+                        if eas.ranking_method == "penalty"
+                            fit_array(i,eas.fitIdx.ik) = fit_array(i,eas.fitIdx.ik) + fit_array(i,eas.fitIdx.pen);
+                        end
+                    end
             end
 end
 
