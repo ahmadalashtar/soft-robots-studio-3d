@@ -1,3 +1,5 @@
+%checks for collisions and planes collisions
+
 function intersects = collisionCheck(nodes,obstacles,nUsedNodes, planes)
 
 nObstacles = size(obstacles,1);
