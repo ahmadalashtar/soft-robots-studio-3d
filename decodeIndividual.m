@@ -1,10 +1,10 @@
 % Transform a chromosome into a robot configurations expressed as pairs <angle1, angle2, link length>
 %
 % INPUT: 
-% 'robot_chromosome' is the chromosome representing one individual of the population [t*2+1 x n+5]
+% 'robot_chromosome' is the chromosome representing one individual of the population [t*2+1 x n+4]
 %
 % OUTPUT: 
-% 'robot_configurations' is [n x 3 x t] containing pairs <angle, link length> for each node for each configuration (each target)
+% 'robot_configurations' is [nodes x 3 x targets] containing pairs <angle, link length> for each node for each configuration (each target)
 function [robot_configurations] = decodeIndividual(robot_chromosome)
     
     global eas;
