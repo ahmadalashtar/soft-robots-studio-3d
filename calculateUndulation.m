@@ -1,3 +1,6 @@
+% calculates undulation 'zigzag' in the chrom
+%   it takes projections on the xz and yz planes for each link 
+%   and checks for angle sign change
 function [und] = calculateUndulation(chrom)
     global op;
     global eas;  % genetic algorithm settings
