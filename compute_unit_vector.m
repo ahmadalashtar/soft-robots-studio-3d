@@ -1,3 +1,7 @@
+% computes unit vector
+%   input is a 1x5 target [x y z rotationX rotationY]
+%   output is a unite vector in the specified direction
+
 function u = compute_unit_vector(input)
     % Extract rotation angles
     rot_x = input(4); % Rotation around x-axis in degrees
