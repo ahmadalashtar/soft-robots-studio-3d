@@ -1,3 +1,4 @@
+% a group of settings for the second Task in the experiment
 function secondTask(exp_flag)
     global op;
     if nargin == 0

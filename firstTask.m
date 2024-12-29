@@ -1,3 +1,5 @@
+% a group of settings for the first Task in the experiment
+
 function firstTask(exp_flag)
     global op;
     if nargin == 0
