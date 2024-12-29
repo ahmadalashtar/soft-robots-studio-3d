@@ -4,7 +4,7 @@
 % 'op' is the object describing the optimization problem 
 %
 % OUTPUT: 
-% 'indv' is the random individual [t*2+1 x n+eas.extra_genes]
+% 'indv' is the random individual [t*2+1 x n+4]
 function [individual] =  generateRandomIndividualBBBC(centerOfMass, gen)
     
     global op;  % optimization problem

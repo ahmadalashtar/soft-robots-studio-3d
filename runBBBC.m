@@ -1,3 +1,6 @@
+%starts the BBBC algorithm
+%input is a number, defaults to 1
+%output is the best individual with its best fitness
 function [best, bestFitness] = runBBBC(exp)
     
     global eas;       % big bang-big crunch settings

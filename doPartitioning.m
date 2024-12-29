@@ -1,3 +1,9 @@
+% Perform ranking of the population: divide the population into partitions 
+% based on how good their fitness is, and then sort the number of nodes 
+% within each partition to minimize it.
+%
+% INPUT/OUTPUT: 
+% 'fit_array', is a matrix with fitness values
 function [fit_array, rank_info] = doPartitioning(fit_array, rank_info, fitIdx)
     fit_array = sortrows(fit_array, fitIdx.ik);
     rank_info.minFit = fit_array(1,fitIdx.ik);                            % get min ik fitness value from feasible solutions
@@ -38,3 +44,9 @@ function [fit_array, rank_info] = doPartitioning(fit_array, rank_info, fitIdx)
         end
     end
 end
+% 'fit_array' is composed as follows, for each individual in the population:
+%
+% -> first element is the fitness from the inverse kinematics (ik fitness), calculated as the normalized sum of the distances of each node from the target's orientation segment, overall sum for each configuration
+% -> second element is the sum of all nodes used to reach the target, overall sum for each configuration
+% -> third element is the rank based on the partitions to minimize the number of nodes (rank fitness) + the penality for constraint violation
+% -> fourth element is the index of the individual with respect of the array 'pop', as this matrix is sorted by the third column and the order will not be the same as the individuals in the population

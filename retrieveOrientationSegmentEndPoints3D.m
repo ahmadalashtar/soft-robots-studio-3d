@@ -1,3 +1,11 @@
+% Return a set of coordinates identifying the endpoints of the target's orientation segments 
+%
+% INPUT:
+% 'draw_plot' is a boolean flag, true if you want to plot the segments from targets
+%
+% OUTPUT:
+% 'end_points' is an array tx3 containing the coordinates [x, y, z] of the end points for each segment
+
 function [endPoints] = retrieveOrientationSegmentEndPoints3D(targets,obstacles,base)
 
 maxLength = retrieveMaxLength(targets,base);

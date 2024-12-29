@@ -1,4 +1,6 @@
-% Perform ranking of the population: divide the population into partitions based on how good their fitness is, and then sort the number of nodes within each partition to minimize it.
+% Perform ranking of the population: divide the population into 
+% partitions based on how good their fitness is, 
+% and then sort the number of nodes within each partition to minimize it.
 %
 % INPUT/OUTPUT: 
 % 'fit_array', is a matrix with fitness values

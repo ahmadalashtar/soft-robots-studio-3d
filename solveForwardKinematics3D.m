@@ -1,3 +1,7 @@
+% computes forward kinematics in 3D
+%   input: conf is a [nodes x 3] matrix with [angle around X, angle around Y, extension on Z]
+%   output: coordinates of each node and the rotation array
+
 function [coordinates, Rarray] = solveForwardKinematics3D(conf, base, draw)
     % Number of transformations
     num_links = size(conf, 1);

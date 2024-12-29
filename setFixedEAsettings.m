@@ -1,3 +1,4 @@
+%settings for EA
 function [] = setFixedEAsettings()
     %---------------------EA SETTINGS---------------------    
     global eas;

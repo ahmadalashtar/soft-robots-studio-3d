@@ -1,10 +1,7 @@
-% Run the Genetic Algorithm
-%
-% INPUT: none
-%
-% OUTPUT:
-% 'pop' is the population at the last generation of the algorithm [t*2+1 x n+4 x n_individuals]
-% 'fit_array', is a matrix with fitness values, composed of 'ik fitness', 'number of nodes', 'rank fitness', 'index in the pop array'[n_individuals x 4]
+%starts the GA algorithm
+%input is a number, defaults to 1
+%output is the best individual with its best fitness
+
 function [best, bestFitness] = runGeneticAlgorithm(exp)
     
     global eas; % genetic algorithm settings
@@ -31,7 +28,7 @@ if eas.ga.mutation_probability == -1.0
 end
 
 %--RANDOM INITIALIZATION
-pop = initializeRandomPopulation();  % pop is [t+1 x n+4 x n_individuals]
+pop = initializeRandomPopulation();  % pop is [t*2+1 x n+4 x n_individuals]
 
     %--EVALUATION
     [pop, fit_array_P] = evaluate(pop);

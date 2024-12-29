@@ -1,3 +1,7 @@
+%starts the PSO algorithm
+%input is a number, defaults to 1
+%output is the best individual with its best fitness
+
 function [best, bestFitness] = runPSO(exp)
     
     global eas;

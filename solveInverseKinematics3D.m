@@ -1,3 +1,10 @@
+% computes the inverse kinematics in 3D
+%   input: conf is a [nodes x 3] matrix with [angle around X, angle around Y, extension on Z]
+%          points [x, y, z] of each node
+%          the index of the closest link to the orietntation segment
+%          target as [x, y, z, rotation around X, rotation around Y]
+%   output: the rotation around x and y required to reach the target
+
 function [theta_x, theta_y, length] = solveInverseKinematics3D(conf,points,ee_link,target)
  
     R = eye(1);

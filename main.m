@@ -1,16 +1,16 @@
 % MAIN FUNCTION
 %
 % Optimization Problem defintion:
-% > .home_base, [1x3]                   pose of the home base, array: [x , y , angle in deg (positive counterclockwise from x-axis)]
-% > .targets, [tx3]                     pose of the target(s), matrix: [x , y , angle in deg (positive counterclockwise from x-axis)]
-% > .obstacles, [ox3]                   pose of the obstacle(s), matrix: [x , y , radius]
+% > .home_base, [1x5]                   pose of the home base, array: [x , y , z, angle x in deg (positive counterclockwise from x-axis), angle y in deg (positive counterclockwise from y-axis)]
+% > .targets, [tx5]                     pose of the target(s), matrix: [x , y z, , angle x in deg (positive counterclockwise from x-axis), angle y in deg (positive counterclockwise from y-axis)]
+% > .obstacles, [ox5]                   pose of the obstacle(s), matrix: [x , y , z, radius, height]
 % > .n_links, 1x1                       max number of nodes
 % > .angle_domain, 2x1                  range of joint bending angles [min angle, max angle] (in deg)
 % > .length_domain, 1x2                 length domain of each link: [min length required, max length] 
 % > .first_angle                        data structure
 %   | > .is_fixed, bool                 boolean, true if first angle from base is fixed, false otherwise
 %   | > .first_angle.angle, 1x1         THIS MAKES NO SENSE I WILL PROBABLY REMOVE IT if first angle from base is fixed, max angle of the first joint (in deg) - will generate an angle in the range +-angle, which will start based on the orientation defined in the home base
-% > .end_points, tx2                    contains the end point [x , y] of the segments starting from the target in the direction of the reaching orientation, used to solve the inverse kinematics
+% > .end_points, tx3                    contains the end point [x , y, z] of the segments starting from the target in the direction of the reaching orientation, used to solve the inverse kinematics
     
 % Genetic Algorithm settings:
 %  > .parallel                          boolean, true to run parallel computing
@@ -30,7 +30,7 @@
 %  > .normalize_weightDistance, bool    if true, while calculating the ik fitness, it will normalize the distances of each node from the orientation segment over the number of nodes (keep it to TRUE)
     
 % Genetic Algorithm output:
-%  > pop, t+1 x n+4 x n_individuals     last generation population
+%  > pop, t*2+1 x n+4 x n_individuals     last generation population
 %  > fit_array, n_individuals x 4       fitness value, composed of 'ik fitness', 'number of nodes', 'rank fitness', 'index in the pop array' (check the function 'evaluate' for more information)
 
 % NOTE FOR EXECUTION, if you want to check how individuals are evolving:

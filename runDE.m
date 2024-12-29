@@ -1,10 +1,7 @@
-% Run the Genetic Algorithm
-%
-% INPUT: none
-%
-% OUTPUT:
-% 'pop' is the population at the last generation of the algorithm [t+1 x n+4 x n_individuals]
-% 'fit_array', is a matrix with fitness values, composed of 'ik fitness', 'number of nodes', 'rank fitness', 'index in the pop array'[n_individuals x 4]
+%starts the DE algorithm
+%input is a number, defaults to 1
+%output is the best individual with its best fitness
+
 function [best, bestFitness] = runDE(exp)
     
     global eas; % genetic algorithm settings

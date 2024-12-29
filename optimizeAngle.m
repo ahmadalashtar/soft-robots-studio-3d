@@ -1,3 +1,5 @@
+%optimizes two angles x and y
+% gives back two angles that reach the same point but with less movement
 function [angleX,angleY] = optimizeAngle(x, y)
     sum = abs(x)+abs(y);
 

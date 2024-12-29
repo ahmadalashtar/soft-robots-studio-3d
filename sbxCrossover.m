@@ -1,3 +1,7 @@
+% performs sbx crossover operator
+% the inputs are the parents with their lower and upper bounds
+% output is the children after performing sbx crossover
+
 function [child1, child2] = sbxCrossover(parent1, parent2, lower_bound, upper_bound)
 global op;  % optimization problem
 global eas; % genetic algorithm settings

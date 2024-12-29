@@ -4,7 +4,7 @@
 % 'op' is the object describing the optimization problem 
 %
 % OUTPUT: 
-% 'chrom' is the random chromosome [t*2+1 x n+5]
+% 'chrom' is the random chromosome [t*2+1 x n+4]
 function [chrom] =  generateRandomChromosome()
     
     global op;  % optimization problem
@@ -57,7 +57,7 @@ function [chrom] =  generateRandomChromosome()
     chrom(n_targets*2+1,:) = lengths; 
 end
 
-% A single chromosome is a matrix [t*2+1 x n+5]: %%EMİR this needs to
+% A single chromosome is a matrix [t*2+1 x n+4]: %%EMİR this needs to
 % change
 
 %  |                 |         |         |         |         |

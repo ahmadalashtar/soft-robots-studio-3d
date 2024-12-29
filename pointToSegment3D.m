@@ -6,7 +6,6 @@
 % Output
 % - d: distance 
 % - inside: true if the point pt is within the segment, false otherwise
-% - xp: ?
 function [d, inside, xp] = pointToSegment3D(pt, v1, v2)
     
     u = [];

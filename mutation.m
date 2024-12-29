@@ -4,7 +4,7 @@
 % 'chrom' is the chromosome of the individual to be mutated
 %
 % OUTPUT: 
-% 'chrom' is the mutated chromosome [t*2+1 x n+5]
+% 'chrom' is the mutated chromosome [t*2+1 x n+4]
 function [chrom] = mutation(chrom)
     
     global op;  % optimization problem

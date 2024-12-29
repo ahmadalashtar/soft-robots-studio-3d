@@ -1,3 +1,11 @@
+% Draw the problem and the configurations of the robot (solution)
+%
+% INPUT:
+% 'robot_configs' is [nodes x 3 x targets], an array of robot configurations
+%                 one configuration for target
+%                 each configuration is composed of a matrix [nodes x 3] containing pairs angle - link length for each node
+% 'op' is the object describing the optimization problem 
+
 function [] = drawProblem3D(robot_configurations)
     global op;
     close all;

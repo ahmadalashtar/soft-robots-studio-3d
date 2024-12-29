@@ -1,3 +1,5 @@
+%selection method
+
 function [matPool] = proportionate(fit_array, isMin)
     global eas; % genetic algorithm settings
     
