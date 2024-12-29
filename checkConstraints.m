@@ -1,7 +1,7 @@
 % Add a penalty factor to infeasible solutions (degrade their fitness).
 %
 % INPUT:
-% 'chrom' is the chromosome [t+1 x n+4] to be evaluated (extra genes should not be empty)
+% 'chrom' is the chromosome [t*2+1 x n+4] to be evaluated (extra genes should not be empty)
 % 'fit_array' 
 % 'draw_plot' is a boolean flag, true if you want to plot the segments from targets (currently not used, but it might be useful in the future?)
 %
