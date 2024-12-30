@@ -1,3 +1,17 @@
+% This function calculates the path vectors from a joint of the robot, which
+% correlate to the link following that joint in the process of steering,
+% ensuring the path does not collide with any obstacles.
+
+% Input:
+% p1: The starting point of the path (3D vector).
+% p2: The midpoint of the path (3D vector).
+% p3: The target endpoint of the path (3D vector).
+% minLength: Minimum length to scale each path vector.
+% obstacles: An array of obstacle positions to check for collisions.
+
+% Output:
+% col: A boolean value indicating if a collision occurs with any obstacle.
+
 function [col] = pathVectors(p1, p2, p3, minLength, obstacles)
     pathVectorsArr = {};
     col = false;
@@ -11,28 +25,6 @@ function [col] = pathVectors(p1, p2, p3, minLength, obstacles)
     curP = firstP;
     K = cross(firstP, tarP, 1);
     K = K / norm(K);
-
-        % hold on;
-    % 
-    % axis equal;
-    % 
-    % limMin = -1;
-    % limMax = 1;
-    % 
-    % xlabel('X');
-    % ylabel('Y');
-    % zlabel('Z');
-    % xlim([limMin, limMax]);
-    % ylim([limMin, limMax]);
-    % zlim([limMin, limMax]);
-    % 
-    % plotVector([1; 0; 0], 'k');
-    % plotVector([0; 1; 0], 'k');
-    % plotVector([0; 0; 1], 'k');
-    % 
-    % plotVector(firstP, 'b', 5);
-    % plotVector(tarP, 'r', 5);
-    % plotVector(K, 'c', 5)
 
     incrementAmount = 3;
 
@@ -57,13 +49,17 @@ function [col] = pathVectors(p1, p2, p3, minLength, obstacles)
         end
         index = index + 1;
     end
-
-    % for i = 1:size(pathVectorsArr, 2)
-    %     pathVectorsArr{i} = minLength * pathVectorsArr{i} + p2;
-    %     %plotVector(p2, pathVectorsArr{i}, 'g');
-    % end
 end
 
+% This helper function rotates our vector (p) around an axis (K) by a given angle (theta).
+
+% Input:
+% p: The vector to be rotated (3D vector), it is a path vector in the process of steering.
+% K: The axis of rotation (3D unit vector).
+% theta: The angle of rotation in degrees.
+
+% Output:
+% rotP: The rotated vector (3D vector).
 
 function rotP = rotateKAxis(p, K, theta)    
     Rk = [K(1)*K(1)*(1-cosd(theta)) + cosd(theta), K(1)*K(2)*(1-cosd(theta)) - (K(3)*sind(theta)), K(1)*K(3)*(1-cosd(theta)) + (K(2)*sind(theta));
@@ -73,15 +69,13 @@ function rotP = rotateKAxis(p, K, theta)
     rotP = Rk * p;
 end
 
-function rotP = rotateXYPrime(p, rotX, rotY)
-    rotX = deg2rad(rotX);
-    rotY = deg2rad(rotY);
+% This function plots a 3D vector from an origin point to an endpoint.
 
-    Rx = [1, 0, 0; 0, cos(rotX), -sin(rotX); 0, sin(rotX), cos(rotX)];
-    Ry = [cos(rotY), 0, sin(rotY); 0, 0, 0; -sin(rotY), 0, cos(rotY)];
-
-    rotP = Rx * Ry * p;
-end
+% Input:
+% org: The origin point of the vector (3D vector).
+% p: The endpoint of the vector (3D vector).
+% col: The color of the vector line.
+% lineWidth: The thickness of the vector line (optional, default is 1.0).
 
 function plotVector(org, p, col, lineWidth)
     arguments

@@ -1,11 +1,19 @@
-%startPoint is a point in 3d space with 3 indices, being X Y Z, it is
-%the start point of the vector that ends with endPoint.
-%endPoint is a point in 3d space with 3 indices, being X Y Z, it is the
-%end point of the vector that starts with startPoint.
-%obstacle is a 5 index array representing a cylinder, first being X position, second being Y
-%position and the third being Z position. 4th index is the radius of the
-%cylinder and 5th is the leng
-%this function finds out if the vector collides with the cylinder obstacle or not.
+% This function determines whether the vector collides with the cylindrical obstacle or not.
+
+% Input:
+% startPoint: A point in 3D space with 3 indices, being X, Y, Z. 
+% It is the starting point of the vector (link) that ends with endPoint.
+% endPoint: A point in 3D space with 3 indices, being X, Y, Z. 
+% It is the ending point of the vector (link) that starts with startPoint.
+% obstacle is a 5-index array representing a cylinder:
+%   - First index: X position
+%   - Second index: Y position
+%   - Third index: Z position
+%   - Fourth index: radius of the cylinder
+%   - Fifth index: length (height) of the cylinder
+
+% Output:
+% isColliding: If the vector collides with the cylindrical obstacle or not.
 
 function isColliding = veccol(startPoint, endPoint, obstacle)
 
@@ -44,30 +52,6 @@ function isColliding = veccol(startPoint, endPoint, obstacle)
         trimmedEnd = trimmedStart + t * lineVector;
     end
 
-    %direction = trimmedEnd - trimmedStart;
-    % segmentLength = norm(direction);
-    % if segmentLength == 0
-    %     closestPoint = trimmedStart;
-    % else
-    %     direction = direction / segmentLength;
-    % 
-    %     d = obstaclePos - trimmedStart;
-    %     projLength = dot(d, direction);
-    % 
-    %     if projLength < 0
-    %         closestPoint = trimmedStart;
-    %     elseif projLength > segmentLength
-    %         closestPoint = trimmedEnd;
-    %     else
-    %         closestPoint = trimmedStart + projLength * direction;
-    %     end
-    % end
-    %if projection is lower than the limit, startPoint is the closest
-    %if projection is bigger than the limit, the endPoint is the closest
-
-    %distanceToCylinderBase = distanceLinePoint(startPoint(1:2), endPoint(1:2), obstacle(1:2));
-
-
     [closest_x, closest_y] = closestPointOnSegment(trimmedStart(1), trimmedStart(2), trimmedEnd(1), trimmedEnd(2), obstaclePos(1), obstaclePos(2));
 
     distanceToCylinderBase = sqrt((closest_x - obstaclePos(1))^2 + (closest_y - obstaclePos(2))^2);
@@ -78,6 +62,17 @@ function isColliding = veccol(startPoint, endPoint, obstacle)
         %plotter(startPoint, endPoint, obstacle);
     %end
 end
+
+
+% Finds the closest point on a line segment to a given point in 2D space.
+
+% Input:
+% ax, ay - Coordinates of the segment's start point.
+% bx, by - Coordinates of the segment's end point.
+% px, py - Coordinates of the external point.
+
+% Output:
+% closest_x, closest_y - Coordinates of the closest point on the segment to (px, py).
 
 function [closest_x, closest_y] = closestPointOnSegment(ax, ay, bx, by, px, py)
     abx = bx - ax;
@@ -98,31 +93,20 @@ function [closest_x, closest_y] = closestPointOnSegment(ax, ay, bx, by, px, py)
     closest_y = ay + t * aby;
 end
 
-% function [distance, onSegment] = distanceLinePoint(startPoint, endPoint, comparisonPoint)
-%     if startPoint(1) == endPoint(1) && endPoint(1) == comparisonPoint(1)
-%         distance = min([abs(startPoint(2) - comparisonPoint(2)), abs(endPoint(2) - comparisonPoint(2))]);
-%         return;
-%     elseif startPoint(2) == endPoint(2) && endPoint(2) == comparisonPoint(2)
-%         distance = min([abs(startPoint(1) - comparisonPoint(1)), abs(endPoint(1) - comparisonPoint(1))]);
-%         return;
-%     end
-% 
-%     numerator = abs((endPoint(1) - startPoint(1)) * (startPoint(2) - comparisonPoint(2)) - ...
-%                     (startPoint(1) - comparisonPoint(1)) * (endPoint(2) - startPoint(2)));
-%     denominator = sqrt((endPoint(1) - startPoint(1))^2 + (endPoint(2) - startPoint(2))^2);
-%     distance = numerator ./ denominator;
-% 
-% end
+
+% Visualizes a 3D vector and its interaction with a cylindrical obstacle.
+
+% Input:
+% startPoint - A 3D point [X, Y, Z], representing the start of the vector.
+% endPoint - A 3D point [X, Y, Z], representing the end of the vector.
+% obstacle - A 5-element array representing a cylinder:
+%              [X, Y, Z, radius, height], where (X, Y, Z) is the base center,
+%              radius is the cylinder's radius, and height is its length.
+
+% Output:
+% A 3D plot visualizing the vector, its start and end points, and the cylindrical obstacle.
 
 function plotter(startPoint, endPoint, obstacle)
-
-    % startPoint = [71.0412, -6.09121, 100.871];
-    % endPoint = [94.3988, -13.6421, 105.333];
-    % obstacle = [85 0 200 12.5 300];
-
-    %startPoint = [35.4352, -33.9399, 113.338];
-    %endPoint = [47.9788, -33.4889, 113.528];
-    %obstacle = [45 -45 200 12.5 300];
     
     obstaclePos = obstacle(1:3);
     radius = obstacle(4);
@@ -140,15 +124,13 @@ function plotter(startPoint, endPoint, obstacle)
 
     plot3([startPoint(1), endPoint(1)], [startPoint(2), endPoint(2)], [startPoint(3), endPoint(3)], 'b', 'LineWidth', 2);
 
-    %scatter3(closestPoint(1), closestPoint(2), closestPoint(3), 100, 'blue');
-
     [X, Y, Z] = cylinder(radius);
     Z = Z * height + cylinderBottom;
 
     X = X + obstaclePos(1);
     Y = Y + obstaclePos(2);
     
-    surf(X, Y, Z, 'FaceAlpha', 0.3, 'EdgeColor', 'none'); % Plot the cylinder with transparency
+    surf(X, Y, Z, 'FaceAlpha', 0.3, 'EdgeColor', 'none');
 
     xlabel('X');
     ylabel('Y');
