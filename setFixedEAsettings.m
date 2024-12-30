@@ -17,7 +17,7 @@ function [] = setFixedEAsettings()
     eas.ga.mutation_probability = -1;  % -1 is dynamic
     eas.ga.crossover_method = "blxa";
     eas.survival_alpha = 40;    %this is the percentage of elites that will stay in the new population
-    eas.penalty_method = 'frequency';	% 'static', 'adaptive'
+    eas.penalty_method = 'adaptive';	% 'static', 'adaptive'
     eas.adaptive_size = 10;
     eas.adaptive_pen_mult = 50;
 

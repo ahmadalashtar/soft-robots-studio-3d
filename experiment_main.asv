@@ -57,7 +57,7 @@ function experiment_main(data)
         
         result.algo_series = algorithms; %% Type wanted algorithm types in here %"bbbc","ga","pso","de"
            
-        eas.obstacle_avoidance = false; 
+        eas.obstacle_avoidance = false; % we'll do obstacle avoidace later
         eas.rankingSettings.step_ik = 0.5;       % resolution of a partition (i.e., distance in IK fitness between two consecutives paritions)
         eas.rankingSettings.step_len = 5;
     
@@ -68,7 +68,6 @@ function experiment_main(data)
         eas.numOfIteration = data.runs;    %%The amount of iteration
         eas.n_generations = data.generation;
         eas.n_individuals = data.pop;
-
 		if(isfield(data, 'elitist'))
 			eas.survival_method = data.elitist; % 'elitist_full', 'elitist_alpha', 'non-elitist'
 		else
@@ -123,6 +122,7 @@ function experiment_main(data)
 			result.parameters.pso.socialConstant = data.socialConstant;
 		end
     
+
     
         result.output_matrix= zeros(1,18); %% Output matrix will store every iteration on every settings
         result.chromosome_mat = [];

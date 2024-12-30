@@ -51,7 +51,7 @@ function [best, configurations, bestFitness] = main(exp_flag)
     end
     
     if(~exp_flag)
-        thirdTask();
+        firstTask();
     end
     
     if ~exp_flag
