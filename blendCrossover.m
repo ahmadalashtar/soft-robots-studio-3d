@@ -25,6 +25,6 @@ function [child] = blendCrossover(p1, p2, alpha)
     
     %lengths (+1 x nodes) last 4 is empty
     for j=1:1:op.n_links
-        child(ll_index,j) = blendValues(p1(ll_index,j),p1(ll_index,j),alpha,op.length_domain,false);
+        child(ll_index,j) = blendValues(p1(ll_index,j),p2(ll_index,j),alpha,op.length_domain,false);
     end
 end
